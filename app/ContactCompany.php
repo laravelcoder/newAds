@@ -1,13 +1,13 @@
 <?php
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\FilterByUser;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ContactCompany
+ * Class ContactCompany.
  *
- * @package App
  * @property string $name
  * @property string $address
  * @property string $website
@@ -20,7 +20,7 @@ use App\Traits\FilterByUser;
  * @property string $zipcode
  * @property string $country
  * @property string $logo
-*/
+ */
 class ContactCompany extends Model
 {
     use FilterByUser;
@@ -30,10 +30,10 @@ class ContactCompany extends Model
     public static $searchable = [
         'name',
     ];
-    
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCreatedByIdAttribute($input)
@@ -42,28 +42,32 @@ class ContactCompany extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCreatedByTeamIdAttribute($input)
     {
         $this->attributes['created_by_team_id'] = $input ? $input : null;
     }
-    
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    
+
     public function created_by_team()
     {
         return $this->belongsTo(Team::class, 'created_by_team_id');
     }
-    
-    public function contacts() {
+
+    public function contacts()
+    {
         return $this->hasMany(Contact::class, 'company_id');
     }
-    public function phones() {
+
+    public function phones()
+    {
         return $this->hasMany(Phone::class, 'advertisers_id');
     }
 }

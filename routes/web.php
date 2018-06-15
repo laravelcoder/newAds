@@ -1,5 +1,8 @@
 <?php
-Route::get('/', function () { return redirect('/admin/home'); });
+
+Route::get('/', function () {
+    return redirect('/admin/home');
+});
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -18,7 +21,7 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index');
-    
+
     Route::resource('ads_dashboards', 'Admin\AdsDashboardsController');
     Route::resource('networks', 'Admin\NetworksController');
     Route::resource('contact_companies', 'Admin\ContactCompaniesController');
@@ -65,7 +68,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('messenger/inbox', 'Admin\MessengerController@inbox')->name('messenger.inbox');
     Route::get('messenger/outbox', 'Admin\MessengerController@outbox')->name('messenger.outbox');
     Route::resource('messenger', 'Admin\MessengerController');
-
 
     Route::get('search', 'MegaSearchController@search')->name('mega-search');
 });
