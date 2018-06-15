@@ -1,13 +1,13 @@
 <?php
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\FilterByUser;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Contact
+ * Class Contact.
  *
- * @package App
  * @property string $company
  * @property string $first_name
  * @property string $last_name
@@ -16,7 +16,7 @@ use App\Traits\FilterByUser;
  * @property string $address
  * @property string $created_by
  * @property string $created_by_team
-*/
+ */
 class Contact extends Model
 {
     use FilterByUser;
@@ -25,10 +25,10 @@ class Contact extends Model
     protected $hidden = [];
     public static $searchable = [
     ];
-    
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCompanyIdAttribute($input)
@@ -37,7 +37,8 @@ class Contact extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCreatedByIdAttribute($input)
@@ -46,35 +47,37 @@ class Contact extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCreatedByTeamIdAttribute($input)
     {
         $this->attributes['created_by_team_id'] = $input ? $input : null;
     }
-    
+
     public function company()
     {
         return $this->belongsTo(ContactCompany::class, 'company_id');
     }
-    
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    
+
     public function created_by_team()
     {
         return $this->belongsTo(Team::class, 'created_by_team_id');
     }
-    
+
     public function adverstiser_id()
     {
         return $this->belongsToMany(ContactCompany::class, 'contact_contact_company');
     }
-    
-    public function phones() {
+
+    public function phones()
+    {
         return $this->hasMany(Phone::class, 'advertiser_id');
     }
 }
