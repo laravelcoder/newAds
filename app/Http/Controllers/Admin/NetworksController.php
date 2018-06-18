@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Network;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreNetworksRequest;
 use App\Http\Requests\Admin\UpdateNetworksRequest;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Session;
+use App\Network;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\DataTables;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 class NetworksController extends Controller
 {
     /**
@@ -24,7 +21,7 @@ class NetworksController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('network_access')) {
+        if (!Gate::allows('network_access')) {
             return abort(401);
         }
         if ($filterBy = Input::get('filter')) {
@@ -35,17 +32,15 @@ class NetworksController extends Controller
             }
         }
 
-        
         if (request()->ajax()) {
             $query = Network::query();
-            $query->with("created_by");
-            $query->with("created_by_team");
+            $query->with('created_by');
+            $query->with('created_by_team');
             $template = 'actionsTemplate';
-            if(request('show_deleted') == 1) {
-                
-        if (! Gate::allows('network_delete')) {
-            return abort(401);
-        }
+            if (request('show_deleted') == 1) {
+                if (!Gate::allows('network_delete')) {
+                    return abort(401);
+                }
                 $query->onlyTrashed();
                 $template = 'restoreTemplate';
             }
@@ -64,7 +59,7 @@ class NetworksController extends Controller
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
             $table->editColumn('actions', function ($row) use ($template) {
-                $gateKey  = 'network_';
+                $gateKey = 'network_';
                 $routeKey = 'admin.networks';
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
@@ -82,7 +77,7 @@ class NetworksController extends Controller
                 return $row->created_by_team ? $row->created_by_team->name : '';
             });
 
-            $table->rawColumns(['actions','massDelete']);
+            $table->rawColumns(['actions', 'massDelete']);
 
             return $table->make(true);
         }
@@ -97,10 +92,10 @@ class NetworksController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('network_create')) {
+        if (!Gate::allows('network_create')) {
             return abort(401);
         }
-        
+
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
@@ -110,34 +105,33 @@ class NetworksController extends Controller
     /**
      * Store a newly created Network in storage.
      *
-     * @param  \App\Http\Requests\StoreNetworksRequest  $request
+     * @param \App\Http\Requests\StoreNetworksRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNetworksRequest $request)
     {
-        if (! Gate::allows('network_create')) {
+        if (!Gate::allows('network_create')) {
             return abort(401);
         }
         $network = Network::create($request->all());
 
-
-
         return redirect()->route('admin.networks.index');
     }
-
 
     /**
      * Show the form for editing Network.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if (! Gate::allows('network_edit')) {
+        if (!Gate::allows('network_edit')) {
             return abort(401);
         }
-        
+
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
@@ -149,33 +143,32 @@ class NetworksController extends Controller
     /**
      * Update Network in storage.
      *
-     * @param  \App\Http\Requests\UpdateNetworksRequest  $request
-     * @param  int  $id
+     * @param \App\Http\Requests\UpdateNetworksRequest $request
+     * @param int                                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateNetworksRequest $request, $id)
     {
-        if (! Gate::allows('network_edit')) {
+        if (!Gate::allows('network_edit')) {
             return abort(401);
         }
         $network = Network::findOrFail($id);
         $network->update($request->all());
 
-
-
         return redirect()->route('admin.networks.index');
     }
-
 
     /**
      * Display Network.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if (! Gate::allows('network_view')) {
+        if (!Gate::allows('network_view')) {
             return abort(401);
         }
         $network = Network::findOrFail($id);
@@ -183,16 +176,16 @@ class NetworksController extends Controller
         return view('admin.networks.show', compact('network'));
     }
 
-
     /**
      * Remove Network from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        if (! Gate::allows('network_delete')) {
+        if (!Gate::allows('network_delete')) {
             return abort(401);
         }
         $network = Network::findOrFail($id);
@@ -208,7 +201,7 @@ class NetworksController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('network_delete')) {
+        if (!Gate::allows('network_delete')) {
             return abort(401);
         }
         if ($request->input('ids')) {
@@ -220,16 +213,16 @@ class NetworksController extends Controller
         }
     }
 
-
     /**
      * Restore Network from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        if (! Gate::allows('network_delete')) {
+        if (!Gate::allows('network_delete')) {
             return abort(401);
         }
         $network = Network::onlyTrashed()->findOrFail($id);
@@ -241,12 +234,13 @@ class NetworksController extends Controller
     /**
      * Permanently delete Network from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)
     {
-        if (! Gate::allows('network_delete')) {
+        if (!Gate::allows('network_delete')) {
             return abort(401);
         }
         $network = Network::onlyTrashed()->findOrFail($id);

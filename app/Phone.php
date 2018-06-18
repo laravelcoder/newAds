@@ -1,18 +1,18 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Phone
+ * Class Phone.
  *
- * @package App
  * @property string $phone_number
  * @property string $advertiser
  * @property string $agent
  * @property string $advertisers
-*/
+ */
 class Phone extends Model
 {
     use SoftDeletes;
@@ -21,10 +21,10 @@ class Phone extends Model
     protected $hidden = [];
     public static $searchable = [
     ];
-    
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setAdvertiserIdAttribute($input)
@@ -33,7 +33,8 @@ class Phone extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setAgentIdAttribute($input)
@@ -42,27 +43,27 @@ class Phone extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setAdvertisersIdAttribute($input)
     {
         $this->attributes['advertisers_id'] = $input ? $input : null;
     }
-    
+
     public function advertiser()
     {
         return $this->belongsTo(Contact::class, 'advertiser_id');
     }
-    
+
     public function agent()
     {
         return $this->belongsTo(Agent::class, 'agent_id')->withTrashed();
     }
-    
+
     public function advertisers()
     {
         return $this->belongsTo(ContactCompany::class, 'advertisers_id');
     }
-    
 }

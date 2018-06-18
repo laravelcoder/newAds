@@ -12,8 +12,8 @@ class TeamSeed extends Seeder
     public function run()
     {
         $items = [
-            
-            ['id' => 1, 'name' => 'Phillips Team',],
+
+            ['id' => 1, 'name' => 'Phillips Team'],
 
         ];
 

@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Station;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreStationsRequest;
 use App\Http\Requests\Admin\UpdateStationsRequest;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Session;
+use App\Station;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\DataTables;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 class StationsController extends Controller
 {
     /**
@@ -24,7 +21,7 @@ class StationsController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('station_access')) {
+        if (!Gate::allows('station_access')) {
             return abort(401);
         }
         if ($filterBy = Input::get('filter')) {
@@ -35,17 +32,15 @@ class StationsController extends Controller
             }
         }
 
-        
         if (request()->ajax()) {
             $query = Station::query();
-            $query->with("created_by");
-            $query->with("created_by_team");
+            $query->with('created_by');
+            $query->with('created_by_team');
             $template = 'actionsTemplate';
-            if(request('show_deleted') == 1) {
-                
-        if (! Gate::allows('station_delete')) {
-            return abort(401);
-        }
+            if (request('show_deleted') == 1) {
+                if (!Gate::allows('station_delete')) {
+                    return abort(401);
+                }
                 $query->onlyTrashed();
                 $template = 'restoreTemplate';
             }
@@ -64,7 +59,7 @@ class StationsController extends Controller
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
             $table->editColumn('actions', function ($row) use ($template) {
-                $gateKey  = 'station_';
+                $gateKey = 'station_';
                 $routeKey = 'admin.stations';
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
@@ -79,7 +74,7 @@ class StationsController extends Controller
                 return $row->created_by_team ? $row->created_by_team->name : '';
             });
 
-            $table->rawColumns(['actions','massDelete']);
+            $table->rawColumns(['actions', 'massDelete']);
 
             return $table->make(true);
         }
@@ -94,10 +89,10 @@ class StationsController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('station_create')) {
+        if (!Gate::allows('station_create')) {
             return abort(401);
         }
-        
+
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
@@ -107,34 +102,33 @@ class StationsController extends Controller
     /**
      * Store a newly created Station in storage.
      *
-     * @param  \App\Http\Requests\StoreStationsRequest  $request
+     * @param \App\Http\Requests\StoreStationsRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreStationsRequest $request)
     {
-        if (! Gate::allows('station_create')) {
+        if (!Gate::allows('station_create')) {
             return abort(401);
         }
         $station = Station::create($request->all());
 
-
-
         return redirect()->route('admin.stations.index');
     }
-
 
     /**
      * Show the form for editing Station.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if (! Gate::allows('station_edit')) {
+        if (!Gate::allows('station_edit')) {
             return abort(401);
         }
-        
+
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
@@ -146,33 +140,32 @@ class StationsController extends Controller
     /**
      * Update Station in storage.
      *
-     * @param  \App\Http\Requests\UpdateStationsRequest  $request
-     * @param  int  $id
+     * @param \App\Http\Requests\UpdateStationsRequest $request
+     * @param int                                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateStationsRequest $request, $id)
     {
-        if (! Gate::allows('station_edit')) {
+        if (!Gate::allows('station_edit')) {
             return abort(401);
         }
         $station = Station::findOrFail($id);
         $station->update($request->all());
 
-
-
         return redirect()->route('admin.stations.index');
     }
-
 
     /**
      * Display Station.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if (! Gate::allows('station_view')) {
+        if (!Gate::allows('station_view')) {
             return abort(401);
         }
         $station = Station::findOrFail($id);
@@ -180,16 +173,16 @@ class StationsController extends Controller
         return view('admin.stations.show', compact('station'));
     }
 
-
     /**
      * Remove Station from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        if (! Gate::allows('station_delete')) {
+        if (!Gate::allows('station_delete')) {
             return abort(401);
         }
         $station = Station::findOrFail($id);
@@ -205,7 +198,7 @@ class StationsController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('station_delete')) {
+        if (!Gate::allows('station_delete')) {
             return abort(401);
         }
         if ($request->input('ids')) {
@@ -217,16 +210,16 @@ class StationsController extends Controller
         }
     }
 
-
     /**
      * Restore Station from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        if (! Gate::allows('station_delete')) {
+        if (!Gate::allows('station_delete')) {
             return abort(401);
         }
         $station = Station::onlyTrashed()->findOrFail($id);
@@ -238,12 +231,13 @@ class StationsController extends Controller
     /**
      * Permanently delete Station from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)
     {
-        if (! Gate::allows('station_delete')) {
+        if (!Gate::allows('station_delete')) {
             return abort(401);
         }
         $station = Station::onlyTrashed()->findOrFail($id);
