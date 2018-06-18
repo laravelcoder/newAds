@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Category;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoriesRequest;
 use App\Http\Requests\Admin\UpdateCategoriesRequest;
+use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class CategoriesController extends Controller
 {
     public function index()
@@ -23,6 +28,7 @@ class CategoriesController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->update($request->all());
+        
 
         return $category;
     }
@@ -30,6 +36,7 @@ class CategoriesController extends Controller
     public function store(StoreCategoriesRequest $request)
     {
         $category = Category::create($request->all());
+        
 
         return $category;
     }
@@ -38,7 +45,6 @@ class CategoriesController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
-
         return '';
     }
 }

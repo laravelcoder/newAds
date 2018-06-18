@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,9 +23,9 @@ class UpdateCategoriesRequest extends FormRequest
     public function rules()
     {
         return [
-
+            
             'advertiser_id.*' => 'exists:contact_companies,id',
-            'ad_id.*'         => 'exists:ads,id',
+            'ad_id.*' => 'exists:ads,id',
         ];
     }
 }

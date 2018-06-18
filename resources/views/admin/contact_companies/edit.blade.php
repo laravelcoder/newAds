@@ -206,6 +206,40 @@
             <a href="#" class="btn btn-success pull-right add-new">@lang('global.app_add_new')</a>
         </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Ads
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>@lang('global.ads.fields.ad-label')</th>
+                        <th>@lang('global.ads.fields.total-impressions')</th>
+                        <th>@lang('global.ads.fields.total-networks')</th>
+                        <th>@lang('global.ads.fields.total-channels')</th>
+                        
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="ads">
+                    @forelse(old('ads', []) as $index => $data)
+                        @include('admin.contact_companies.ads_row', [
+                            'index' => $index
+                        ])
+                    @empty
+                        @foreach($contact_company->ads as $item)
+                            @include('admin.contact_companies.ads_row', [
+                                'index' => 'id-' . $item->id,
+                                'field' => $item
+                            ])
+                        @endforeach
+                    @endforelse
+                </tbody>
+            </table>
+            <a href="#" class="btn btn-success pull-right add-new">@lang('global.app_add_new')</a>
+        </div>
+    </div>
 
     {!! Form::submit(trans('global.app_update'), ['class' => 'btn btn-danger']) !!}
     {!! Form::close() !!}
@@ -223,6 +257,13 @@
 
     <script type="text/html" id="phones-template">
         @include('admin.contact_companies.phones_row',
+                [
+                    'index' => '_INDEX_',
+                ])
+               </script > 
+
+    <script type="text/html" id="ads-template">
+        @include('admin.contact_companies.ads_row',
                 [
                     'index' => '_INDEX_',
                 ])

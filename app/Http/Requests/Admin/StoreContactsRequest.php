@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +23,7 @@ class StoreContactsRequest extends FormRequest
     public function rules()
     {
         return [
-            'adverstiser_id.*'      => 'exists:contact_companies,id',
+            'adverstiser_id.*' => 'exists:contact_companies,id',
             'phones.*.phone_number' => 'required',
         ];
     }

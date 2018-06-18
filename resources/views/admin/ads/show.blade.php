@@ -21,6 +21,10 @@
                             <td field-key='ad_description'>{!! $ad->ad_description !!}</td>
                         </tr>
                         <tr>
+                            <th>@lang('global.ads.fields.video-upload')</th>
+                            <td field-key='video_upload'>@if($ad->video_upload)<a href="{{ asset(env('UPLOAD_PATH').'/' . $ad->video_upload) }}" target="_blank">Download file</a>@endif</td>
+                        </tr>
+                        <tr>
                             <th>@lang('global.ads.fields.total-impressions')</th>
                             <td field-key='total_impressions'>{{ $ad->total_impressions }}</td>
                         </tr>
@@ -47,6 +51,10 @@
                                     <span class="label label-info label-many">{{ $singleCategoryId->category }}</span>
                                 @endforeach
                             </td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.ads.fields.video-screenshot')</th>
+                            <td field-key='video_screenshot'>@if($ad->video_screenshot)<a href="{{ asset(env('UPLOAD_PATH').'/' . $ad->video_screenshot) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $ad->video_screenshot) }}"/></a>@endif</td>
                         </tr>
                     </table>
                 </div>

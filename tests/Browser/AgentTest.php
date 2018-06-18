@@ -3,8 +3,8 @@
 namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
 
 class AgentTest extends DuskTestCase
 {
@@ -16,23 +16,23 @@ class AgentTest extends DuskTestCase
         $agent = factory('App\Agent')->make();
 
         $relations = [
-            factory('App\Contactcompany')->create(),
-            factory('App\Contactcompany')->create(),
+            factory('App\Contactcompany')->create(), 
+            factory('App\Contactcompany')->create(), 
         ];
 
         $this->browse(function (Browser $browser) use ($admin, $agent, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.agents.index'))
                 ->clickLink('Add new')
-                ->type('first_name', $agent->first_name)
-                ->type('last_name', $agent->last_name)
-                ->type('phone1', $agent->phone1)
-                ->type('phone2', $agent->phone2)
-                ->type('email', $agent->email)
-                ->type('skype', $agent->skype)
-                ->type('address', $agent->address)
-                ->attach('photo', base_path('tests/_resources/test.jpg'))
-                ->type('about', $agent->about)
+                ->type("first_name", $agent->first_name)
+                ->type("last_name", $agent->last_name)
+                ->type("phone1", $agent->phone1)
+                ->type("phone2", $agent->phone2)
+                ->type("email", $agent->email)
+                ->type("skype", $agent->skype)
+                ->type("address", $agent->address)
+                ->attach("photo", base_path("tests/_resources/test.jpg"))
+                ->type("about", $agent->about)
                 ->select('select[name="advertisers_id[]"]', $relations[0]->id)
                 ->select('select[name="advertisers_id[]"]', $relations[1]->id)
                 ->press('Save')
@@ -55,23 +55,23 @@ class AgentTest extends DuskTestCase
         $agent2 = factory('App\Agent')->make();
 
         $relations = [
-            factory('App\Contactcompany')->create(),
-            factory('App\Contactcompany')->create(),
+            factory('App\Contactcompany')->create(), 
+            factory('App\Contactcompany')->create(), 
         ];
 
         $this->browse(function (Browser $browser) use ($admin, $agent, $agent2, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.agents.index'))
-                ->click('tr[data-entry-id="'.$agent->id.'"] .btn-info')
-                ->type('first_name', $agent2->first_name)
-                ->type('last_name', $agent2->last_name)
-                ->type('phone1', $agent2->phone1)
-                ->type('phone2', $agent2->phone2)
-                ->type('email', $agent2->email)
-                ->type('skype', $agent2->skype)
-                ->type('address', $agent2->address)
-                ->attach('photo', base_path('tests/_resources/test.jpg'))
-                ->type('about', $agent2->about)
+                ->click('tr[data-entry-id="' . $agent->id . '"] .btn-info')
+                ->type("first_name", $agent2->first_name)
+                ->type("last_name", $agent2->last_name)
+                ->type("phone1", $agent2->phone1)
+                ->type("phone2", $agent2->phone2)
+                ->type("email", $agent2->email)
+                ->type("skype", $agent2->skype)
+                ->type("address", $agent2->address)
+                ->attach("photo", base_path("tests/_resources/test.jpg"))
+                ->type("about", $agent2->about)
                 ->select('select[name="advertisers_id[]"]', $relations[0]->id)
                 ->select('select[name="advertisers_id[]"]', $relations[1]->id)
                 ->press('Update')
@@ -93,8 +93,8 @@ class AgentTest extends DuskTestCase
         $agent = factory('App\Agent')->create();
 
         $relations = [
-            factory('App\Contactcompany')->create(),
-            factory('App\Contactcompany')->create(),
+            factory('App\Contactcompany')->create(), 
+            factory('App\Contactcompany')->create(), 
         ];
 
         $agent->advertisers_id()->attach([$relations[0]->id, $relations[1]->id]);
@@ -102,7 +102,7 @@ class AgentTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($admin, $agent, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.agents.index'))
-                ->click('tr[data-entry-id="'.$agent->id.'"] .btn-primary')
+                ->click('tr[data-entry-id="' . $agent->id . '"] .btn-primary')
                 ->assertSeeIn("td[field-key='first_name']", $agent->first_name)
                 ->assertSeeIn("td[field-key='last_name']", $agent->last_name)
                 ->assertSeeIn("td[field-key='phone1']", $agent->phone1)
@@ -117,4 +117,5 @@ class AgentTest extends DuskTestCase
                 ->assertSeeIn("tr:last-child td[field-key='advertisers_id'] span:last-child", $relations[1]->name);
         });
     }
+
 }

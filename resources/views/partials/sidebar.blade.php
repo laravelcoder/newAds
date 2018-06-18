@@ -24,14 +24,6 @@
                 </a>
             </li>@endcan
             
-            @can('network_access')
-            <li>
-                <a href="{{ route('admin.networks.index') }}">
-                    <i class="fa fa-gears"></i>
-                    <span>@lang('global.networks.title')</span>
-                </a>
-            </li>@endcan
-            
             @can('contact_management_access')
             <li class="treeview">
                 <a href="#">
@@ -135,12 +127,49 @@
                 </ul>
             </li>@endcan
             
+            @can('internal_notification_access')
+            <li>
+                <a href="{{ route('admin.internal_notifications.index') }}">
+                    <i class="fa fa-briefcase"></i>
+                    <span>@lang('global.internal-notifications.title')</span>
+                </a>
+            </li>@endcan
+            
             @can('network_research_access')
-            <li class="">
+            <li class="treeview">
                 <a href="#">
                     <i class="fa fa-file-video-o"></i>
                     <span>@lang('global.network-research.title')</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
                 </a>
+                <ul class="treeview-menu">
+                    @can('network_access')
+                    <li>
+                        <a href="{{ route('admin.networks.index') }}">
+                            <i class="fa fa-gears"></i>
+                            <span>@lang('global.networks.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                    @can('provider_access')
+                    <li>
+                        <a href="{{ route('admin.providers.index') }}">
+                            <i class="fa fa-gears"></i>
+                            <span>@lang('global.providers.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                    @can('station_access')
+                    <li>
+                        <a href="{{ route('admin.stations.index') }}">
+                            <i class="fa fa-video-camera"></i>
+                            <span>@lang('global.stations.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                </ul>
             </li>@endcan
             
             @can('user_management_access')

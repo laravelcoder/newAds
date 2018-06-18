@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Agent;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\FileUploadTrait;
 use App\Http\Requests\Admin\StoreAgentsRequest;
 use App\Http\Requests\Admin\UpdateAgentsRequest;
+use App\Http\Controllers\Traits\FileUploadTrait;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Input;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class AgentsController extends Controller
 {
     use FileUploadTrait;
@@ -27,14 +34,14 @@ class AgentsController extends Controller
         $request = $this->saveFiles($request);
         $agent = Agent::findOrFail($id);
         $agent->update($request->all());
-
-        $phones = $agent->phones;
+        
+        $phones           = $agent->phones;
         $currentPhoneData = [];
         foreach ($request->input('phones', []) as $index => $data) {
-            if (is_int($index)) {
+            if (is_integer($index)) {
                 $agent->phones()->create($data);
             } else {
-                $id = explode('-', $index)[1];
+                $id                          = explode('-', $index)[1];
                 $currentPhoneData[$id] = $data;
             }
         }
@@ -53,7 +60,7 @@ class AgentsController extends Controller
     {
         $request = $this->saveFiles($request);
         $agent = Agent::create($request->all());
-
+        
         foreach ($request->input('phones', []) as $data) {
             $agent->phones()->create($data);
         }
@@ -65,7 +72,6 @@ class AgentsController extends Controller
     {
         $agent = Agent::findOrFail($id);
         $agent->delete();
-
         return '';
     }
 }

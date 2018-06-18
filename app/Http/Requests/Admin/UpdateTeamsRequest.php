@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +23,7 @@ class UpdateTeamsRequest extends FormRequest
     public function rules()
     {
         return [
-
+            
             'name' => 'required',
         ];
     }

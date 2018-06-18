@@ -2,7 +2,7 @@
 
 @section('content')
     <h3 class="page-title">@lang('global.ads.title')</h3>
-    {!! Form::open(['method' => 'POST', 'route' => ['admin.ads.store']]) !!}
+    {!! Form::open(['method' => 'POST', 'route' => ['admin.ads.store'], 'files' => true,]) !!}
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -30,6 +30,20 @@
                     @if($errors->has('ad_description'))
                         <p class="help-block">
                             {{ $errors->first('ad_description') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('video_upload', trans('global.ads.fields.video-upload').'', ['class' => 'control-label']) !!}
+                    {!! Form::hidden('video_upload', old('video_upload')) !!}
+                    {!! Form::file('video_upload', ['class' => 'form-control']) !!}
+                    {!! Form::hidden('video_upload_max_size', 18) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('video_upload'))
+                        <p class="help-block">
+                            {{ $errors->first('video_upload') }}
                         </p>
                     @endif
                 </div>
@@ -72,6 +86,18 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
+                    {!! Form::label('advertiser_id', trans('global.ads.fields.advertiser').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('advertiser_id', $advertisers, old('advertiser_id'), ['class' => 'form-control select2']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('advertiser_id'))
+                        <p class="help-block">
+                            {{ $errors->first('advertiser_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
                     {!! Form::label('category_id', trans('global.ads.fields.category-id').'', ['class' => 'control-label']) !!}
                     <button type="button" class="btn btn-primary btn-xs" id="selectbtn-category_id">
                         {{ trans('global.app_select_all') }}
@@ -84,6 +110,21 @@
                     @if($errors->has('category_id'))
                         <p class="help-block">
                             {{ $errors->first('category_id') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('video_screenshot', trans('global.ads.fields.video-screenshot').'', ['class' => 'control-label']) !!}
+                    {!! Form::file('video_screenshot', ['class' => 'form-control', 'style' => 'margin-top: 4px;']) !!}
+                    {!! Form::hidden('video_screenshot_max_size', 2) !!}
+                    {!! Form::hidden('video_screenshot_max_width', 4096) !!}
+                    {!! Form::hidden('video_screenshot_max_height', 4096) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('video_screenshot'))
+                        <p class="help-block">
+                            {{ $errors->first('video_screenshot') }}
                         </p>
                     @endif
                 </div>

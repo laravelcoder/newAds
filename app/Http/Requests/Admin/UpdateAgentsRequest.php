@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,9 +23,9 @@ class UpdateAgentsRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'photo'                 => 'nullable|mimes:png,jpg,jpeg,gif',
-            'advertisers_id.*'      => 'exists:contact_companies,id',
+            
+            'photo' => 'nullable|mimes:png,jpg,jpeg,gif',
+            'advertisers_id.*' => 'exists:contact_companies,id',
             'phones.*.phone_number' => 'required',
         ];
     }

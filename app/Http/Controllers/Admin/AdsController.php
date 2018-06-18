@@ -3,17 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Ad;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAdsRequest;
 use App\Http\Requests\Admin\UpdateAdsRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Traits\FileUploadTrait;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Input;
 
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class AdsController extends Controller
 {
+    use FileUploadTrait;
+
     /**
      * Display a listing of Ad.
      *
@@ -21,7 +27,7 @@ class AdsController extends Controller
      */
     public function index()
     {
-        if (!Gate::allows('ad_access')) {
+        if (! Gate::allows('ad_access')) {
             return abort(401);
         }
         if ($filterBy = Input::get('filter')) {
@@ -32,16 +38,19 @@ class AdsController extends Controller
             }
         }
 
+        
         if (request()->ajax()) {
             $query = Ad::query();
-            $query->with('created_by');
-            $query->with('created_by_team');
-            $query->with('category_id');
+            $query->with("advertiser");
+            $query->with("created_by");
+            $query->with("created_by_team");
+            $query->with("category_id");
             $template = 'actionsTemplate';
-            if (request('show_deleted') == 1) {
-                if (!Gate::allows('ad_delete')) {
-                    return abort(401);
-                }
+            if(request('show_deleted') == 1) {
+                
+        if (! Gate::allows('ad_delete')) {
+            return abort(401);
+        }
                 $query->onlyTrashed();
                 $template = 'restoreTemplate';
             }
@@ -49,11 +58,14 @@ class AdsController extends Controller
                 'ads.id',
                 'ads.ad_label',
                 'ads.ad_description',
+                'ads.video_upload',
                 'ads.total_impressions',
                 'ads.total_networks',
                 'ads.total_channels',
+                'ads.advertiser_id',
                 'ads.created_by_id',
                 'ads.created_by_team_id',
+                'ads.video_screenshot',
             ]);
             $table = Datatables::of($query);
 
@@ -63,13 +75,16 @@ class AdsController extends Controller
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
             $table->editColumn('actions', function ($row) use ($template) {
-                $gateKey = 'ad_';
+                $gateKey  = 'ad_';
                 $routeKey = 'admin.ads';
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
             });
             $table->editColumn('ad_description', function ($row) {
                 return $row->ad_description ? $row->ad_description : '';
+            });
+            $table->editColumn('video_upload', function ($row) {
+                if($row->video_upload) { return '<a href="'.asset(env('UPLOAD_PATH').'/'.$row->video_upload) .'" target="_blank">Download file</a>'; };
             });
             $table->editColumn('total_impressions', function ($row) {
                 return $row->total_impressions ? $row->total_impressions : '';
@@ -80,6 +95,9 @@ class AdsController extends Controller
             $table->editColumn('total_channels', function ($row) {
                 return $row->total_channels ? $row->total_channels : '';
             });
+            $table->editColumn('advertiser.name', function ($row) {
+                return $row->advertiser ? $row->advertiser->name : '';
+            });
             $table->editColumn('created_by.name', function ($row) {
                 return $row->created_by ? $row->created_by->name : '';
             });
@@ -87,15 +105,18 @@ class AdsController extends Controller
                 return $row->created_by_team ? $row->created_by_team->name : '';
             });
             $table->editColumn('category_id.category', function ($row) {
-                if (count($row->category_id) == 0) {
+                if(count($row->category_id) == 0) {
                     return '';
                 }
 
-                return '<span class="label label-info label-many">'.implode('</span><span class="label label-info label-many"> ',
-                        $row->category_id->pluck('category')->toArray()).'</span>';
+                return '<span class="label label-info label-many">' . implode('</span><span class="label label-info label-many"> ',
+                        $row->category_id->pluck('category')->toArray()) . '</span>';
+            });
+            $table->editColumn('video_screenshot', function ($row) {
+                if($row->video_screenshot) { return '<a href="'. asset(env('UPLOAD_PATH').'/' . $row->video_screenshot) .'" target="_blank"><img src="'. asset(env('UPLOAD_PATH').'/thumb/' . $row->video_screenshot) .'"/>'; };
             });
 
-            $table->rawColumns(['actions', 'massDelete', 'category_id.category']);
+            $table->rawColumns(['actions','massDelete','video_upload','category_id.category','video_screenshot']);
 
             return $table->make(true);
         }
@@ -110,94 +131,103 @@ class AdsController extends Controller
      */
     public function create()
     {
-        if (!Gate::allows('ad_create')) {
+        if (! Gate::allows('ad_create')) {
             return abort(401);
         }
-
+        
+        $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $category_ids = \App\Category::get()->pluck('category', 'id');
 
-        return view('admin.ads.create', compact('created_bies', 'created_by_teams', 'category_ids'));
+
+        return view('admin.ads.create', compact('advertisers', 'created_bies', 'created_by_teams', 'category_ids'));
     }
 
     /**
      * Store a newly created Ad in storage.
      *
-     * @param \App\Http\Requests\StoreAdsRequest $request
-     *
+     * @param  \App\Http\Requests\StoreAdsRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAdsRequest $request)
     {
-        if (!Gate::allows('ad_create')) {
+        if (! Gate::allows('ad_create')) {
             return abort(401);
         }
+        $request = $this->saveFiles($request);
         $ad = Ad::create($request->all());
-        $ad->category_id()->sync(array_filter((array) $request->input('category_id')));
+        $ad->category_id()->sync(array_filter((array)$request->input('category_id')));
+
+
 
         return redirect()->route('admin.ads.index');
     }
 
+
     /**
      * Show the form for editing Ad.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if (!Gate::allows('ad_edit')) {
+        if (! Gate::allows('ad_edit')) {
             return abort(401);
         }
-
+        
+        $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $category_ids = \App\Category::get()->pluck('category', 'id');
 
+
         $ad = Ad::findOrFail($id);
 
-        return view('admin.ads.edit', compact('ad', 'created_bies', 'created_by_teams', 'category_ids'));
+        return view('admin.ads.edit', compact('ad', 'advertisers', 'created_bies', 'created_by_teams', 'category_ids'));
     }
 
     /**
      * Update Ad in storage.
      *
-     * @param \App\Http\Requests\UpdateAdsRequest $request
-     * @param int                                 $id
-     *
+     * @param  \App\Http\Requests\UpdateAdsRequest  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAdsRequest $request, $id)
     {
-        if (!Gate::allows('ad_edit')) {
+        if (! Gate::allows('ad_edit')) {
             return abort(401);
         }
+        $request = $this->saveFiles($request);
         $ad = Ad::findOrFail($id);
         $ad->update($request->all());
-        $ad->category_id()->sync(array_filter((array) $request->input('category_id')));
+        $ad->category_id()->sync(array_filter((array)$request->input('category_id')));
+
+
 
         return redirect()->route('admin.ads.index');
     }
 
+
     /**
      * Display Ad.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if (!Gate::allows('ad_view')) {
+        if (! Gate::allows('ad_view')) {
             return abort(401);
         }
-
+        
+        $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $category_ids = \App\Category::get()->pluck('category', 'id');
-        $categories = \App\Category::whereHas('ad_id',
+$categories = \App\Category::whereHas('ad_id',
                     function ($query) use ($id) {
                         $query->where('id', $id);
                     })->get();
@@ -207,16 +237,16 @@ class AdsController extends Controller
         return view('admin.ads.show', compact('ad', 'categories'));
     }
 
+
     /**
      * Remove Ad from storage.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        if (!Gate::allows('ad_delete')) {
+        if (! Gate::allows('ad_delete')) {
             return abort(401);
         }
         $ad = Ad::findOrFail($id);
@@ -232,7 +262,7 @@ class AdsController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        if (!Gate::allows('ad_delete')) {
+        if (! Gate::allows('ad_delete')) {
             return abort(401);
         }
         if ($request->input('ids')) {
@@ -244,16 +274,16 @@ class AdsController extends Controller
         }
     }
 
+
     /**
      * Restore Ad from storage.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        if (!Gate::allows('ad_delete')) {
+        if (! Gate::allows('ad_delete')) {
             return abort(401);
         }
         $ad = Ad::onlyTrashed()->findOrFail($id);
@@ -265,13 +295,12 @@ class AdsController extends Controller
     /**
      * Permanently delete Ad from storage.
      *
-     * @param int $id
-     *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function perma_del($id)
     {
-        if (!Gate::allows('ad_delete')) {
+        if (! Gate::allows('ad_delete')) {
             return abort(401);
         }
         $ad = Ad::onlyTrashed()->findOrFail($id);

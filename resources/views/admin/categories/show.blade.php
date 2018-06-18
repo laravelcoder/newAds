@@ -52,12 +52,14 @@
     <thead>
         <tr>
             <th>@lang('global.ads.fields.ad-label')</th>
+                        <th>@lang('global.ads.fields.video-upload')</th>
                         <th>@lang('global.ads.fields.total-impressions')</th>
                         <th>@lang('global.ads.fields.total-networks')</th>
                         <th>@lang('global.ads.fields.total-channels')</th>
                         <th>@lang('global.ads.fields.created-by')</th>
                         <th>@lang('global.ads.fields.created-by-team')</th>
                         <th>@lang('global.ads.fields.category-id')</th>
+                        <th>@lang('global.ads.fields.video-screenshot')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -71,6 +73,7 @@
             @foreach ($ads as $ad)
                 <tr data-entry-id="{{ $ad->id }}">
                     <td field-key='ad_label'>{{ $ad->ad_label }}</td>
+                                <td field-key='video_upload'>@if($ad->video_upload)<a href="{{ asset(env('UPLOAD_PATH').'/' . $ad->video_upload) }}" target="_blank">Download file</a>@endif</td>
                                 <td field-key='total_impressions'>{{ $ad->total_impressions }}</td>
                                 <td field-key='total_networks'>{{ $ad->total_networks }}</td>
                                 <td field-key='total_channels'>{{ $ad->total_channels }}</td>
@@ -81,6 +84,7 @@
                                         <span class="label label-info label-many">{{ $singleCategoryId->category }}</span>
                                     @endforeach
                                 </td>
+                                <td field-key='video_screenshot'>@if($ad->video_screenshot)<a href="{{ asset(env('UPLOAD_PATH').'/' . $ad->video_screenshot) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $ad->video_screenshot) }}"/></a>@endif</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     {!! Form::open(array(
@@ -121,7 +125,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="13">@lang('global.app_no_entries_in_table')</td>
+                <td colspan="16">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
