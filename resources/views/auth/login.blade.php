@@ -30,10 +30,7 @@
                         <label class="col-md-4 control-label">@lang('global.app_email')</label>
 
                         <div class="col-md-6">
-                            <input type="email"
-                                   class="form-control"
-                                   name="email"
-                                   value="{{ old('email') }}">
+                            <input id="emailinput" type="email" class="form-control" name="email" value="{{ old('email') }}">
                         </div>
                     </div>
 
@@ -41,9 +38,7 @@
                         <label class="col-md-4 control-label">@lang('global.app_password')</label>
 
                         <div class="col-md-6">
-                            <input type="password"
-                                   class="form-control"
-                                   name="password">
+                            <input id="passwordinput" type="password" class="form-control" name="password">
                         </div>
                     </div>
 
