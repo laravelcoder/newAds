@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateCombined1528841716AgentsTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateCombined1528841716AgentsTable extends Migration
      */
     public function up()
     {
-        if(! Schema::hasTable('agents')) {
+        if (!Schema::hasTable('agents')) {
             Schema::create('agents', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('advertiser_company')->nullable();
@@ -24,7 +24,7 @@ class CreateCombined1528841716AgentsTable extends Migration
                 $table->string('photo')->nullable();
                 $table->text('about')->nullable();
                 $table->text('notes')->nullable();
-                
+
                 $table->timestamps();
                 $table->softDeletes();
 

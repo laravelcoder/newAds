@@ -12,82 +12,82 @@ class __TwigTemplate_bc57a8dd4f1110bd590a662e2b0edba0857cef43405672d0b154be311a3
         $this->source = $this->getSourceContext();
 
         // line 1
-        $this->parent = $this->loadTemplate("layout/layout.twig", "search.twig", 1);
-        $this->blocks = array(
-            'title' => array($this, 'block_title'),
-            'body_class' => array($this, 'block_body_class'),
-            'page_content' => array($this, 'block_page_content'),
-            'js_search' => array($this, 'block_js_search'),
-        );
+        $this->parent = $this->loadTemplate('layout/layout.twig', 'search.twig', 1);
+        $this->blocks = [
+            'title'        => [$this, 'block_title'],
+            'body_class'   => [$this, 'block_body_class'],
+            'page_content' => [$this, 'block_page_content'],
+            'js_search'    => [$this, 'block_js_search'],
+        ];
     }
 
     protected function doGetParent(array $context)
     {
-        return "layout/layout.twig";
+        return 'layout/layout.twig';
     }
 
-    protected function doDisplay(array $context, array $blocks = array())
+    protected function doDisplay(array $context, array $blocks = [])
     {
         // line 2
-        $context["__internal_72f03427b9c1316d474c1ac0b5fd5ffbe925de68be81d0d1ae2c79ad19a6de69"] = $this->loadTemplate("macros.twig", "search.twig", 2);
+        $context['__internal_72f03427b9c1316d474c1ac0b5fd5ffbe925de68be81d0d1ae2c79ad19a6de69'] = $this->loadTemplate('macros.twig', 'search.twig', 2);
         // line 1
         $this->parent->display($context, array_merge($this->blocks, $blocks));
     }
 
     // line 3
-    public function block_title($context, array $blocks = array())
+    public function block_title($context, array $blocks = [])
     {
-        echo "Search | ";
-        $this->displayParentBlock("title", $context, $blocks);
+        echo 'Search | ';
+        $this->displayParentBlock('title', $context, $blocks);
     }
 
     // line 4
-    public function block_body_class($context, array $blocks = array())
+    public function block_body_class($context, array $blocks = [])
     {
-        echo "search-page";
+        echo 'search-page';
     }
 
     // line 6
-    public function block_page_content($context, array $blocks = array())
+    public function block_page_content($context, array $blocks = [])
     {
         // line 7
-        echo "
-    <div class=\"page-header\">
+        echo '
+    <div class="page-header">
         <h1>Search</h1>
     </div>
 
     <p>This page allows you to search through the API documentation for
     specific terms. Enter your search words into the box below and click
-    \"submit\". The search will be performed on namespaces, classes, interfaces,
+    "submit". The search will be performed on namespaces, classes, interfaces,
     traits, functions, and methods.</p>
 
-    <form class=\"form-inline\" role=\"form\" action=\"";
+    <form class="form-inline" role="form" action="';
         // line 17
-        echo twig_escape_filter($this->env, $this->extensions['Sami\Renderer\TwigExtension']->pathForStaticFile($context, "search.html"), "html", null, true);
-        echo "\" method=\"GET\">
-        <div class=\"form-group\">
-            <label class=\"sr-only\" for=\"search\">Search</label>
-            <input type=\"search\" class=\"form-control\" name=\"search\" id=\"search\" placeholder=\"Search\">
+        echo twig_escape_filter($this->env, $this->extensions['Sami\Renderer\TwigExtension']->pathForStaticFile($context, 'search.html'), 'html', null, true);
+        echo '" method="GET">
+        <div class="form-group">
+            <label class="sr-only" for="search">Search</label>
+            <input type="search" class="form-control" name="search" id="search" placeholder="Search">
         </div>
-        <button type=\"submit\" class=\"btn btn-default\">submit</button>
+        <button type="submit" class="btn btn-default">submit</button>
     </form>
 
     <h2>Search Results</h2>
 
-    <div class=\"container-fluid\">
-        <ul class=\"search-results\"></ul>
+    <div class="container-fluid">
+        <ul class="search-results"></ul>
     </div>
 
-    ";
+    ';
         // line 31
-        $this->displayBlock("js_search", $context, $blocks);
-        echo "
+        $this->displayBlock('js_search', $context, $blocks);
+        echo '
 
-";
+';
     }
 
     // line 35
-    public function block_js_search($context, array $blocks = array())
+    public function block_js_search($context, array $blocks = [])
     {
         // line 36
         echo "    <script type=\"text/javascript\">
@@ -147,7 +147,7 @@ class __TwigTemplate_bc57a8dd4f1110bd590a662e2b0edba0857cef43405672d0b154be311a3
 
     public function getTemplateName()
     {
-        return "search.twig";
+        return 'search.twig';
     }
 
     public function isTraitable()
@@ -157,7 +157,7 @@ class __TwigTemplate_bc57a8dd4f1110bd590a662e2b0edba0857cef43405672d0b154be311a3
 
     public function getDebugInfo()
     {
-        return array (  93 => 36,  90 => 35,  83 => 31,  66 => 17,  54 => 7,  51 => 6,  45 => 4,  38 => 3,  34 => 1,  32 => 2,  15 => 1,);
+        return [93 => 36,  90 => 35,  83 => 31,  66 => 17,  54 => 7,  51 => 6,  45 => 4,  38 => 3,  34 => 1,  32 => 2,  15 => 1];
     }
 
     public function getSourceContext()
@@ -250,6 +250,6 @@ class __TwigTemplate_bc57a8dd4f1110bd590a662e2b0edba0857cef43405672d0b154be311a3
         })();
     </script>
 {% endblock %}
-", "search.twig", "phar://C:/Users/phillip.madsen/sami.phar/Sami/Resources/themes\\default/search.twig");
+", 'search.twig', 'phar://C:/Users/phillip.madsen/sami.phar/Sami/Resources/themes\\default/search.twig');
     }
 }

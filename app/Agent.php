@@ -1,14 +1,14 @@
 <?php
+
 namespace App;
 
+use App\Traits\FilterByUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\FilterByUser;
 
 /**
- * Class Agent
+ * Class Agent.
  *
- * @package App
  * @property string $advertiser_company
  * @property string $first_name
  * @property string $last_name
@@ -21,7 +21,7 @@ use App\Traits\FilterByUser;
  * @property string $created_by_team
  * @property text $notes
  * @property string $advertiser
-*/
+ */
 class Agent extends Model
 {
     use SoftDeletes, FilterByUser;
@@ -31,10 +31,10 @@ class Agent extends Model
     public static $searchable = [
         'advertiser_company',
     ];
-    
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCreatedByIdAttribute($input)
@@ -43,7 +43,8 @@ class Agent extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setCreatedByTeamIdAttribute($input)
@@ -52,30 +53,32 @@ class Agent extends Model
     }
 
     /**
-     * Set to null if empty
+     * Set to null if empty.
+     *
      * @param $input
      */
     public function setAdvertiserIdAttribute($input)
     {
         $this->attributes['advertiser_id'] = $input ? $input : null;
     }
-    
+
     public function created_by()
     {
         return $this->belongsTo(User::class, 'created_by_id');
     }
-    
+
     public function created_by_team()
     {
         return $this->belongsTo(Team::class, 'created_by_team_id');
     }
-    
+
     public function advertiser()
     {
         return $this->belongsTo(ContactCompany::class, 'advertiser_id');
     }
-    
-    public function phones() {
+
+    public function phones()
+    {
         return $this->hasMany(Phone::class, 'agent_id');
     }
 }

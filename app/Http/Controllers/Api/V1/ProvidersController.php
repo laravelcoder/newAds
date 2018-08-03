@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Provider;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProvidersRequest;
 use App\Http\Requests\Admin\UpdateProvidersRequest;
-use Yajra\DataTables\DataTables;
+use App\Provider;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 class ProvidersController extends Controller
 {
     public function index()
@@ -28,7 +23,6 @@ class ProvidersController extends Controller
     {
         $provider = Provider::findOrFail($id);
         $provider->update($request->all());
-        
 
         return $provider;
     }
@@ -36,7 +30,6 @@ class ProvidersController extends Controller
     public function store(StoreProvidersRequest $request)
     {
         $provider = Provider::create($request->all());
-        
 
         return $provider;
     }
@@ -45,6 +38,7 @@ class ProvidersController extends Controller
     {
         $provider = Provider::findOrFail($id);
         $provider->delete();
+
         return '';
     }
 }

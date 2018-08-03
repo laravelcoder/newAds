@@ -1,7 +1,9 @@
 <?php
+
 // Route::middleware('auth')->group(function () {
     Route::get('/r', function () {
-        function philsroutes() {
+        function philsroutes()
+        {
             $routeCollection = Route::getRoutes();
             echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">';
             echo "<div class='container'><div class='col-md-12'><table class='table table-striped' style='width:100%'>";
@@ -14,10 +16,10 @@
 
             foreach ($routeCollection as $value) {
                 echo '<tr>';
-                echo '<td>' . $value->methods()[0] . '</td>';
-                echo "<td><a href='" . $value->uri() . "' target='_blank'>" . $value->uri() . '</a> </td>';
-                echo '<td>' . $value->getName() . '</td>';
-                echo '<td>' . $value->getActionName() . '</td>';
+                echo '<td>'.$value->methods()[0].'</td>';
+                echo "<td><a href='".$value->uri()."' target='_blank'>".$value->uri().'</a> </td>';
+                echo '<td>'.$value->getName().'</td>';
+                echo '<td>'.$value->getActionName().'</td>';
                 echo '</tr>';
             }
 
@@ -29,7 +31,9 @@
     });
 // });
 
-Route::get('/', function () { return redirect('/admin/home'); });
+Route::get('/', function () {
+    return redirect('/admin/home');
+});
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -52,7 +56,7 @@ Route::get('{driver}/callback', 'Auth\LoginController@handleSocialCallback')->na
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index');
-    
+
     Route::resource('ads_dashboards', 'Admin\AdsDashboardsController');
     Route::resource('contact_companies', 'Admin\ContactCompaniesController');
     Route::post('contact_companies_mass_destroy', ['uses' => 'Admin\ContactCompaniesController@massDestroy', 'as' => 'contact_companies.mass_destroy']);
@@ -115,8 +119,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('messenger/outbox', 'Admin\MessengerController@outbox')->name('messenger.outbox');
     Route::resource('messenger', 'Admin\MessengerController');
 
-
     Route::get('search', 'MegaSearchController@search')->name('mega-search');
     Route::get('language/{lang}', function ($lang) {
         return redirect()->back()->withCookie(cookie()->forever('language', $lang));
-    })->name('language');});
+    })->name('language');
+});

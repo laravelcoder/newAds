@@ -1,7 +1,8 @@
 <?php
+
 use Sami\Sami;
-use Sami\RemoteRepository\GitHubRemoteRepository;
 use Symfony\Component\Finder\Finder;
+
 $iterator = Finder::create()
  ->files()
  ->name('*.php')
@@ -13,11 +14,11 @@ $iterator = Finder::create()
  ->exclude('bootstrap')
  ->exclude('storage')
  ->exclude('vendor')
- ->in(__DIR__ .'/app');
+ ->in(__DIR__.'/app');
 
-return new Sami($iterator,[
- 'theme' => 'default',
- 'title' => 'My App',
- 'build_dir' => __DIR__ . '/public/_docs/build',
- 'cache_dir' => __DIR__ . '/public/_docs/cache',
+return new Sami($iterator, [
+ 'theme'     => 'default',
+ 'title'     => 'My App',
+ 'build_dir' => __DIR__.'/public/_docs/build',
+ 'cache_dir' => __DIR__.'/public/_docs/cache',
 ]);
