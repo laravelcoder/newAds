@@ -22,4 +22,4 @@ Homestead.json
 .circleci/newads.sublime-workspace
 .phpintel
 resources/views/auth/login.blade.php
-
+.circleci
