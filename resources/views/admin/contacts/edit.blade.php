@@ -85,18 +85,12 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('adverstiser_id', trans('global.contacts.fields.adverstiser-id').'', ['class' => 'control-label']) !!}
-                    <button type="button" class="btn btn-primary btn-xs" id="selectbtn-adverstiser_id">
-                        {{ trans('global.app_select_all') }}
-                    </button>
-                    <button type="button" class="btn btn-primary btn-xs" id="deselectbtn-adverstiser_id">
-                        {{ trans('global.app_deselect_all') }}
-                    </button>
-                    {!! Form::select('adverstiser_id[]', $adverstiser_ids, old('adverstiser_id') ? old('adverstiser_id') : $contact->adverstiser_id->pluck('id')->toArray(), ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'selectall-adverstiser_id' ]) !!}
+                    {!! Form::label('notes', trans('global.contacts.fields.notes').'', ['class' => 'control-label']) !!}
+                    {!! Form::textarea('notes', old('notes'), ['class' => 'form-control ', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('adverstiser_id'))
+                    @if($errors->has('notes'))
                         <p class="help-block">
-                            {{ $errors->first('adverstiser_id') }}
+                            {{ $errors->first('notes') }}
                         </p>
                     @endif
                 </div>
@@ -167,14 +161,4 @@
             return false;
         });
         </script>
-    <script>
-        $("#selectbtn-adverstiser_id").click(function(){
-            $("#selectall-adverstiser_id > option").prop("selected","selected");
-            $("#selectall-adverstiser_id").trigger("change");
-        });
-        $("#deselectbtn-adverstiser_id").click(function(){
-            $("#selectall-adverstiser_id > option").prop("selected","");
-            $("#selectall-adverstiser_id").trigger("change");
-        });
-    </script>
 @stop

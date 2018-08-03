@@ -33,20 +33,16 @@
                             <td field-key='address'>{{ $contact->address }}</td>
                         </tr>
                         <tr>
+                            <th>@lang('global.contacts.fields.notes')</th>
+                            <td field-key='notes'>{!! $contact->notes !!}</td>
+                        </tr>
+                        <tr>
                             <th>@lang('global.contacts.fields.created-by')</th>
                             <td field-key='created_by'>{{ $contact->created_by->name or '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.contacts.fields.created-by-team')</th>
                             <td field-key='created_by_team'>{{ $contact->created_by_team->name or '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.contacts.fields.adverstiser-id')</th>
-                            <td field-key='adverstiser_id'>
-                                @foreach ($contact->adverstiser_id as $singleAdverstiserId)
-                                    <span class="label label-info label-many">{{ $singleAdverstiserId->name }}</span>
-                                @endforeach
-                            </td>
                         </tr>
                     </table>
                 </div>

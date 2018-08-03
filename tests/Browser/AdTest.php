@@ -26,19 +26,24 @@ class AdTest extends DuskTestCase
                 ->clickLink('Add new')
                 ->type("ad_label", $ad->ad_label)
                 ->type("ad_description", $ad->ad_description)
+                ->attach("video_upload", base_path("tests/_resources/test.jpg"))
                 ->type("total_impressions", $ad->total_impressions)
                 ->type("total_networks", $ad->total_networks)
                 ->type("total_channels", $ad->total_channels)
+                ->select("advertiser_id", $ad->advertiser_id)
                 ->select('select[name="category_id[]"]', $relations[0]->id)
                 ->select('select[name="category_id[]"]', $relations[1]->id)
+                ->attach("video_screenshot", base_path("tests/_resources/test.jpg"))
                 ->press('Save')
                 ->assertRouteIs('admin.ads.index')
                 ->assertSeeIn("tr:last-child td[field-key='ad_label']", $ad->ad_label)
                 ->assertSeeIn("tr:last-child td[field-key='total_impressions']", $ad->total_impressions)
                 ->assertSeeIn("tr:last-child td[field-key='total_networks']", $ad->total_networks)
                 ->assertSeeIn("tr:last-child td[field-key='total_channels']", $ad->total_channels)
+                ->assertSeeIn("tr:last-child td[field-key='advertiser']", $ad->advertiser->name)
                 ->assertSeeIn("tr:last-child td[field-key='category_id'] span:first-child", $relations[0]->category)
-                ->assertSeeIn("tr:last-child td[field-key='category_id'] span:last-child", $relations[1]->category);
+                ->assertSeeIn("tr:last-child td[field-key='category_id'] span:last-child", $relations[1]->category)
+                ->assertVisible("img[src='" . env("APP_URL") . "/" . env("UPLOAD_PATH") . "/thumb/" . \App\Ad::first()->video_screenshot . "']");
         });
     }
 
@@ -59,19 +64,24 @@ class AdTest extends DuskTestCase
                 ->click('tr[data-entry-id="' . $ad->id . '"] .btn-info')
                 ->type("ad_label", $ad2->ad_label)
                 ->type("ad_description", $ad2->ad_description)
+                ->attach("video_upload", base_path("tests/_resources/test.jpg"))
                 ->type("total_impressions", $ad2->total_impressions)
                 ->type("total_networks", $ad2->total_networks)
                 ->type("total_channels", $ad2->total_channels)
+                ->select("advertiser_id", $ad2->advertiser_id)
                 ->select('select[name="category_id[]"]', $relations[0]->id)
                 ->select('select[name="category_id[]"]', $relations[1]->id)
+                ->attach("video_screenshot", base_path("tests/_resources/test.jpg"))
                 ->press('Update')
                 ->assertRouteIs('admin.ads.index')
                 ->assertSeeIn("tr:last-child td[field-key='ad_label']", $ad2->ad_label)
                 ->assertSeeIn("tr:last-child td[field-key='total_impressions']", $ad2->total_impressions)
                 ->assertSeeIn("tr:last-child td[field-key='total_networks']", $ad2->total_networks)
                 ->assertSeeIn("tr:last-child td[field-key='total_channels']", $ad2->total_channels)
+                ->assertSeeIn("tr:last-child td[field-key='advertiser']", $ad2->advertiser->name)
                 ->assertSeeIn("tr:last-child td[field-key='category_id'] span:first-child", $relations[0]->category)
-                ->assertSeeIn("tr:last-child td[field-key='category_id'] span:last-child", $relations[1]->category);
+                ->assertSeeIn("tr:last-child td[field-key='category_id'] span:last-child", $relations[1]->category)
+                ->assertVisible("img[src='" . env("APP_URL") . "/" . env("UPLOAD_PATH") . "/thumb/" . \App\Ad::first()->video_screenshot . "']");
         });
     }
 
@@ -96,6 +106,7 @@ class AdTest extends DuskTestCase
                 ->assertSeeIn("td[field-key='total_impressions']", $ad->total_impressions)
                 ->assertSeeIn("td[field-key='total_networks']", $ad->total_networks)
                 ->assertSeeIn("td[field-key='total_channels']", $ad->total_channels)
+                ->assertSeeIn("td[field-key='advertiser']", $ad->advertiser->name)
                 ->assertSeeIn("td[field-key='created_by']", $ad->created_by->name)
                 ->assertSeeIn("td[field-key='created_by_team']", $ad->created_by_team->name)
                 ->assertSeeIn("tr:last-child td[field-key='category_id'] span:first-child", $relations[0]->category)

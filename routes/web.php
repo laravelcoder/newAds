@@ -1,4 +1,34 @@
 <?php
+// Route::middleware('auth')->group(function () {
+    Route::get('/r', function () {
+        function philsroutes() {
+            $routeCollection = Route::getRoutes();
+            echo '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">';
+            echo "<div class='container'><div class='col-md-12'><table class='table table-striped' style='width:100%'>";
+            echo '<tr>';
+            echo "<td width='10%'><h4>HTTP Method</h4></td>";
+            echo "<td width='30%'><h4>URL</h4></td>";
+            echo "<td width='30%'><h4>Route</h4></td>";
+            echo "<td width='30%'><h4>Corresponding Action</h4></td>";
+            echo '</tr>';
+
+            foreach ($routeCollection as $value) {
+                echo '<tr>';
+                echo '<td>' . $value->methods()[0] . '</td>';
+                echo "<td><a href='" . $value->uri() . "' target='_blank'>" . $value->uri() . '</a> </td>';
+                echo '<td>' . $value->getName() . '</td>';
+                echo '<td>' . $value->getActionName() . '</td>';
+                echo '</tr>';
+            }
+
+            echo '</table></div></div>';
+            echo '<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>';
+        }
+
+        return philsroutes();
+    });
+// });
+
 Route::get('/', function () { return redirect('/admin/home'); });
 
 // Authentication Routes...
@@ -16,11 +46,14 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
 
+// Social Login Routes..
+Route::get('login/{driver}', 'Auth\LoginController@redirectToSocial')->name('auth.login.social');
+Route::get('{driver}/callback', 'Auth\LoginController@handleSocialCallback')->name('auth.login.social_callback');
+
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index');
     
     Route::resource('ads_dashboards', 'Admin\AdsDashboardsController');
-    Route::resource('networks', 'Admin\NetworksController');
     Route::resource('contact_companies', 'Admin\ContactCompaniesController');
     Route::post('contact_companies_mass_destroy', ['uses' => 'Admin\ContactCompaniesController@massDestroy', 'as' => 'contact_companies.mass_destroy']);
     Route::resource('contacts', 'Admin\ContactsController');
@@ -29,6 +62,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('agents_mass_destroy', ['uses' => 'Admin\AgentsController@massDestroy', 'as' => 'agents.mass_destroy']);
     Route::post('agents_restore/{id}', ['uses' => 'Admin\AgentsController@restore', 'as' => 'agents.restore']);
     Route::delete('agents_perma_del/{id}', ['uses' => 'Admin\AgentsController@perma_del', 'as' => 'agents.perma_del']);
+    Route::resource('audiences', 'Admin\AudiencesController');
+    Route::post('audiences_mass_destroy', ['uses' => 'Admin\AudiencesController@massDestroy', 'as' => 'audiences.mass_destroy']);
+    Route::post('audiences_restore/{id}', ['uses' => 'Admin\AudiencesController@restore', 'as' => 'audiences.restore']);
+    Route::delete('audiences_perma_del/{id}', ['uses' => 'Admin\AudiencesController@perma_del', 'as' => 'audiences.perma_del']);
     Route::resource('categories', 'Admin\CategoriesController');
     Route::post('categories_mass_destroy', ['uses' => 'Admin\CategoriesController@massDestroy', 'as' => 'categories.mass_destroy']);
     Route::post('categories_restore/{id}', ['uses' => 'Admin\CategoriesController@restore', 'as' => 'categories.restore']);
@@ -44,14 +81,26 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('ads_mass_destroy', ['uses' => 'Admin\AdsController@massDestroy', 'as' => 'ads.mass_destroy']);
     Route::post('ads_restore/{id}', ['uses' => 'Admin\AdsController@restore', 'as' => 'ads.restore']);
     Route::delete('ads_perma_del/{id}', ['uses' => 'Admin\AdsController@perma_del', 'as' => 'ads.perma_del']);
-    Route::resource('audiences', 'Admin\AudiencesController');
-    Route::post('audiences_mass_destroy', ['uses' => 'Admin\AudiencesController@massDestroy', 'as' => 'audiences.mass_destroy']);
-    Route::post('audiences_restore/{id}', ['uses' => 'Admin\AudiencesController@restore', 'as' => 'audiences.restore']);
-    Route::delete('audiences_perma_del/{id}', ['uses' => 'Admin\AudiencesController@perma_del', 'as' => 'audiences.perma_del']);
     Route::resource('demographics', 'Admin\DemographicsController');
     Route::post('demographics_mass_destroy', ['uses' => 'Admin\DemographicsController@massDestroy', 'as' => 'demographics.mass_destroy']);
     Route::post('demographics_restore/{id}', ['uses' => 'Admin\DemographicsController@restore', 'as' => 'demographics.restore']);
     Route::delete('demographics_perma_del/{id}', ['uses' => 'Admin\DemographicsController@perma_del', 'as' => 'demographics.perma_del']);
+    Route::resource('campaigns', 'Admin\CampaignsController');
+    Route::post('campaigns_mass_destroy', ['uses' => 'Admin\CampaignsController@massDestroy', 'as' => 'campaigns.mass_destroy']);
+    Route::post('campaigns_restore/{id}', ['uses' => 'Admin\CampaignsController@restore', 'as' => 'campaigns.restore']);
+    Route::delete('campaigns_perma_del/{id}', ['uses' => 'Admin\CampaignsController@perma_del', 'as' => 'campaigns.perma_del']);
+    Route::resource('networks', 'Admin\NetworksController');
+    Route::post('networks_mass_destroy', ['uses' => 'Admin\NetworksController@massDestroy', 'as' => 'networks.mass_destroy']);
+    Route::post('networks_restore/{id}', ['uses' => 'Admin\NetworksController@restore', 'as' => 'networks.restore']);
+    Route::delete('networks_perma_del/{id}', ['uses' => 'Admin\NetworksController@perma_del', 'as' => 'networks.perma_del']);
+    Route::resource('affiliates', 'Admin\AffiliatesController');
+    Route::post('affiliates_mass_destroy', ['uses' => 'Admin\AffiliatesController@massDestroy', 'as' => 'affiliates.mass_destroy']);
+    Route::post('affiliates_restore/{id}', ['uses' => 'Admin\AffiliatesController@restore', 'as' => 'affiliates.restore']);
+    Route::delete('affiliates_perma_del/{id}', ['uses' => 'Admin\AffiliatesController@perma_del', 'as' => 'affiliates.perma_del']);
+    Route::resource('stations', 'Admin\StationsController');
+    Route::post('stations_mass_destroy', ['uses' => 'Admin\StationsController@massDestroy', 'as' => 'stations.mass_destroy']);
+    Route::post('stations_restore/{id}', ['uses' => 'Admin\StationsController@restore', 'as' => 'stations.restore']);
+    Route::delete('stations_perma_del/{id}', ['uses' => 'Admin\StationsController@perma_del', 'as' => 'stations.perma_del']);
     Route::resource('permissions', 'Admin\PermissionsController');
     Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
     Route::resource('roles', 'Admin\RolesController');
@@ -68,4 +117,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
 
     Route::get('search', 'MegaSearchController@search')->name('mega-search');
-});
+    Route::get('language/{lang}', function ($lang) {
+        return redirect()->back()->withCookie(cookie()->forever('language', $lang));
+    })->name('language');});

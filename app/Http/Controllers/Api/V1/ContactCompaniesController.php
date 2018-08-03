@@ -69,6 +69,23 @@ class ContactCompaniesController extends Controller
                 $item->delete();
             }
         }
+        $ads           = $contact_company->ads;
+        $currentAdData = [];
+        foreach ($request->input('ads', []) as $index => $data) {
+            if (is_integer($index)) {
+                $contact_company->ads()->create($data);
+            } else {
+                $id                          = explode('-', $index)[1];
+                $currentAdData[$id] = $data;
+            }
+        }
+        foreach ($ads as $item) {
+            if (isset($currentAdData[$item->id])) {
+                $item->update($currentAdData[$item->id]);
+            } else {
+                $item->delete();
+            }
+        }
 
         return $contact_company;
     }
@@ -83,6 +100,9 @@ class ContactCompaniesController extends Controller
         }
         foreach ($request->input('phones', []) as $data) {
             $contact_company->phones()->create($data);
+        }
+        foreach ($request->input('ads', []) as $data) {
+            $contact_company->ads()->create($data);
         }
 
         return $contact_company;

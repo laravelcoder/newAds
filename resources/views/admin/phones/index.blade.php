@@ -32,11 +32,11 @@
                         @endcan
 
                         <th>@lang('global.phones.fields.phone-number')</th>
-                        <th>@lang('global.phones.fields.advertiser')</th>
+                        <th>@lang('global.phones.fields.contact')</th>
                         <th>@lang('global.contacts.fields.last-name')</th>
+                        <th>@lang('global.phones.fields.advertiser')</th>
                         <th>@lang('global.phones.fields.agent')</th>
                         <th>@lang('global.agents.fields.last-name')</th>
-                        <th>@lang('global.phones.fields.advertisers')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -61,11 +61,11 @@
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
                 @endif
                 @endcan{data: 'phone_number', name: 'phone_number'},
-                {data: 'advertiser.first_name', name: 'advertiser.first_name'},
-                {data: 'advertiser.last_name', name: 'advertiser.last_name'},
+                {data: 'contact.first_name', name: 'contact.first_name'},
+                {data: 'contact.last_name', name: 'contact.last_name'},
+                {data: 'advertiser.name', name: 'advertiser.name'},
                 {data: 'agent.first_name', name: 'agent.first_name'},
                 {data: 'agent.last_name', name: 'agent.last_name'},
-                {data: 'advertisers.name', name: 'advertisers.name'},
                 
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];

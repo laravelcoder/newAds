@@ -26,6 +26,10 @@ class UpdateContactCompaniesRequest extends FormRequest
             
             'logo' => 'nullable|mimes:png,jpg,jpeg,gif',
             'phones.*.phone_number' => 'required',
+            'ads.*.ad_label' => 'required',
+            'ads.*.total_impressions' => 'max:2147483647|nullable|numeric',
+            'ads.*.total_networks' => 'max:2147483647|nullable|numeric',
+            'ads.*.total_channels' => 'max:2147483647|nullable|numeric',
         ];
     }
 }

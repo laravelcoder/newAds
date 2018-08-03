@@ -12,4 +12,12 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
 
         Route::resource('ads', 'AdsController', ['except' => ['create', 'edit']]);
 
+        Route::resource('campaigns', 'CampaignsController', ['except' => ['create', 'edit']]);
+
+        Route::resource('affiliates', 'AffiliatesController', ['except' => ['create', 'edit']]);
+
+        Route::resource('stations', 'StationsController', ['except' => ['create', 'edit']]);
+
+        Route::resource('teams', 'TeamsController', ['except' => ['create', 'edit']]);
+
 });

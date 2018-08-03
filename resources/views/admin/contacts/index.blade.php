@@ -31,7 +31,6 @@
                         <th>@lang('global.contacts.fields.email')</th>
                         <th>@lang('global.contacts.fields.created-by')</th>
                         <th>@lang('global.contacts.fields.created-by-team')</th>
-                        <th>@lang('global.contacts.fields.adverstiser-id')</th>
                                                 <th>&nbsp;</th>
 
                     </tr>
@@ -56,7 +55,6 @@
                 {data: 'email', name: 'email'},
                 {data: 'created_by.name', name: 'created_by.name'},
                 {data: 'created_by_team.name', name: 'created_by_team.name'},
-                {data: 'adverstiser_id.name', name: 'adverstiser_id.name'},
                 
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];

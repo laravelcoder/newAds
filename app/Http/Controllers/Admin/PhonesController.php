@@ -30,9 +30,9 @@ class PhonesController extends Controller
         
         if (request()->ajax()) {
             $query = Phone::query();
+            $query->with("contact");
             $query->with("advertiser");
             $query->with("agent");
-            $query->with("advertisers");
             $template = 'actionsTemplate';
             if(request('show_deleted') == 1) {
                 
@@ -45,9 +45,9 @@ class PhonesController extends Controller
             $query->select([
                 'phones.id',
                 'phones.phone_number',
+                'phones.contact_id',
                 'phones.advertiser_id',
                 'phones.agent_id',
-                'phones.advertisers_id',
             ]);
             $table = Datatables::of($query);
 
@@ -62,14 +62,14 @@ class PhonesController extends Controller
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
             });
-            $table->editColumn('advertiser.first_name', function ($row) {
-                return $row->advertiser ? $row->advertiser->first_name : '';
+            $table->editColumn('contact.first_name', function ($row) {
+                return $row->contact ? $row->contact->first_name : '';
+            });
+            $table->editColumn('advertiser.name', function ($row) {
+                return $row->advertiser ? $row->advertiser->name : '';
             });
             $table->editColumn('agent.first_name', function ($row) {
                 return $row->agent ? $row->agent->first_name : '';
-            });
-            $table->editColumn('advertisers.name', function ($row) {
-                return $row->advertisers ? $row->advertisers->name : '';
             });
 
             $table->rawColumns(['actions','massDelete']);
@@ -91,11 +91,11 @@ class PhonesController extends Controller
             return abort(401);
         }
         
-        $advertisers = \App\Contact::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
-        $agents = \App\Agent::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
+        $contacts = \App\Contact::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
         $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $agents = \App\Agent::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
 
-        return view('admin.phones.create', compact('advertisers', 'agents', 'advertisers'));
+        return view('admin.phones.create', compact('contacts', 'advertisers', 'agents'));
     }
 
     /**
@@ -129,13 +129,13 @@ class PhonesController extends Controller
             return abort(401);
         }
         
-        $advertisers = \App\Contact::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
-        $agents = \App\Agent::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
+        $contacts = \App\Contact::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
         $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
+        $agents = \App\Agent::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
 
         $phone = Phone::findOrFail($id);
 
-        return view('admin.phones.edit', compact('phone', 'advertisers', 'agents', 'advertisers'));
+        return view('admin.phones.edit', compact('phone', 'contacts', 'advertisers', 'agents'));
     }
 
     /**

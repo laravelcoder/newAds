@@ -11,17 +11,20 @@ use App\Traits\FilterByUser;
  * @package App
  * @property string $ad_label
  * @property text $ad_description
+ * @property string $video_upload
  * @property integer $total_impressions
  * @property integer $total_networks
  * @property integer $total_channels
+ * @property string $advertiser
  * @property string $created_by
  * @property string $created_by_team
+ * @property string $video_screenshot
 */
 class Ad extends Model
 {
     use SoftDeletes, FilterByUser;
 
-    protected $fillable = ['ad_label', 'ad_description', 'total_impressions', 'total_networks', 'total_channels', 'created_by_id', 'created_by_team_id'];
+    protected $fillable = ['ad_label', 'ad_description', 'video_upload', 'total_impressions', 'total_networks', 'total_channels', 'video_screenshot', 'advertiser_id', 'created_by_id', 'created_by_team_id'];
     protected $hidden = [];
     public static $searchable = [
         'ad_label',
@@ -59,6 +62,15 @@ class Ad extends Model
      * Set to null if empty
      * @param $input
      */
+    public function setAdvertiserIdAttribute($input)
+    {
+        $this->attributes['advertiser_id'] = $input ? $input : null;
+    }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
     public function setCreatedByIdAttribute($input)
     {
         $this->attributes['created_by_id'] = $input ? $input : null;
@@ -71,6 +83,11 @@ class Ad extends Model
     public function setCreatedByTeamIdAttribute($input)
     {
         $this->attributes['created_by_team_id'] = $input ? $input : null;
+    }
+    
+    public function advertiser()
+    {
+        return $this->belongsTo(ContactCompany::class, 'advertiser_id');
     }
     
     public function created_by()

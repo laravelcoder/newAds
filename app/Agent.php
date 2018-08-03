@@ -9,10 +9,9 @@ use App\Traits\FilterByUser;
  * Class Agent
  *
  * @package App
+ * @property string $advertiser_company
  * @property string $first_name
  * @property string $last_name
- * @property string $phone1
- * @property string $phone2
  * @property string $email
  * @property string $skype
  * @property string $address
@@ -20,14 +19,17 @@ use App\Traits\FilterByUser;
  * @property text $about
  * @property string $created_by
  * @property string $created_by_team
+ * @property text $notes
+ * @property string $advertiser
 */
 class Agent extends Model
 {
     use SoftDeletes, FilterByUser;
 
-    protected $fillable = ['first_name', 'last_name', 'phone1', 'phone2', 'email', 'skype', 'address', 'photo', 'about', 'created_by_id', 'created_by_team_id'];
+    protected $fillable = ['advertiser_company', 'first_name', 'last_name', 'email', 'skype', 'address', 'photo', 'about', 'notes', 'created_by_id', 'created_by_team_id', 'advertiser_id'];
     protected $hidden = [];
     public static $searchable = [
+        'advertiser_company',
     ];
     
 
@@ -48,6 +50,15 @@ class Agent extends Model
     {
         $this->attributes['created_by_team_id'] = $input ? $input : null;
     }
+
+    /**
+     * Set to null if empty
+     * @param $input
+     */
+    public function setAdvertiserIdAttribute($input)
+    {
+        $this->attributes['advertiser_id'] = $input ? $input : null;
+    }
     
     public function created_by()
     {
@@ -59,9 +70,9 @@ class Agent extends Model
         return $this->belongsTo(Team::class, 'created_by_team_id');
     }
     
-    public function advertisers_id()
+    public function advertiser()
     {
-        return $this->belongsToMany(ContactCompany::class, 'agent_contact_company');
+        return $this->belongsTo(ContactCompany::class, 'advertiser_id');
     }
     
     public function phones() {

@@ -9,19 +9,25 @@ return [
 		'networks' => [		'title' => 'Networks Channels',		'fields' => [		],	],
 		'teams' => [		'title' => 'Teams',		'fields' => [			'name' => 'Name',		],	],
 		'internal-notifications' => [		'title' => 'Notifications',		'fields' => [			'text' => 'Text',			'link' => 'Link',			'users' => 'Users',		],	],
-		'contact-management' => [		'title' => 'Contact management',		'fields' => [		],	],
-		'contact-companies' => [		'title' => 'Advertisers',		'fields' => [			'name' => 'Advertiser Name',			'address' => 'Address',			'website' => 'Website',			'email' => 'Email',			'created-by' => 'Created by',			'address2' => 'Address 2',			'created-by-team' => 'Created by Team',			'city' => 'City',			'state' => 'State',			'zipcode' => 'Zipcode',			'country' => 'Country',			'logo' => 'Logo',		],	],
-		'contacts' => [		'title' => 'Contacts',		'fields' => [			'company' => 'Advertiser',			'first-name' => 'First name',			'last-name' => 'Last name',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'adverstiser-id' => 'Adverstiser',		],	],
-		'agents' => [		'title' => 'Agents',		'fields' => [			'first-name' => 'First name',			'last-name' => 'Last name',			'phone1' => 'Phone 1',			'phone2' => 'Phone 2',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',			'photo' => 'Photo',			'about' => 'About',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertisers-id' => 'Advertisers',		],	],
-		'ads' => [		'title' => 'Ads',		'fields' => [			'ad-label' => 'Ad label',			'ad-description' => 'Ad Description',			'total-impressions' => 'Total Impressions',			'total-networks' => 'Total Networks',			'total-channels' => 'Total Channels',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'category-id' => 'Category id',		],	],
+		'advertiser-management' => [		'title' => 'Advertiser Management',		'fields' => [		],	],
+		'contact-companies' => [		'title' => 'Advertisers',		'fields' => [			'name' => 'Advertiser Name',			'address' => 'Address',			'website' => 'Website',			'email' => 'Email',			'address2' => 'Address 2',			'city' => 'City',			'state' => 'State',			'zipcode' => 'Zipcode',			'country' => 'Country',			'logo' => 'Logo',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',		],	],
+		'contacts' => [		'title' => 'Contacts',		'fields' => [			'company' => 'Advertiser',			'first-name' => 'First name',			'last-name' => 'Last name',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',			'notes' => 'Notes',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',		],	],
+		'agents' => [		'title' => 'Agents',		'fields' => [			'advertiser-company' => 'Advertiser company',			'first-name' => 'First name',			'last-name' => 'Last name',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',			'photo' => 'Photo',			'about' => 'About',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'notes' => 'Notes',			'advertiser' => 'Advertiser',		],	],
+		'ads' => [		'title' => 'Ads',		'fields' => [			'ad-label' => 'Ad label',			'ad-description' => 'Ad Description',			'video-upload' => 'Video upload',			'total-impressions' => 'Total Impressions',			'total-networks' => 'Total Networks',			'total-channels' => 'Total Channels',			'advertiser' => 'Advertiser',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'category-id' => 'Category',			'video-screenshot' => 'Video screenshot',		],	],
 		'categories' => [		'title' => 'Categories',		'fields' => [			'category' => 'Category',			'slug' => 'Slug',			'advertiser-id' => 'Advertiser',			'ad-id' => 'Ad',		],	],
-		'phones' => [		'title' => 'Phones',		'fields' => [			'phone-number' => 'Phone number',			'advertiser' => 'Advertiser',			'agent' => 'Agent id',			'advertisers' => 'Advertisers',		],	],
+		'phones' => [		'title' => 'Phones',		'fields' => [			'phone-number' => 'Phone number',			'contact' => 'Contact',			'advertiser' => 'Advertiser',			'agent' => 'Agent',		],	],
 		'ads-section' => [		'title' => 'Ads section',		'fields' => [		],	],
 		'ads-section' => [		'title' => 'Ads Section',		'fields' => [		],	],
 		'audiences' => [		'title' => 'Audiences',		'fields' => [			'name' => 'Name',			'value' => 'Value',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertiser' => 'Advertiser',		],	],
 		'demographics' => [		'title' => 'Demographics',		'fields' => [			'demographic' => 'Demographic',			'value' => 'Value',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertiser' => 'Advertiser',		],	],
 		'advertisers-details' => [		'title' => 'Advertisers Details',		'fields' => [		],	],
 		'network-research' => [		'title' => 'Network Research',		'fields' => [		],	],
+		'networks-admin' => [		'title' => 'Networks admin',		'fields' => [		],	],
+		'networks' => [		'title' => 'Networks',		'fields' => [			'network' => 'Network',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'network-id' => 'Network id',			'affiliates' => 'Affiliates',		],	],
+		'providers' => [		'title' => 'Providers',		'fields' => [		],	],
+		'stations' => [		'title' => 'Stations',		'fields' => [			'station-label' => 'Station Label',			'channel-number' => 'Channel #',			'affiliate' => 'Affiliate',			'network' => 'Network',		],	],
+		'campaign' => [		'title' => 'Campaign',		'fields' => [			'name' => 'Name',			'start-date' => 'Start date',			'finish-date' => 'Finish date',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertiser' => 'Advertiser',			'ads' => 'Ads',		],	],
+		'affiliates' => [		'title' => 'Affiliates',		'fields' => [			'affiliate' => 'Affiliate',		],	],
 	'app_create' => 'Toevoegen',
 	'app_save' => 'Opslaan',
 	'app_edit' => 'Bewerken',

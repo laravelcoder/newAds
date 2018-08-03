@@ -29,6 +29,7 @@ class UpdateAdsRequest extends FormRequest
             'total_networks' => 'max:2147483647|nullable|numeric',
             'total_channels' => 'max:2147483647|nullable|numeric',
             'category_id.*' => 'exists:categories,id',
+            'video_screenshot' => 'nullable|mimes:png,jpg,jpeg,gif',
         ];
     }
 }

@@ -99,13 +99,13 @@ class ContactCompanyTest extends DuskTestCase
                 ->assertSeeIn("td[field-key='address']", $contact_company->address)
                 ->assertSeeIn("td[field-key='website']", $contact_company->website)
                 ->assertSeeIn("td[field-key='email']", $contact_company->email)
-                ->assertSeeIn("td[field-key='created_by']", $contact_company->created_by->name)
                 ->assertSeeIn("td[field-key='address2']", $contact_company->address2)
-                ->assertSeeIn("td[field-key='created_by_team']", $contact_company->created_by_team->name)
                 ->assertSeeIn("td[field-key='city']", $contact_company->city)
                 ->assertSeeIn("td[field-key='state']", $contact_company->state)
                 ->assertSeeIn("td[field-key='zipcode']", $contact_company->zipcode)
-                ->assertSeeIn("td[field-key='country']", $contact_company->country);
+                ->assertSeeIn("td[field-key='country']", $contact_company->country)
+                ->assertSeeIn("td[field-key='created_by']", $contact_company->created_by->name)
+                ->assertSeeIn("td[field-key='created_by_team']", $contact_company->created_by_team->name);
         });
     }
 

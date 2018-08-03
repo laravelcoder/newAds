@@ -23,7 +23,6 @@ class StoreContactsRequest extends FormRequest
     public function rules()
     {
         return [
-            'adverstiser_id.*' => 'exists:contact_companies,id',
             'phones.*.phone_number' => 'required',
         ];
     }

@@ -24,7 +24,6 @@ class StoreAgentsRequest extends FormRequest
     {
         return [
             'photo' => 'nullable|mimes:png,jpg,jpeg,gif',
-            'advertisers_id.*' => 'exists:contact_companies,id',
             'phones.*.phone_number' => 'required',
         ];
     }

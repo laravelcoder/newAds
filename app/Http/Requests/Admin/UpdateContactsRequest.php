@@ -24,7 +24,6 @@ class UpdateContactsRequest extends FormRequest
     {
         return [
             
-            'adverstiser_id.*' => 'exists:contact_companies,id',
             'phones.*.phone_number' => 'required',
         ];
     }

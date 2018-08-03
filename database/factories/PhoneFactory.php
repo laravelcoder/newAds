@@ -3,8 +3,8 @@
 $factory->define(App\Phone::class, function (Faker\Generator $faker) {
     return [
         "phone_number" => $faker->name,
-        "advertiser_id" => factory('App\Contact')->create(),
+        "contact_id" => factory('App\Contact')->create(),
+        "advertiser_id" => factory('App\ContactCompany')->create(),
         "agent_id" => factory('App\Agent')->create(),
-        "advertisers_id" => factory('App\ContactCompany')->create(),
     ];
 });

@@ -43,7 +43,7 @@ class AgentsController extends Controller
             $query = Agent::query();
             $query->with("created_by");
             $query->with("created_by_team");
-            $query->with("advertisers_id");
+            $query->with("advertiser");
             $template = 'actionsTemplate';
             if(request('show_deleted') == 1) {
                 
@@ -55,10 +55,9 @@ class AgentsController extends Controller
             }
             $query->select([
                 'agents.id',
+                'agents.advertiser_company',
                 'agents.first_name',
                 'agents.last_name',
-                'agents.phone1',
-                'agents.phone2',
                 'agents.email',
                 'agents.skype',
                 'agents.address',
@@ -66,6 +65,8 @@ class AgentsController extends Controller
                 'agents.about',
                 'agents.created_by_id',
                 'agents.created_by_team_id',
+                'agents.notes',
+                'agents.advertiser_id',
             ]);
             $table = Datatables::of($query);
 
@@ -80,17 +81,14 @@ class AgentsController extends Controller
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
             });
+            $table->editColumn('advertiser_company', function ($row) {
+                return $row->advertiser_company ? $row->advertiser_company : '';
+            });
             $table->editColumn('first_name', function ($row) {
                 return $row->first_name ? $row->first_name : '';
             });
             $table->editColumn('last_name', function ($row) {
                 return $row->last_name ? $row->last_name : '';
-            });
-            $table->editColumn('phone1', function ($row) {
-                return $row->phone1 ? $row->phone1 : '';
-            });
-            $table->editColumn('phone2', function ($row) {
-                return $row->phone2 ? $row->phone2 : '';
             });
             $table->editColumn('email', function ($row) {
                 return $row->email ? $row->email : '';
@@ -113,16 +111,14 @@ class AgentsController extends Controller
             $table->editColumn('created_by_team.name', function ($row) {
                 return $row->created_by_team ? $row->created_by_team->name : '';
             });
-            $table->editColumn('advertisers_id.name', function ($row) {
-                if(count($row->advertisers_id) == 0) {
-                    return '';
-                }
-
-                return '<span class="label label-info label-many">' . implode('</span><span class="label label-info label-many"> ',
-                        $row->advertisers_id->pluck('name')->toArray()) . '</span>';
+            $table->editColumn('notes', function ($row) {
+                return $row->notes ? $row->notes : '';
+            });
+            $table->editColumn('advertiser.name', function ($row) {
+                return $row->advertiser ? $row->advertiser->name : '';
             });
 
-            $table->rawColumns(['actions','massDelete','photo','advertisers_id.name']);
+            $table->rawColumns(['actions','massDelete','photo']);
 
             return $table->make(true);
         }
@@ -143,10 +139,9 @@ class AgentsController extends Controller
         
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $advertisers_ids = \App\ContactCompany::get()->pluck('name', 'id');
+        $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
-
-        return view('admin.agents.create', compact('created_bies', 'created_by_teams', 'advertisers_ids'));
+        return view('admin.agents.create', compact('created_bies', 'created_by_teams', 'advertisers'));
     }
 
     /**
@@ -162,7 +157,6 @@ class AgentsController extends Controller
         }
         $request = $this->saveFiles($request);
         $agent = Agent::create($request->all());
-        $agent->advertisers_id()->sync(array_filter((array)$request->input('advertisers_id')));
 
         foreach ($request->input('phones', []) as $data) {
             $agent->phones()->create($data);
@@ -187,12 +181,11 @@ class AgentsController extends Controller
         
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $advertisers_ids = \App\ContactCompany::get()->pluck('name', 'id');
-
+        $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
 
         $agent = Agent::findOrFail($id);
 
-        return view('admin.agents.edit', compact('agent', 'created_bies', 'created_by_teams', 'advertisers_ids'));
+        return view('admin.agents.edit', compact('agent', 'created_bies', 'created_by_teams', 'advertisers'));
     }
 
     /**
@@ -210,7 +203,6 @@ class AgentsController extends Controller
         $request = $this->saveFiles($request);
         $agent = Agent::findOrFail($id);
         $agent->update($request->all());
-        $agent->advertisers_id()->sync(array_filter((array)$request->input('advertisers_id')));
 
         $phones           = $agent->phones;
         $currentPhoneData = [];
@@ -249,8 +241,7 @@ class AgentsController extends Controller
         
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $advertisers_ids = \App\ContactCompany::get()->pluck('name', 'id');
-$phones = \App\Phone::where('agent_id', $id)->get();
+        $advertisers = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$phones = \App\Phone::where('agent_id', $id)->get();
 
         $agent = Agent::findOrFail($id);
 

@@ -12,14 +12,14 @@ use App\Traits\FilterByUser;
  * @property string $address
  * @property string $website
  * @property string $email
- * @property string $created_by
  * @property string $address2
- * @property string $created_by_team
  * @property string $city
  * @property string $state
  * @property string $zipcode
  * @property string $country
  * @property string $logo
+ * @property string $created_by
+ * @property string $created_by_team
 */
 class ContactCompany extends Model
 {
@@ -64,6 +64,12 @@ class ContactCompany extends Model
         return $this->hasMany(Contact::class, 'company_id');
     }
     public function phones() {
-        return $this->hasMany(Phone::class, 'advertisers_id');
+        return $this->hasMany(Phone::class, 'advertiser_id');
+    }
+    public function campaigns() {
+        return $this->hasMany(Campaign::class, 'advertiser_id');
+    }
+    public function ads() {
+        return $this->hasMany(Ad::class, 'advertiser_id');
     }
 }

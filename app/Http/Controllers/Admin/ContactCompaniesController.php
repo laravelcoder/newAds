@@ -51,14 +51,14 @@ class ContactCompaniesController extends Controller
                 'contact_companies.address',
                 'contact_companies.website',
                 'contact_companies.email',
-                'contact_companies.created_by_id',
                 'contact_companies.address2',
-                'contact_companies.created_by_team_id',
                 'contact_companies.city',
                 'contact_companies.state',
                 'contact_companies.zipcode',
                 'contact_companies.country',
                 'contact_companies.logo',
+                'contact_companies.created_by_id',
+                'contact_companies.created_by_team_id',
             ]);
             $table = Datatables::of($query);
 
@@ -85,14 +85,8 @@ class ContactCompaniesController extends Controller
             $table->editColumn('email', function ($row) {
                 return $row->email ? $row->email : '';
             });
-            $table->editColumn('created_by.name', function ($row) {
-                return $row->created_by ? $row->created_by->name : '';
-            });
             $table->editColumn('address2', function ($row) {
                 return $row->address2 ? $row->address2 : '';
-            });
-            $table->editColumn('created_by_team.name', function ($row) {
-                return $row->created_by_team ? $row->created_by_team->name : '';
             });
             $table->editColumn('city', function ($row) {
                 return $row->city ? $row->city : '';
@@ -108,6 +102,12 @@ class ContactCompaniesController extends Controller
             });
             $table->editColumn('logo', function ($row) {
                 if($row->logo) { return '<a href="'. asset(env('UPLOAD_PATH').'/' . $row->logo) .'" target="_blank"><img src="'. asset(env('UPLOAD_PATH').'/thumb/' . $row->logo) .'"/>'; };
+            });
+            $table->editColumn('created_by.name', function ($row) {
+                return $row->created_by ? $row->created_by->name : '';
+            });
+            $table->editColumn('created_by_team.name', function ($row) {
+                return $row->created_by_team ? $row->created_by_team->name : '';
             });
 
             $table->rawColumns(['actions','massDelete','logo']);
@@ -154,6 +154,12 @@ class ContactCompaniesController extends Controller
         }
         foreach ($request->input('phones', []) as $data) {
             $contact_company->phones()->create($data);
+        }
+        foreach ($request->input('campaigns', []) as $data) {
+            $contact_company->campaigns()->create($data);
+        }
+        foreach ($request->input('ads', []) as $data) {
+            $contact_company->ads()->create($data);
         }
 
 
@@ -231,6 +237,40 @@ class ContactCompaniesController extends Controller
                 $item->delete();
             }
         }
+        $campaigns           = $contact_company->campaigns;
+        $currentCampaignData = [];
+        foreach ($request->input('campaigns', []) as $index => $data) {
+            if (is_integer($index)) {
+                $contact_company->campaigns()->create($data);
+            } else {
+                $id                          = explode('-', $index)[1];
+                $currentCampaignData[$id] = $data;
+            }
+        }
+        foreach ($campaigns as $item) {
+            if (isset($currentCampaignData[$item->id])) {
+                $item->update($currentCampaignData[$item->id]);
+            } else {
+                $item->delete();
+            }
+        }
+        $ads           = $contact_company->ads;
+        $currentAdData = [];
+        foreach ($request->input('ads', []) as $index => $data) {
+            if (is_integer($index)) {
+                $contact_company->ads()->create($data);
+            } else {
+                $id                          = explode('-', $index)[1];
+                $currentAdData[$id] = $data;
+            }
+        }
+        foreach ($ads as $item) {
+            if (isset($currentAdData[$item->id])) {
+                $item->update($currentAdData[$item->id]);
+            } else {
+                $item->delete();
+            }
+        }
 
 
         return redirect()->route('admin.contact_companies.index');
@@ -253,17 +293,11 @@ class ContactCompaniesController extends Controller
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$contacts = \App\Contact::where('company_id', $id)->get();$categories = \App\Category::whereHas('advertiser_id',
                     function ($query) use ($id) {
                         $query->where('id', $id);
-                    })->get();$phones = \App\Phone::where('advertisers_id', $id)->get();$audiences = \App\Audience::where('advertiser_id', $id)->get();$demographics = \App\Demographic::where('advertiser_id', $id)->get();$contacts = \App\Contact::whereHas('adverstiser_id',
-                    function ($query) use ($id) {
-                        $query->where('id', $id);
-                    })->get();$agents = \App\Agent::whereHas('advertisers_id',
-                    function ($query) use ($id) {
-                        $query->where('id', $id);
-                    })->get();
+                    })->get();$phones = \App\Phone::where('advertiser_id', $id)->get();$audiences = \App\Audience::where('advertiser_id', $id)->get();$demographics = \App\Demographic::where('advertiser_id', $id)->get();$campaigns = \App\Campaign::where('advertiser_id', $id)->get();$ads = \App\Ad::where('advertiser_id', $id)->get();$agents = \App\Agent::where('advertiser_id', $id)->get();
 
         $contact_company = ContactCompany::findOrFail($id);
 
-        return view('admin.contact_companies.show', compact('contact_company', 'contacts', 'categories', 'phones', 'audiences', 'demographics', 'contacts', 'agents'));
+        return view('admin.contact_companies.show', compact('contact_company', 'contacts', 'categories', 'phones', 'audiences', 'demographics', 'campaigns', 'ads', 'agents'));
     }
 
 

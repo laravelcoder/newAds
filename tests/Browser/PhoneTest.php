@@ -22,15 +22,15 @@ class PhoneTest extends DuskTestCase
                 ->visit(route('admin.phones.index'))
                 ->clickLink('Add new')
                 ->type("phone_number", $phone->phone_number)
+                ->select("contact_id", $phone->contact_id)
                 ->select("advertiser_id", $phone->advertiser_id)
                 ->select("agent_id", $phone->agent_id)
-                ->select("advertisers_id", $phone->advertisers_id)
                 ->press('Save')
                 ->assertRouteIs('admin.phones.index')
                 ->assertSeeIn("tr:last-child td[field-key='phone_number']", $phone->phone_number)
-                ->assertSeeIn("tr:last-child td[field-key='advertiser']", $phone->advertiser->first_name)
-                ->assertSeeIn("tr:last-child td[field-key='agent']", $phone->agent->first_name)
-                ->assertSeeIn("tr:last-child td[field-key='advertisers']", $phone->advertisers->name);
+                ->assertSeeIn("tr:last-child td[field-key='contact']", $phone->contact->first_name)
+                ->assertSeeIn("tr:last-child td[field-key='advertiser']", $phone->advertiser->name)
+                ->assertSeeIn("tr:last-child td[field-key='agent']", $phone->agent->first_name);
         });
     }
 
@@ -47,15 +47,15 @@ class PhoneTest extends DuskTestCase
                 ->visit(route('admin.phones.index'))
                 ->click('tr[data-entry-id="' . $phone->id . '"] .btn-info')
                 ->type("phone_number", $phone2->phone_number)
+                ->select("contact_id", $phone2->contact_id)
                 ->select("advertiser_id", $phone2->advertiser_id)
                 ->select("agent_id", $phone2->agent_id)
-                ->select("advertisers_id", $phone2->advertisers_id)
                 ->press('Update')
                 ->assertRouteIs('admin.phones.index')
                 ->assertSeeIn("tr:last-child td[field-key='phone_number']", $phone2->phone_number)
-                ->assertSeeIn("tr:last-child td[field-key='advertiser']", $phone2->advertiser->first_name)
-                ->assertSeeIn("tr:last-child td[field-key='agent']", $phone2->agent->first_name)
-                ->assertSeeIn("tr:last-child td[field-key='advertisers']", $phone2->advertisers->name);
+                ->assertSeeIn("tr:last-child td[field-key='contact']", $phone2->contact->first_name)
+                ->assertSeeIn("tr:last-child td[field-key='advertiser']", $phone2->advertiser->name)
+                ->assertSeeIn("tr:last-child td[field-key='agent']", $phone2->agent->first_name);
         });
     }
 
@@ -72,9 +72,9 @@ class PhoneTest extends DuskTestCase
                 ->visit(route('admin.phones.index'))
                 ->click('tr[data-entry-id="' . $phone->id . '"] .btn-primary')
                 ->assertSeeIn("td[field-key='phone_number']", $phone->phone_number)
-                ->assertSeeIn("td[field-key='advertiser']", $phone->advertiser->first_name)
-                ->assertSeeIn("td[field-key='agent']", $phone->agent->first_name)
-                ->assertSeeIn("td[field-key='advertisers']", $phone->advertisers->name);
+                ->assertSeeIn("td[field-key='contact']", $phone->contact->first_name)
+                ->assertSeeIn("td[field-key='advertiser']", $phone->advertiser->name)
+                ->assertSeeIn("td[field-key='agent']", $phone->agent->first_name);
         });
     }
 

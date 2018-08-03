@@ -37,19 +37,97 @@
             </div><!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     
-<li role="presentation" class="active"><a href="#internal_notifications" aria-controls="internal_notifications" role="tab" data-toggle="tab">Notifications</a></li>
+<li role="presentation" class="active"><a href="#networks" aria-controls="networks" role="tab" data-toggle="tab">Networks</a></li>
+<li role="presentation" class=""><a href="#internal_notifications" aria-controls="internal_notifications" role="tab" data-toggle="tab">Notifications</a></li>
 <li role="presentation" class=""><a href="#audiences" aria-controls="audiences" role="tab" data-toggle="tab">Audiences</a></li>
 <li role="presentation" class=""><a href="#demographics" aria-controls="demographics" role="tab" data-toggle="tab">Demographics</a></li>
-<li role="presentation" class=""><a href="#contact_companies" aria-controls="contact_companies" role="tab" data-toggle="tab">Advertisers</a></li>
-<li role="presentation" class=""><a href="#ads" aria-controls="ads" role="tab" data-toggle="tab">Ads</a></li>
+<li role="presentation" class=""><a href="#campaign" aria-controls="campaign" role="tab" data-toggle="tab">Campaign</a></li>
 <li role="presentation" class=""><a href="#contacts" aria-controls="contacts" role="tab" data-toggle="tab">Contacts</a></li>
+<li role="presentation" class=""><a href="#ads" aria-controls="ads" role="tab" data-toggle="tab">Ads</a></li>
 <li role="presentation" class=""><a href="#agents" aria-controls="agents" role="tab" data-toggle="tab">Agents</a></li>
+<li role="presentation" class=""><a href="#contact_companies" aria-controls="contact_companies" role="tab" data-toggle="tab">Advertisers</a></li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
     
-<div role="tabpanel" class="tab-pane active" id="internal_notifications">
+<div role="tabpanel" class="tab-pane active" id="networks">
+<table class="table table-bordered table-striped {{ count($networks) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.networks.fields.network')</th>
+                        <th>@lang('global.networks.fields.created-by')</th>
+                        <th>@lang('global.networks.fields.created-by-team')</th>
+                        <th>@lang('global.networks.fields.network-id')</th>
+                        <th>@lang('global.networks.fields.affiliates')</th>
+                        @if( request('show_deleted') == 1 )
+                        <th>&nbsp;</th>
+                        @else
+                        <th>&nbsp;</th>
+                        @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($networks) > 0)
+            @foreach ($networks as $network)
+                <tr data-entry-id="{{ $network->id }}">
+                    <td field-key='network'>{{ $network->network }}</td>
+                                <td field-key='created_by'>{{ $network->created_by->name or '' }}</td>
+                                <td field-key='created_by_team'>{{ $network->created_by_team->name or '' }}</td>
+                                <td field-key='network_id'>{{ $network->network_id }}</td>
+                                <td field-key='affiliates'>
+                                    @foreach ($network->affiliates as $singleAffiliates)
+                                        <span class="label label-info label-many">{{ $singleAffiliates->affiliate }}</span>
+                                    @endforeach
+                                </td>
+                                @if( request('show_deleted') == 1 )
+                                <td>
+                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.networks.restore', $network->id])) !!}
+                                    {!! Form::submit(trans('global.app_restore'), array('class' => 'btn btn-xs btn-success')) !!}
+                                    {!! Form::close() !!}
+                                                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.networks.perma_del', $network->id])) !!}
+                                    {!! Form::submit(trans('global.app_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                                                </td>
+                                @else
+                                <td>
+                                    @can('network_view')
+                                    <a href="{{ route('admin.networks.show',[$network->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('network_edit')
+                                    <a href="{{ route('admin.networks.edit',[$network->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('network_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.networks.destroy', $network->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+                                @endif
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="10">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="internal_notifications">
 <table class="table table-bordered table-striped {{ count($internal_notifications) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
@@ -244,56 +322,120 @@
     </tbody>
 </table>
 </div>
-<div role="tabpanel" class="tab-pane " id="contact_companies">
-<table class="table table-bordered table-striped {{ count($contact_companies) > 0 ? 'datatable' : '' }}">
+<div role="tabpanel" class="tab-pane " id="campaign">
+<table class="table table-bordered table-striped {{ count($campaigns) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
-            <th>@lang('global.contact-companies.fields.name')</th>
-                        <th>@lang('global.contact-companies.fields.address')</th>
-                        <th>@lang('global.contact-companies.fields.website')</th>
-                        <th>@lang('global.contact-companies.fields.email')</th>
-                        <th>@lang('global.contact-companies.fields.created-by')</th>
-                        <th>@lang('global.contact-companies.fields.address2')</th>
-                        <th>@lang('global.contact-companies.fields.created-by-team')</th>
-                        <th>@lang('global.contact-companies.fields.city')</th>
-                        <th>@lang('global.contact-companies.fields.state')</th>
-                        <th>@lang('global.contact-companies.fields.zipcode')</th>
-                        <th>@lang('global.contact-companies.fields.country')</th>
-                        <th>@lang('global.contact-companies.fields.logo')</th>
+            <th>@lang('global.campaign.fields.name')</th>
+                        <th>@lang('global.campaign.fields.start-date')</th>
+                        <th>@lang('global.campaign.fields.finish-date')</th>
+                        <th>@lang('global.campaign.fields.created-by')</th>
+                        <th>@lang('global.campaign.fields.created-by-team')</th>
+                        <th>@lang('global.campaign.fields.ads')</th>
+                        @if( request('show_deleted') == 1 )
+                        <th>&nbsp;</th>
+                        @else
+                        <th>&nbsp;</th>
+                        @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($campaigns) > 0)
+            @foreach ($campaigns as $campaign)
+                <tr data-entry-id="{{ $campaign->id }}">
+                    <td field-key='name'>{{ $campaign->name }}</td>
+                                <td field-key='start_date'>{{ $campaign->start_date }}</td>
+                                <td field-key='finish_date'>{{ $campaign->finish_date }}</td>
+                                <td field-key='created_by'>{{ $campaign->created_by->name or '' }}</td>
+                                <td field-key='created_by_team'>{{ $campaign->created_by_team->name or '' }}</td>
+                                <td field-key='ads'>
+                                    @foreach ($campaign->ads as $singleAds)
+                                        <span class="label label-info label-many">{{ $singleAds->ad_label }}</span>
+                                    @endforeach
+                                </td>
+                                @if( request('show_deleted') == 1 )
+                                <td>
+                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.campaigns.restore', $campaign->id])) !!}
+                                    {!! Form::submit(trans('global.app_restore'), array('class' => 'btn btn-xs btn-success')) !!}
+                                    {!! Form::close() !!}
+                                                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.campaigns.perma_del', $campaign->id])) !!}
+                                    {!! Form::submit(trans('global.app_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                                                </td>
+                                @else
+                                <td>
+                                    @can('campaign_view')
+                                    <a href="{{ route('admin.campaigns.show',[$campaign->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('campaign_edit')
+                                    <a href="{{ route('admin.campaigns.edit',[$campaign->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('campaign_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.campaigns.destroy', $campaign->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+                                @endif
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="12">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="contacts">
+<table class="table table-bordered table-striped {{ count($contacts) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.contacts.fields.first-name')</th>
+                        <th>@lang('global.contacts.fields.last-name')</th>
+                        <th>@lang('global.contacts.fields.email')</th>
+                        <th>@lang('global.contacts.fields.created-by')</th>
+                        <th>@lang('global.contacts.fields.created-by-team')</th>
                                                 <th>&nbsp;</th>
 
         </tr>
     </thead>
 
     <tbody>
-        @if (count($contact_companies) > 0)
-            @foreach ($contact_companies as $contact_company)
-                <tr data-entry-id="{{ $contact_company->id }}">
-                    <td field-key='name'>{{ $contact_company->name }}</td>
-                                <td field-key='address'>{{ $contact_company->address }}</td>
-                                <td field-key='website'>{{ $contact_company->website }}</td>
-                                <td field-key='email'>{{ $contact_company->email }}</td>
-                                <td field-key='created_by'>{{ $contact_company->created_by->name or '' }}</td>
-                                <td field-key='address2'>{{ $contact_company->address2 }}</td>
-                                <td field-key='created_by_team'>{{ $contact_company->created_by_team->name or '' }}</td>
-                                <td field-key='city'>{{ $contact_company->city }}</td>
-                                <td field-key='state'>{{ $contact_company->state }}</td>
-                                <td field-key='zipcode'>{{ $contact_company->zipcode }}</td>
-                                <td field-key='country'>{{ $contact_company->country }}</td>
-                                <td field-key='logo'>@if($contact_company->logo)<a href="{{ asset(env('UPLOAD_PATH').'/' . $contact_company->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $contact_company->logo) }}"/></a>@endif</td>
+        @if (count($contacts) > 0)
+            @foreach ($contacts as $contact)
+                <tr data-entry-id="{{ $contact->id }}">
+                    <td field-key='first_name'>{{ $contact->first_name }}</td>
+                                <td field-key='last_name'>{{ $contact->last_name }}</td>
+                                <td field-key='email'>{{ $contact->email }}</td>
+                                <td field-key='created_by'>{{ $contact->created_by->name or '' }}</td>
+                                <td field-key='created_by_team'>{{ $contact->created_by_team->name or '' }}</td>
                                                                 <td>
-                                    @can('contact_company_view')
-                                    <a href="{{ route('admin.contact_companies.show',[$contact_company->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @can('contact_view')
+                                    <a href="{{ route('admin.contacts.show',[$contact->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
                                     @endcan
-                                    @can('contact_company_edit')
-                                    <a href="{{ route('admin.contact_companies.edit',[$contact_company->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @can('contact_edit')
+                                    <a href="{{ route('admin.contacts.edit',[$contact->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
                                     @endcan
-                                    @can('contact_company_delete')
+                                    @can('contact_delete')
 {!! Form::open(array(
                                         'style' => 'display: inline-block;',
                                         'method' => 'DELETE',
                                         'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.contact_companies.destroy', $contact_company->id])) !!}
+                                        'route' => ['admin.contacts.destroy', $contact->id])) !!}
                                     {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
                                     {!! Form::close() !!}
                                     @endcan
@@ -303,7 +445,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="17">@lang('global.app_no_entries_in_table')</td>
+                <td colspan="14">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
@@ -320,6 +462,7 @@
                         <th>@lang('global.ads.fields.created-by')</th>
                         <th>@lang('global.ads.fields.created-by-team')</th>
                         <th>@lang('global.ads.fields.category-id')</th>
+                        <th>@lang('global.ads.fields.video-screenshot')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -343,6 +486,7 @@
                                         <span class="label label-info label-many">{{ $singleCategoryId->category }}</span>
                                     @endforeach
                                 </td>
+                                <td field-key='video_screenshot'>@if($ad->video_screenshot)<a href="{{ asset(env('UPLOAD_PATH').'/' . $ad->video_screenshot) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $ad->video_screenshot) }}"/></a>@endif</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     {!! Form::open(array(
@@ -383,64 +527,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="13">@lang('global.app_no_entries_in_table')</td>
-            </tr>
-        @endif
-    </tbody>
-</table>
-</div>
-<div role="tabpanel" class="tab-pane " id="contacts">
-<table class="table table-bordered table-striped {{ count($contacts) > 0 ? 'datatable' : '' }}">
-    <thead>
-        <tr>
-            <th>@lang('global.contacts.fields.first-name')</th>
-                        <th>@lang('global.contacts.fields.last-name')</th>
-                        <th>@lang('global.contacts.fields.email')</th>
-                        <th>@lang('global.contacts.fields.created-by')</th>
-                        <th>@lang('global.contacts.fields.created-by-team')</th>
-                        <th>@lang('global.contacts.fields.adverstiser-id')</th>
-                                                <th>&nbsp;</th>
-
-        </tr>
-    </thead>
-
-    <tbody>
-        @if (count($contacts) > 0)
-            @foreach ($contacts as $contact)
-                <tr data-entry-id="{{ $contact->id }}">
-                    <td field-key='first_name'>{{ $contact->first_name }}</td>
-                                <td field-key='last_name'>{{ $contact->last_name }}</td>
-                                <td field-key='email'>{{ $contact->email }}</td>
-                                <td field-key='created_by'>{{ $contact->created_by->name or '' }}</td>
-                                <td field-key='created_by_team'>{{ $contact->created_by_team->name or '' }}</td>
-                                <td field-key='adverstiser_id'>
-                                    @foreach ($contact->adverstiser_id as $singleAdverstiserId)
-                                        <span class="label label-info label-many">{{ $singleAdverstiserId->name }}</span>
-                                    @endforeach
-                                </td>
-                                                                <td>
-                                    @can('contact_view')
-                                    <a href="{{ route('admin.contacts.show',[$contact->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
-                                    @endcan
-                                    @can('contact_edit')
-                                    <a href="{{ route('admin.contacts.edit',[$contact->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
-                                    @endcan
-                                    @can('contact_delete')
-{!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.contacts.destroy', $contact->id])) !!}
-                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                </td>
-
-                </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="14">@lang('global.app_no_entries_in_table')</td>
+                <td colspan="16">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
@@ -450,15 +537,14 @@
 <table class="table table-bordered table-striped {{ count($agents) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
-            <th>@lang('global.agents.fields.first-name')</th>
+            <th>@lang('global.agents.fields.advertiser-company')</th>
+                        <th>@lang('global.agents.fields.first-name')</th>
                         <th>@lang('global.agents.fields.last-name')</th>
-                        <th>@lang('global.agents.fields.phone1')</th>
-                        <th>@lang('global.agents.fields.phone2')</th>
                         <th>@lang('global.agents.fields.email')</th>
                         <th>@lang('global.agents.fields.skype')</th>
                         <th>@lang('global.agents.fields.created-by')</th>
                         <th>@lang('global.agents.fields.created-by-team')</th>
-                        <th>@lang('global.agents.fields.advertisers-id')</th>
+                        <th>@lang('global.agents.fields.advertiser')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -471,19 +557,14 @@
         @if (count($agents) > 0)
             @foreach ($agents as $agent)
                 <tr data-entry-id="{{ $agent->id }}">
-                    <td field-key='first_name'>{{ $agent->first_name }}</td>
+                    <td field-key='advertiser_company'>{{ $agent->advertiser_company }}</td>
+                                <td field-key='first_name'>{{ $agent->first_name }}</td>
                                 <td field-key='last_name'>{{ $agent->last_name }}</td>
-                                <td field-key='phone1'>{{ $agent->phone1 }}</td>
-                                <td field-key='phone2'>{{ $agent->phone2 }}</td>
                                 <td field-key='email'>{{ $agent->email }}</td>
                                 <td field-key='skype'>{{ $agent->skype }}</td>
                                 <td field-key='created_by'>{{ $agent->created_by->name or '' }}</td>
                                 <td field-key='created_by_team'>{{ $agent->created_by_team->name or '' }}</td>
-                                <td field-key='advertisers_id'>
-                                    @foreach ($agent->advertisers_id as $singleAdvertisersId)
-                                        <span class="label label-info label-many">{{ $singleAdvertisersId->name }}</span>
-                                    @endforeach
-                                </td>
+                                <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     {!! Form::open(array(
@@ -520,6 +601,71 @@
                                     @endcan
                                 </td>
                                 @endif
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="17">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="contact_companies">
+<table class="table table-bordered table-striped {{ count($contact_companies) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.contact-companies.fields.name')</th>
+                        <th>@lang('global.contact-companies.fields.address')</th>
+                        <th>@lang('global.contact-companies.fields.website')</th>
+                        <th>@lang('global.contact-companies.fields.email')</th>
+                        <th>@lang('global.contact-companies.fields.address2')</th>
+                        <th>@lang('global.contact-companies.fields.city')</th>
+                        <th>@lang('global.contact-companies.fields.state')</th>
+                        <th>@lang('global.contact-companies.fields.zipcode')</th>
+                        <th>@lang('global.contact-companies.fields.country')</th>
+                        <th>@lang('global.contact-companies.fields.logo')</th>
+                        <th>@lang('global.contact-companies.fields.created-by')</th>
+                        <th>@lang('global.contact-companies.fields.created-by-team')</th>
+                                                <th>&nbsp;</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($contact_companies) > 0)
+            @foreach ($contact_companies as $contact_company)
+                <tr data-entry-id="{{ $contact_company->id }}">
+                    <td field-key='name'>{{ $contact_company->name }}</td>
+                                <td field-key='address'>{{ $contact_company->address }}</td>
+                                <td field-key='website'>{{ $contact_company->website }}</td>
+                                <td field-key='email'>{{ $contact_company->email }}</td>
+                                <td field-key='address2'>{{ $contact_company->address2 }}</td>
+                                <td field-key='city'>{{ $contact_company->city }}</td>
+                                <td field-key='state'>{{ $contact_company->state }}</td>
+                                <td field-key='zipcode'>{{ $contact_company->zipcode }}</td>
+                                <td field-key='country'>{{ $contact_company->country }}</td>
+                                <td field-key='logo'>@if($contact_company->logo)<a href="{{ asset(env('UPLOAD_PATH').'/' . $contact_company->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $contact_company->logo) }}"/></a>@endif</td>
+                                <td field-key='created_by'>{{ $contact_company->created_by->name or '' }}</td>
+                                <td field-key='created_by_team'>{{ $contact_company->created_by_team->name or '' }}</td>
+                                                                <td>
+                                    @can('contact_company_view')
+                                    <a href="{{ route('admin.contact_companies.show',[$contact_company->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('contact_company_edit')
+                                    <a href="{{ route('admin.contact_companies.edit',[$contact_company->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('contact_company_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.contact_companies.destroy', $contact_company->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+
                 </tr>
             @endforeach
         @else

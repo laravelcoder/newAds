@@ -41,7 +41,6 @@ class ContactsController extends Controller
             $query->with("company");
             $query->with("created_by");
             $query->with("created_by_team");
-            $query->with("adverstiser_id");
             $template = 'actionsTemplate';
             
             $query->select([
@@ -52,6 +51,7 @@ class ContactsController extends Controller
                 'contacts.email',
                 'contacts.skype',
                 'contacts.address',
+                'contacts.notes',
                 'contacts.created_by_id',
                 'contacts.created_by_team_id',
             ]);
@@ -86,22 +86,17 @@ class ContactsController extends Controller
             $table->editColumn('address', function ($row) {
                 return $row->address ? $row->address : '';
             });
+            $table->editColumn('notes', function ($row) {
+                return $row->notes ? $row->notes : '';
+            });
             $table->editColumn('created_by.name', function ($row) {
                 return $row->created_by ? $row->created_by->name : '';
             });
             $table->editColumn('created_by_team.name', function ($row) {
                 return $row->created_by_team ? $row->created_by_team->name : '';
             });
-            $table->editColumn('adverstiser_id.name', function ($row) {
-                if(count($row->adverstiser_id) == 0) {
-                    return '';
-                }
 
-                return '<span class="label label-info label-many">' . implode('</span><span class="label label-info label-many"> ',
-                        $row->adverstiser_id->pluck('name')->toArray()) . '</span>';
-            });
-
-            $table->rawColumns(['actions','massDelete','adverstiser_id.name']);
+            $table->rawColumns(['actions','massDelete']);
 
             return $table->make(true);
         }
@@ -123,10 +118,8 @@ class ContactsController extends Controller
         $companies = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $adverstiser_ids = \App\ContactCompany::get()->pluck('name', 'id');
 
-
-        return view('admin.contacts.create', compact('companies', 'created_bies', 'created_by_teams', 'adverstiser_ids'));
+        return view('admin.contacts.create', compact('companies', 'created_bies', 'created_by_teams'));
     }
 
     /**
@@ -141,7 +134,6 @@ class ContactsController extends Controller
             return abort(401);
         }
         $contact = Contact::create($request->all());
-        $contact->adverstiser_id()->sync(array_filter((array)$request->input('adverstiser_id')));
 
         foreach ($request->input('phones', []) as $data) {
             $contact->phones()->create($data);
@@ -167,12 +159,10 @@ class ContactsController extends Controller
         $companies = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $adverstiser_ids = \App\ContactCompany::get()->pluck('name', 'id');
-
 
         $contact = Contact::findOrFail($id);
 
-        return view('admin.contacts.edit', compact('contact', 'companies', 'created_bies', 'created_by_teams', 'adverstiser_ids'));
+        return view('admin.contacts.edit', compact('contact', 'companies', 'created_bies', 'created_by_teams'));
     }
 
     /**
@@ -189,7 +179,6 @@ class ContactsController extends Controller
         }
         $contact = Contact::findOrFail($id);
         $contact->update($request->all());
-        $contact->adverstiser_id()->sync(array_filter((array)$request->input('adverstiser_id')));
 
         $phones           = $contact->phones;
         $currentPhoneData = [];
@@ -228,9 +217,7 @@ class ContactsController extends Controller
         
         $companies = \App\ContactCompany::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $created_bies = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
-        $adverstiser_ids = \App\ContactCompany::get()->pluck('name', 'id');
-$phones = \App\Phone::where('advertiser_id', $id)->get();
+        $created_by_teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$phones = \App\Phone::where('contact_id', $id)->get();
 
         $contact = Contact::findOrFail($id);
 

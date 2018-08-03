@@ -31,15 +31,14 @@
                             @if ( request('show_deleted') != 1 )<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>@endif
                         @endcan
 
+                        <th>@lang('global.agents.fields.advertiser-company')</th>
                         <th>@lang('global.agents.fields.first-name')</th>
                         <th>@lang('global.agents.fields.last-name')</th>
-                        <th>@lang('global.agents.fields.phone1')</th>
-                        <th>@lang('global.agents.fields.phone2')</th>
                         <th>@lang('global.agents.fields.email')</th>
                         <th>@lang('global.agents.fields.skype')</th>
                         <th>@lang('global.agents.fields.created-by')</th>
                         <th>@lang('global.agents.fields.created-by-team')</th>
-                        <th>@lang('global.agents.fields.advertisers-id')</th>
+                        <th>@lang('global.agents.fields.advertiser')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -63,15 +62,14 @@
                 @if ( request('show_deleted') != 1 )
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
                 @endif
-                @endcan{data: 'first_name', name: 'first_name'},
+                @endcan{data: 'advertiser_company', name: 'advertiser_company'},
+                {data: 'first_name', name: 'first_name'},
                 {data: 'last_name', name: 'last_name'},
-                {data: 'phone1', name: 'phone1'},
-                {data: 'phone2', name: 'phone2'},
                 {data: 'email', name: 'email'},
                 {data: 'skype', name: 'skype'},
                 {data: 'created_by.name', name: 'created_by.name'},
                 {data: 'created_by_team.name', name: 'created_by_team.name'},
-                {data: 'advertisers_id.name', name: 'advertisers_id.name'},
+                {data: 'advertiser.name', name: 'advertiser.name'},
                 
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];

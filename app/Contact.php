@@ -14,6 +14,7 @@ use App\Traits\FilterByUser;
  * @property string $email
  * @property string $skype
  * @property string $address
+ * @property text $notes
  * @property string $created_by
  * @property string $created_by_team
 */
@@ -21,7 +22,7 @@ class Contact extends Model
 {
     use FilterByUser;
 
-    protected $fillable = ['first_name', 'last_name', 'email', 'skype', 'address', 'company_id', 'created_by_id', 'created_by_team_id'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'skype', 'address', 'notes', 'company_id', 'created_by_id', 'created_by_team_id'];
     protected $hidden = [];
     public static $searchable = [
     ];
@@ -69,12 +70,7 @@ class Contact extends Model
         return $this->belongsTo(Team::class, 'created_by_team_id');
     }
     
-    public function adverstiser_id()
-    {
-        return $this->belongsToMany(ContactCompany::class, 'contact_contact_company');
-    }
-    
     public function phones() {
-        return $this->hasMany(Phone::class, 'advertiser_id');
+        return $this->hasMany(Phone::class, 'contact_id');
     }
 }

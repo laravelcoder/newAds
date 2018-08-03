@@ -13,20 +13,16 @@
                 <div class="col-md-6">
                     <table class="table table-bordered table-striped">
                         <tr>
+                            <th>@lang('global.agents.fields.advertiser-company')</th>
+                            <td field-key='advertiser_company'>{{ $agent->advertiser_company }}</td>
+                        </tr>
+                        <tr>
                             <th>@lang('global.agents.fields.first-name')</th>
                             <td field-key='first_name'>{{ $agent->first_name }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.agents.fields.last-name')</th>
                             <td field-key='last_name'>{{ $agent->last_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.agents.fields.phone1')</th>
-                            <td field-key='phone1'>{{ $agent->phone1 }}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.agents.fields.phone2')</th>
-                            <td field-key='phone2'>{{ $agent->phone2 }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.agents.fields.email')</th>
@@ -57,12 +53,12 @@
                             <td field-key='created_by_team'>{{ $agent->created_by_team->name or '' }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.agents.fields.advertisers-id')</th>
-                            <td field-key='advertisers_id'>
-                                @foreach ($agent->advertisers_id as $singleAdvertisersId)
-                                    <span class="label label-info label-many">{{ $singleAdvertisersId->name }}</span>
-                                @endforeach
-                            </td>
+                            <th>@lang('global.agents.fields.notes')</th>
+                            <td field-key='notes'>{!! $agent->notes !!}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.agents.fields.advertiser')</th>
+                            <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                         </tr>
                     </table>
                 </div>

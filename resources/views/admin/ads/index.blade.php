@@ -35,9 +35,11 @@
                         <th>@lang('global.ads.fields.total-impressions')</th>
                         <th>@lang('global.ads.fields.total-networks')</th>
                         <th>@lang('global.ads.fields.total-channels')</th>
+                        <th>@lang('global.ads.fields.advertiser')</th>
                         <th>@lang('global.ads.fields.created-by')</th>
                         <th>@lang('global.ads.fields.created-by-team')</th>
                         <th>@lang('global.ads.fields.category-id')</th>
+                        <th>@lang('global.ads.fields.video-screenshot')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -65,9 +67,11 @@
                 {data: 'total_impressions', name: 'total_impressions'},
                 {data: 'total_networks', name: 'total_networks'},
                 {data: 'total_channels', name: 'total_channels'},
+                {data: 'advertiser.name', name: 'advertiser.name'},
                 {data: 'created_by.name', name: 'created_by.name'},
                 {data: 'created_by_team.name', name: 'created_by_team.name'},
                 {data: 'category_id.category', name: 'category_id.category'},
+                {data: 'video_screenshot', name: 'video_screenshot'},
                 
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];

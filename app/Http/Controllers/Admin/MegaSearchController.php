@@ -11,7 +11,11 @@ class MegaSearchController extends Controller
         'Audience',
         'ContactCompany',
         'Demographic',
+        'Network',
+        'Agent',
+        'Station',
         'Ad',
+        'Campaign',
     ];
 
     public function search(Request $request)

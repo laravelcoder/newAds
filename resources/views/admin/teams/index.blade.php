@@ -18,7 +18,7 @@
         </div>
 
         <div class="panel-body table-responsive">
-            <table class="table table-bordered table-striped {{ count($teams) > 0 ? 'datatable' : '' }} @can('team_delete') dt-select @endcan">
+            <table class="table table-bordered table-striped ajaxTable @can('team_delete') dt-select @endcan">
                 <thead>
                     <tr>
                         @can('team_delete')
@@ -30,42 +30,6 @@
 
                     </tr>
                 </thead>
-                
-                <tbody>
-                    @if (count($teams) > 0)
-                        @foreach ($teams as $team)
-                            <tr data-entry-id="{{ $team->id }}">
-                                @can('team_delete')
-                                    <td></td>
-                                @endcan
-
-                                <td field-key='name'>{{ $team->name }}</td>
-                                                                <td>
-                                    @can('team_view')
-                                    <a href="{{ route('admin.teams.show',[$team->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
-                                    @endcan
-                                    @can('team_edit')
-                                    <a href="{{ route('admin.teams.edit',[$team->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
-                                    @endcan
-                                    @can('team_delete')
-{!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.teams.destroy', $team->id])) !!}
-                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                </td>
-
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="6">@lang('global.app_no_entries_in_table')</td>
-                        </tr>
-                    @endif
-                </tbody>
             </table>
         </div>
     </div>
@@ -76,6 +40,15 @@
         @can('team_delete')
             window.route_mass_crud_entries_destroy = '{{ route('admin.teams.mass_destroy') }}';
         @endcan
-
+        $(document).ready(function () {
+            window.dtDefaultOptions.ajax = '{!! route('admin.teams.index') !!}';
+            window.dtDefaultOptions.columns = [@can('team_delete')
+                    {data: 'massDelete', name: 'id', searchable: false, sortable: false},
+                @endcan{data: 'name', name: 'name'},
+                
+                {data: 'actions', name: 'actions', searchable: false, sortable: false}
+            ];
+            processAjaxTables();
+        });
     </script>
 @endsection

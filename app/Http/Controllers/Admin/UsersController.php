@@ -126,14 +126,14 @@ class UsersController extends Controller
         
         $roles = \App\Role::get()->pluck('title', 'id');
 
-        $teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$internal_notifications = \App\InternalNotification::whereHas('users',
+        $teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');$networks = \App\Network::where('created_by_id', $id)->get();$internal_notifications = \App\InternalNotification::whereHas('users',
                     function ($query) use ($id) {
                         $query->where('id', $id);
-                    })->get();$audiences = \App\Audience::where('created_by_id', $id)->get();$demographics = \App\Demographic::where('created_by_id', $id)->get();$contact_companies = \App\ContactCompany::where('created_by_id', $id)->get();$ads = \App\Ad::where('created_by_id', $id)->get();$contacts = \App\Contact::where('created_by_id', $id)->get();$agents = \App\Agent::where('created_by_id', $id)->get();
+                    })->get();$audiences = \App\Audience::where('created_by_id', $id)->get();$demographics = \App\Demographic::where('created_by_id', $id)->get();$campaigns = \App\Campaign::where('created_by_id', $id)->get();$contacts = \App\Contact::where('created_by_id', $id)->get();$ads = \App\Ad::where('created_by_id', $id)->get();$agents = \App\Agent::where('created_by_id', $id)->get();$contact_companies = \App\ContactCompany::where('created_by_id', $id)->get();
 
         $user = User::findOrFail($id);
 
-        return view('admin.users.show', compact('user', 'internal_notifications', 'audiences', 'demographics', 'contact_companies', 'ads', 'contacts', 'agents'));
+        return view('admin.users.show', compact('user', 'networks', 'internal_notifications', 'audiences', 'demographics', 'campaigns', 'contacts', 'ads', 'agents', 'contact_companies'));
     }
 
 
