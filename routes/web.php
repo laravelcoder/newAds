@@ -1,4 +1,5 @@
 <?php
+
 // Route::middleware('auth')->group(function () {
     Route::get('/r', function () {
         function philsroutes()
@@ -30,7 +31,9 @@
     });
 // });
 
-Route::get('/', function () { return redirect('/admin/sales_dashboards'); });
+Route::get('/', function () {
+    return redirect('/admin/sales_dashboards');
+});
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -54,7 +57,7 @@ Route::get('{driver}/callback', 'Auth\LoginController@handleSocialCallback')->na
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index');
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
-    
+
     Route::resource('sales_dashboards', 'Admin\SalesDashboardsController');
     Route::resource('ads_dashboards', 'Admin\AdsDashboardsController');
     Route::resource('contact_companies', 'Admin\ContactCompaniesController');
@@ -126,8 +129,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('messenger/outbox', 'Admin\MessengerController@outbox')->name('messenger.outbox');
     Route::resource('messenger', 'Admin\MessengerController');
 
-
     Route::get('search', 'MegaSearchController@search')->name('mega-search');
     Route::get('language/{lang}', function ($lang) {
         return redirect()->back()->withCookie(cookie()->forever('language', $lang));
-    })->name('language');});
+    })->name('language');
+});

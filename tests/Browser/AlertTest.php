@@ -2,29 +2,25 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class AlertTest extends DuskTestCase
 {
-
     public function testCreateAlert()
     {
         $admin = \App\User::find(1);
         $alert = factory('App\Alert')->make();
 
-        
-
         $this->browse(function (Browser $browser) use ($admin, $alert) {
             $browser->loginAs($admin)
                 ->visit(route('admin.alerts.index'))
                 ->clickLink('Add new')
-                ->type("title", $alert->title)
-                ->type("content", $alert->content)
-                ->select("alert_type", $alert->alert_type)
-                ->select("contact_id", $alert->contact_id)
-                ->select("user_id", $alert->user_id)
+                ->type('title', $alert->title)
+                ->type('content', $alert->content)
+                ->select('alert_type', $alert->alert_type)
+                ->select('contact_id', $alert->contact_id)
+                ->select('user_id', $alert->user_id)
                 ->press('Save')
                 ->assertRouteIs('admin.alerts.index')
                 ->assertSeeIn("tr:last-child td[field-key='title']", $alert->title)
@@ -41,17 +37,15 @@ class AlertTest extends DuskTestCase
         $alert = factory('App\Alert')->create();
         $alert2 = factory('App\Alert')->make();
 
-        
-
         $this->browse(function (Browser $browser) use ($admin, $alert, $alert2) {
             $browser->loginAs($admin)
                 ->visit(route('admin.alerts.index'))
-                ->click('tr[data-entry-id="' . $alert->id . '"] .btn-info')
-                ->type("title", $alert2->title)
-                ->type("content", $alert2->content)
-                ->select("alert_type", $alert2->alert_type)
-                ->select("contact_id", $alert2->contact_id)
-                ->select("user_id", $alert2->user_id)
+                ->click('tr[data-entry-id="'.$alert->id.'"] .btn-info')
+                ->type('title', $alert2->title)
+                ->type('content', $alert2->content)
+                ->select('alert_type', $alert2->alert_type)
+                ->select('contact_id', $alert2->contact_id)
+                ->select('user_id', $alert2->user_id)
                 ->press('Update')
                 ->assertRouteIs('admin.alerts.index')
                 ->assertSeeIn("tr:last-child td[field-key='title']", $alert2->title)
@@ -67,13 +61,10 @@ class AlertTest extends DuskTestCase
         $admin = \App\User::find(1);
         $alert = factory('App\Alert')->create();
 
-        
-
-
         $this->browse(function (Browser $browser) use ($admin, $alert) {
             $browser->loginAs($admin)
                 ->visit(route('admin.alerts.index'))
-                ->click('tr[data-entry-id="' . $alert->id . '"] .btn-primary')
+                ->click('tr[data-entry-id="'.$alert->id.'"] .btn-primary')
                 ->assertSeeIn("td[field-key='title']", $alert->title)
                 ->assertSeeIn("td[field-key='content']", $alert->content)
                 ->assertSeeIn("td[field-key='alert_type']", $alert->alert_type)
@@ -82,5 +73,4 @@ class AlertTest extends DuskTestCase
                 ->logout();
         });
     }
-
 }

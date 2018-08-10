@@ -12,8 +12,8 @@ class PhoneSeed extends Seeder
     public function run()
     {
         $items = [
-            
-            ['id' => 4, 'phone_number' => '1234567890', 'contact_id' => null, 'advertiser_id' => 1, 'agent_id' => null,],
+
+            ['id' => 4, 'phone_number' => '1234567890', 'contact_id' => null, 'advertiser_id' => 1, 'agent_id' => null],
 
         ];
 

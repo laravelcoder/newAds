@@ -12,8 +12,8 @@ class ContentPageSeed extends Seeder
     public function run()
     {
         $items = [
-            
-            ['id' => 1, 'title' => 'About us', 'page_text' => 'Sample text', 'excerpt' => 'Sample excerpt', 'featured_image' => '',],
+
+            ['id' => 1, 'title' => 'About us', 'page_text' => 'Sample text', 'excerpt' => 'Sample excerpt', 'featured_image' => ''],
 
         ];
 
