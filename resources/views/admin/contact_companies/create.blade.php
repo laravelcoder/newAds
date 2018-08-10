@@ -24,18 +24,6 @@
             </div>
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('address', trans('global.contact-companies.fields.address').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('address', old('address'), ['class' => 'form-control', 'placeholder' => '']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('address'))
-                        <p class="help-block">
-                            {{ $errors->first('address') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
                     {!! Form::label('website', trans('global.contact-companies.fields.website').'', ['class' => 'control-label']) !!}
                     {!! Form::text('website', old('website'), ['class' => 'form-control', 'placeholder' => '']) !!}
                     <p class="help-block"></p>
@@ -54,6 +42,18 @@
                     @if($errors->has('email'))
                         <p class="help-block">
                             {{ $errors->first('email') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('address', trans('global.contact-companies.fields.address').'', ['class' => 'control-label']) !!}
+                    {!! Form::text('address', old('address'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('address'))
+                        <p class="help-block">
+                            {{ $errors->first('address') }}
                         </p>
                     @endif
                 </div>

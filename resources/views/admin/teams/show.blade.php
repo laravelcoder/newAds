@@ -523,14 +523,13 @@
 <table class="table table-bordered table-striped {{ count($agents) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
-            <th>@lang('global.agents.fields.advertiser-company')</th>
+            <th>@lang('global.agents.fields.advertiser')</th>
                         <th>@lang('global.agents.fields.first-name')</th>
                         <th>@lang('global.agents.fields.last-name')</th>
                         <th>@lang('global.agents.fields.email')</th>
                         <th>@lang('global.agents.fields.skype')</th>
                         <th>@lang('global.agents.fields.created-by')</th>
                         <th>@lang('global.agents.fields.created-by-team')</th>
-                        <th>@lang('global.agents.fields.advertiser')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -543,14 +542,13 @@
         @if (count($agents) > 0)
             @foreach ($agents as $agent)
                 <tr data-entry-id="{{ $agent->id }}">
-                    <td field-key='advertiser_company'>{{ $agent->advertiser_company }}</td>
+                    <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                                 <td field-key='first_name'>{{ $agent->first_name }}</td>
                                 <td field-key='last_name'>{{ $agent->last_name }}</td>
                                 <td field-key='email'>{{ $agent->email }}</td>
                                 <td field-key='skype'>{{ $agent->skype }}</td>
                                 <td field-key='created_by'>{{ $agent->created_by->name or '' }}</td>
                                 <td field-key='created_by_team'>{{ $agent->created_by_team->name or '' }}</td>
-                                <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     {!! Form::open(array(
@@ -591,7 +589,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="17">@lang('global.app_no_entries_in_table')</td>
+                <td colspan="16">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
@@ -602,15 +600,8 @@
     <thead>
         <tr>
             <th>@lang('global.contact-companies.fields.name')</th>
-                        <th>@lang('global.contact-companies.fields.address')</th>
                         <th>@lang('global.contact-companies.fields.website')</th>
                         <th>@lang('global.contact-companies.fields.email')</th>
-                        <th>@lang('global.contact-companies.fields.address2')</th>
-                        <th>@lang('global.contact-companies.fields.city')</th>
-                        <th>@lang('global.contact-companies.fields.state')</th>
-                        <th>@lang('global.contact-companies.fields.zipcode')</th>
-                        <th>@lang('global.contact-companies.fields.country')</th>
-                        <th>@lang('global.contact-companies.fields.logo')</th>
                         <th>@lang('global.contact-companies.fields.created-by')</th>
                         <th>@lang('global.contact-companies.fields.created-by-team')</th>
                                                 <th>&nbsp;</th>
@@ -623,15 +614,8 @@
             @foreach ($contact_companies as $contact_company)
                 <tr data-entry-id="{{ $contact_company->id }}">
                     <td field-key='name'>{{ $contact_company->name }}</td>
-                                <td field-key='address'>{{ $contact_company->address }}</td>
                                 <td field-key='website'>{{ $contact_company->website }}</td>
                                 <td field-key='email'>{{ $contact_company->email }}</td>
-                                <td field-key='address2'>{{ $contact_company->address2 }}</td>
-                                <td field-key='city'>{{ $contact_company->city }}</td>
-                                <td field-key='state'>{{ $contact_company->state }}</td>
-                                <td field-key='zipcode'>{{ $contact_company->zipcode }}</td>
-                                <td field-key='country'>{{ $contact_company->country }}</td>
-                                <td field-key='logo'>@if($contact_company->logo)<a href="{{ asset(env('UPLOAD_PATH').'/' . $contact_company->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $contact_company->logo) }}"/></a>@endif</td>
                                 <td field-key='created_by'>{{ $contact_company->created_by->name or '' }}</td>
                                 <td field-key='created_by_team'>{{ $contact_company->created_by_team->name or '' }}</td>
                                                                 <td>

@@ -42,6 +42,7 @@
 <li role="presentation" class=""><a href="#audiences" aria-controls="audiences" role="tab" data-toggle="tab">Audiences</a></li>
 <li role="presentation" class=""><a href="#demographics" aria-controls="demographics" role="tab" data-toggle="tab">Demographics</a></li>
 <li role="presentation" class=""><a href="#campaign" aria-controls="campaign" role="tab" data-toggle="tab">Campaign</a></li>
+<li role="presentation" class=""><a href="#alerts" aria-controls="alerts" role="tab" data-toggle="tab">Alerts</a></li>
 <li role="presentation" class=""><a href="#contacts" aria-controls="contacts" role="tab" data-toggle="tab">Contacts</a></li>
 <li role="presentation" class=""><a href="#ads" aria-controls="ads" role="tab" data-toggle="tab">Ads</a></li>
 <li role="presentation" class=""><a href="#agents" aria-controls="agents" role="tab" data-toggle="tab">Agents</a></li>
@@ -400,6 +401,55 @@
     </tbody>
 </table>
 </div>
+<div role="tabpanel" class="tab-pane " id="alerts">
+<table class="table table-bordered table-striped {{ count($alerts) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.alerts.fields.title')</th>
+                        <th>@lang('global.alerts.fields.alert-type')</th>
+                        <th>@lang('global.alerts.fields.contact')</th>
+                        <th>@lang('global.alerts.fields.user')</th>
+                                                <th>&nbsp;</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($alerts) > 0)
+            @foreach ($alerts as $alert)
+                <tr data-entry-id="{{ $alert->id }}">
+                    <td field-key='title'>{{ $alert->title }}</td>
+                                <td field-key='alert_type'>{{ $alert->alert_type }}</td>
+                                <td field-key='contact'>{{ $alert->contact->first_name or '' }}</td>
+                                <td field-key='user'>{{ $alert->user->name or '' }}</td>
+                                                                <td>
+                                    @can('alert_view')
+                                    <a href="{{ route('admin.alerts.show',[$alert->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('alert_edit')
+                                    <a href="{{ route('admin.alerts.edit',[$alert->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('alert_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.alerts.destroy', $alert->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="10">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
 <div role="tabpanel" class="tab-pane " id="contacts">
 <table class="table table-bordered table-striped {{ count($contacts) > 0 ? 'datatable' : '' }}">
     <thead>
@@ -537,14 +587,13 @@
 <table class="table table-bordered table-striped {{ count($agents) > 0 ? 'datatable' : '' }}">
     <thead>
         <tr>
-            <th>@lang('global.agents.fields.advertiser-company')</th>
+            <th>@lang('global.agents.fields.advertiser')</th>
                         <th>@lang('global.agents.fields.first-name')</th>
                         <th>@lang('global.agents.fields.last-name')</th>
                         <th>@lang('global.agents.fields.email')</th>
                         <th>@lang('global.agents.fields.skype')</th>
                         <th>@lang('global.agents.fields.created-by')</th>
                         <th>@lang('global.agents.fields.created-by-team')</th>
-                        <th>@lang('global.agents.fields.advertiser')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -557,14 +606,13 @@
         @if (count($agents) > 0)
             @foreach ($agents as $agent)
                 <tr data-entry-id="{{ $agent->id }}">
-                    <td field-key='advertiser_company'>{{ $agent->advertiser_company }}</td>
+                    <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                                 <td field-key='first_name'>{{ $agent->first_name }}</td>
                                 <td field-key='last_name'>{{ $agent->last_name }}</td>
                                 <td field-key='email'>{{ $agent->email }}</td>
                                 <td field-key='skype'>{{ $agent->skype }}</td>
                                 <td field-key='created_by'>{{ $agent->created_by->name or '' }}</td>
                                 <td field-key='created_by_team'>{{ $agent->created_by_team->name or '' }}</td>
-                                <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     {!! Form::open(array(
@@ -605,7 +653,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="17">@lang('global.app_no_entries_in_table')</td>
+                <td colspan="16">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
@@ -616,15 +664,8 @@
     <thead>
         <tr>
             <th>@lang('global.contact-companies.fields.name')</th>
-                        <th>@lang('global.contact-companies.fields.address')</th>
                         <th>@lang('global.contact-companies.fields.website')</th>
                         <th>@lang('global.contact-companies.fields.email')</th>
-                        <th>@lang('global.contact-companies.fields.address2')</th>
-                        <th>@lang('global.contact-companies.fields.city')</th>
-                        <th>@lang('global.contact-companies.fields.state')</th>
-                        <th>@lang('global.contact-companies.fields.zipcode')</th>
-                        <th>@lang('global.contact-companies.fields.country')</th>
-                        <th>@lang('global.contact-companies.fields.logo')</th>
                         <th>@lang('global.contact-companies.fields.created-by')</th>
                         <th>@lang('global.contact-companies.fields.created-by-team')</th>
                                                 <th>&nbsp;</th>
@@ -637,15 +678,8 @@
             @foreach ($contact_companies as $contact_company)
                 <tr data-entry-id="{{ $contact_company->id }}">
                     <td field-key='name'>{{ $contact_company->name }}</td>
-                                <td field-key='address'>{{ $contact_company->address }}</td>
                                 <td field-key='website'>{{ $contact_company->website }}</td>
                                 <td field-key='email'>{{ $contact_company->email }}</td>
-                                <td field-key='address2'>{{ $contact_company->address2 }}</td>
-                                <td field-key='city'>{{ $contact_company->city }}</td>
-                                <td field-key='state'>{{ $contact_company->state }}</td>
-                                <td field-key='zipcode'>{{ $contact_company->zipcode }}</td>
-                                <td field-key='country'>{{ $contact_company->country }}</td>
-                                <td field-key='logo'>@if($contact_company->logo)<a href="{{ asset(env('UPLOAD_PATH').'/' . $contact_company->logo) }}" target="_blank"><img src="{{ asset(env('UPLOAD_PATH').'/thumb/' . $contact_company->logo) }}"/></a>@endif</td>
                                 <td field-key='created_by'>{{ $contact_company->created_by->name or '' }}</td>
                                 <td field-key='created_by_team'>{{ $contact_company->created_by_team->name or '' }}</td>
                                                                 <td>

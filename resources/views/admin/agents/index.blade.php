@@ -31,14 +31,13 @@
                             @if ( request('show_deleted') != 1 )<th style="text-align:center;"><input type="checkbox" id="select-all" /></th>@endif
                         @endcan
 
-                        <th>@lang('global.agents.fields.advertiser-company')</th>
+                        <th>@lang('global.agents.fields.advertiser')</th>
                         <th>@lang('global.agents.fields.first-name')</th>
                         <th>@lang('global.agents.fields.last-name')</th>
                         <th>@lang('global.agents.fields.email')</th>
                         <th>@lang('global.agents.fields.skype')</th>
                         <th>@lang('global.agents.fields.created-by')</th>
                         <th>@lang('global.agents.fields.created-by-team')</th>
-                        <th>@lang('global.agents.fields.advertiser')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -62,14 +61,13 @@
                 @if ( request('show_deleted') != 1 )
                     {data: 'massDelete', name: 'id', searchable: false, sortable: false},
                 @endif
-                @endcan{data: 'advertiser_company', name: 'advertiser_company'},
+                @endcan{data: 'advertiser.name', name: 'advertiser.name'},
                 {data: 'first_name', name: 'first_name'},
                 {data: 'last_name', name: 'last_name'},
                 {data: 'email', name: 'email'},
                 {data: 'skype', name: 'skype'},
                 {data: 'created_by.name', name: 'created_by.name'},
                 {data: 'created_by_team.name', name: 'created_by_team.name'},
-                {data: 'advertiser.name', name: 'advertiser.name'},
                 
                 {data: 'actions', name: 'actions', searchable: false, sortable: false}
             ];

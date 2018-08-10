@@ -17,16 +17,16 @@
                             <td field-key='name'>{{ $contact_company->name }}</td>
                         </tr>
                         <tr>
-                            <th>@lang('global.contact-companies.fields.address')</th>
-                            <td field-key='address'>{{ $contact_company->address }}</td>
-                        </tr>
-                        <tr>
                             <th>@lang('global.contact-companies.fields.website')</th>
                             <td field-key='website'>{{ $contact_company->website }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.contact-companies.fields.email')</th>
                             <td field-key='email'>{{ $contact_company->email }}</td>
+                        </tr>
+                        <tr>
+                            <th>@lang('global.contact-companies.fields.address')</th>
+                            <td field-key='address'>{{ $contact_company->address }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.contact-companies.fields.address2')</th>
@@ -66,13 +66,13 @@
 <ul class="nav nav-tabs" role="tablist">
     
 <li role="presentation" class="active"><a href="#contacts" aria-controls="contacts" role="tab" data-toggle="tab">Contacts</a></li>
+<li role="presentation" class=""><a href="#agents" aria-controls="agents" role="tab" data-toggle="tab">Agents</a></li>
 <li role="presentation" class=""><a href="#categories" aria-controls="categories" role="tab" data-toggle="tab">Categories</a></li>
 <li role="presentation" class=""><a href="#phones" aria-controls="phones" role="tab" data-toggle="tab">Phones</a></li>
 <li role="presentation" class=""><a href="#audiences" aria-controls="audiences" role="tab" data-toggle="tab">Audiences</a></li>
 <li role="presentation" class=""><a href="#demographics" aria-controls="demographics" role="tab" data-toggle="tab">Demographics</a></li>
 <li role="presentation" class=""><a href="#campaign" aria-controls="campaign" role="tab" data-toggle="tab">Campaign</a></li>
 <li role="presentation" class=""><a href="#ads" aria-controls="ads" role="tab" data-toggle="tab">Ads</a></li>
-<li role="presentation" class=""><a href="#agents" aria-controls="agents" role="tab" data-toggle="tab">Agents</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -124,6 +124,82 @@
         @else
             <tr>
                 <td colspan="14">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="agents">
+<table class="table table-bordered table-striped {{ count($agents) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.agents.fields.advertiser')</th>
+                        <th>@lang('global.agents.fields.first-name')</th>
+                        <th>@lang('global.agents.fields.last-name')</th>
+                        <th>@lang('global.agents.fields.email')</th>
+                        <th>@lang('global.agents.fields.skype')</th>
+                        <th>@lang('global.agents.fields.created-by')</th>
+                        <th>@lang('global.agents.fields.created-by-team')</th>
+                        @if( request('show_deleted') == 1 )
+                        <th>&nbsp;</th>
+                        @else
+                        <th>&nbsp;</th>
+                        @endif
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($agents) > 0)
+            @foreach ($agents as $agent)
+                <tr data-entry-id="{{ $agent->id }}">
+                    <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
+                                <td field-key='first_name'>{{ $agent->first_name }}</td>
+                                <td field-key='last_name'>{{ $agent->last_name }}</td>
+                                <td field-key='email'>{{ $agent->email }}</td>
+                                <td field-key='skype'>{{ $agent->skype }}</td>
+                                <td field-key='created_by'>{{ $agent->created_by->name or '' }}</td>
+                                <td field-key='created_by_team'>{{ $agent->created_by_team->name or '' }}</td>
+                                @if( request('show_deleted') == 1 )
+                                <td>
+                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'POST',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.agents.restore', $agent->id])) !!}
+                                    {!! Form::submit(trans('global.app_restore'), array('class' => 'btn btn-xs btn-success')) !!}
+                                    {!! Form::close() !!}
+                                                                    {!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.agents.perma_del', $agent->id])) !!}
+                                    {!! Form::submit(trans('global.app_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                                                </td>
+                                @else
+                                <td>
+                                    @can('agent_view')
+                                    <a href="{{ route('admin.agents.show',[$agent->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('agent_edit')
+                                    <a href="{{ route('admin.agents.edit',[$agent->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('agent_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.agents.destroy', $agent->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+                                @endif
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="16">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>
@@ -570,84 +646,6 @@
         @else
             <tr>
                 <td colspan="16">@lang('global.app_no_entries_in_table')</td>
-            </tr>
-        @endif
-    </tbody>
-</table>
-</div>
-<div role="tabpanel" class="tab-pane " id="agents">
-<table class="table table-bordered table-striped {{ count($agents) > 0 ? 'datatable' : '' }}">
-    <thead>
-        <tr>
-            <th>@lang('global.agents.fields.advertiser-company')</th>
-                        <th>@lang('global.agents.fields.first-name')</th>
-                        <th>@lang('global.agents.fields.last-name')</th>
-                        <th>@lang('global.agents.fields.email')</th>
-                        <th>@lang('global.agents.fields.skype')</th>
-                        <th>@lang('global.agents.fields.created-by')</th>
-                        <th>@lang('global.agents.fields.created-by-team')</th>
-                        <th>@lang('global.agents.fields.advertiser')</th>
-                        @if( request('show_deleted') == 1 )
-                        <th>&nbsp;</th>
-                        @else
-                        <th>&nbsp;</th>
-                        @endif
-        </tr>
-    </thead>
-
-    <tbody>
-        @if (count($agents) > 0)
-            @foreach ($agents as $agent)
-                <tr data-entry-id="{{ $agent->id }}">
-                    <td field-key='advertiser_company'>{{ $agent->advertiser_company }}</td>
-                                <td field-key='first_name'>{{ $agent->first_name }}</td>
-                                <td field-key='last_name'>{{ $agent->last_name }}</td>
-                                <td field-key='email'>{{ $agent->email }}</td>
-                                <td field-key='skype'>{{ $agent->skype }}</td>
-                                <td field-key='created_by'>{{ $agent->created_by->name or '' }}</td>
-                                <td field-key='created_by_team'>{{ $agent->created_by_team->name or '' }}</td>
-                                <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
-                                @if( request('show_deleted') == 1 )
-                                <td>
-                                    {!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'POST',
-                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.agents.restore', $agent->id])) !!}
-                                    {!! Form::submit(trans('global.app_restore'), array('class' => 'btn btn-xs btn-success')) !!}
-                                    {!! Form::close() !!}
-                                                                    {!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.agents.perma_del', $agent->id])) !!}
-                                    {!! Form::submit(trans('global.app_permadel'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                                                </td>
-                                @else
-                                <td>
-                                    @can('agent_view')
-                                    <a href="{{ route('admin.agents.show',[$agent->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
-                                    @endcan
-                                    @can('agent_edit')
-                                    <a href="{{ route('admin.agents.edit',[$agent->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
-                                    @endcan
-                                    @can('agent_delete')
-{!! Form::open(array(
-                                        'style' => 'display: inline-block;',
-                                        'method' => 'DELETE',
-                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
-                                        'route' => ['admin.agents.destroy', $agent->id])) !!}
-                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                                    {!! Form::close() !!}
-                                    @endcan
-                                </td>
-                                @endif
-                </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="17">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>

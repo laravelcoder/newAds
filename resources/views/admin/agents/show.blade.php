@@ -13,8 +13,8 @@
                 <div class="col-md-6">
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>@lang('global.agents.fields.advertiser-company')</th>
-                            <td field-key='advertiser_company'>{{ $agent->advertiser_company }}</td>
+                            <th>@lang('global.agents.fields.advertiser')</th>
+                            <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                         </tr>
                         <tr>
                             <th>@lang('global.agents.fields.first-name')</th>
@@ -55,10 +55,6 @@
                         <tr>
                             <th>@lang('global.agents.fields.notes')</th>
                             <td field-key='notes'>{!! $agent->notes !!}</td>
-                        </tr>
-                        <tr>
-                            <th>@lang('global.agents.fields.advertiser')</th>
-                            <td field-key='advertiser'>{{ $agent->advertiser->name or '' }}</td>
                         </tr>
                     </table>
                 </div>

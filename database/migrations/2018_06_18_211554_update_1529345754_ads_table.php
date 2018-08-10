@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class Update1529345754AdsTable extends Migration
 {
@@ -13,13 +13,15 @@ class Update1529345754AdsTable extends Migration
     public function up()
     {
         Schema::table('ads', function (Blueprint $table) {
-            if (!Schema::hasColumn('ads', 'video_upload')) {
+            
+if (!Schema::hasColumn('ads', 'video_upload')) {
                 $table->string('video_upload')->nullable();
-            }
-            if (!Schema::hasColumn('ads', 'video_screenshot')) {
+                }
+if (!Schema::hasColumn('ads', 'video_screenshot')) {
                 $table->string('video_screenshot')->nullable();
-            }
+                }
         });
+
     }
 
     /**
@@ -32,6 +34,8 @@ class Update1529345754AdsTable extends Migration
         Schema::table('ads', function (Blueprint $table) {
             $table->dropColumn('video_upload');
             $table->dropColumn('video_screenshot');
+            
         });
+
     }
 }

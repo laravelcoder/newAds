@@ -9,13 +9,21 @@
                 <select class="searchable-field form-control"></select>
             </li>
 
-            <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
+{{--             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/') }}">
                     <i class="fa fa-wrench"></i>
                     <span class="title">@lang('global.app_dashboard')</span>
                 </a>
-            </li>
+            </li> --}}
 
+            @can('sales_dashboard_access')
+            <li>
+                <a href="{{ route('admin.sales_dashboards.index') }}">
+                    <i class="fa fa-dashboard"></i>
+                    <span>@lang('global.sales-dashboard.title')</span>
+                </a>
+            </li>@endcan
+            
             @can('ads_dashboard_access')
             <li>
                 <a href="{{ route('admin.ads_dashboards.index') }}">
@@ -135,14 +143,6 @@
                 </ul>
             </li>@endcan
             
-            @can('internal_notification_access')
-            <li>
-                <a href="{{ route('admin.internal_notifications.index') }}">
-                    <i class="fa fa-briefcase"></i>
-                    <span>@lang('global.internal-notifications.title')</span>
-                </a>
-            </li>@endcan
-            
             @can('network_research_access')
             <li class="treeview">
                 <a href="#">
@@ -190,11 +190,11 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    @can('permission_access')
+                    @can('user_access')
                     <li>
-                        <a href="{{ route('admin.permissions.index') }}">
-                            <i class="fa fa-briefcase"></i>
-                            <span>@lang('global.permissions.title')</span>
+                        <a href="{{ route('admin.users.index') }}">
+                            <i class="fa fa-user"></i>
+                            <span>@lang('global.users.title')</span>
                         </a>
                     </li>@endcan
                     
@@ -206,19 +206,64 @@
                         </a>
                     </li>@endcan
                     
-                    @can('user_access')
-                    <li>
-                        <a href="{{ route('admin.users.index') }}">
-                            <i class="fa fa-user"></i>
-                            <span>@lang('global.users.title')</span>
-                        </a>
-                    </li>@endcan
-                    
                     @can('team_access')
                     <li>
                         <a href="{{ route('admin.teams.index') }}">
                             <i class="fa fa-users"></i>
                             <span>@lang('global.teams.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                    @can('permission_access')
+                    <li>
+                        <a href="{{ route('admin.permissions.index') }}">
+                            <i class="fa fa-briefcase"></i>
+                            <span>@lang('global.permissions.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                    @can('alert_access')
+                    <li>
+                        <a href="{{ route('admin.alerts.index') }}">
+                            <i class="fa fa-asterisk"></i>
+                            <span>@lang('global.alerts.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                </ul>
+            </li>@endcan
+            
+            @can('content_management_access')
+            <li class="treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i>
+                    <span>@lang('global.content-management.title')</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    @can('content_category_access')
+                    <li>
+                        <a href="{{ route('admin.content_categories.index') }}">
+                            <i class="fa fa-folder"></i>
+                            <span>@lang('global.content-categories.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                    @can('content_tag_access')
+                    <li>
+                        <a href="{{ route('admin.content_tags.index') }}">
+                            <i class="fa fa-tags"></i>
+                            <span>@lang('global.content-tags.title')</span>
+                        </a>
+                    </li>@endcan
+                    
+                    @can('content_page_access')
+                    <li>
+                        <a href="{{ route('admin.content_pages.index') }}">
+                            <i class="fa fa-file-o"></i>
+                            <span>@lang('global.content-pages.title')</span>
                         </a>
                     </li>@endcan
                     

@@ -1,5 +1,4 @@
 <?php
-
 // Route::middleware('auth')->group(function () {
     Route::get('/r', function () {
         function philsroutes()
@@ -31,9 +30,7 @@
     });
 // });
 
-Route::get('/', function () {
-    return redirect('/admin/home');
-});
+Route::get('/', function () { return redirect('/admin/sales_dashboards'); });
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -56,7 +53,9 @@ Route::get('{driver}/callback', 'Auth\LoginController@handleSocialCallback')->na
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index');
-
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+    
+    Route::resource('sales_dashboards', 'Admin\SalesDashboardsController');
     Route::resource('ads_dashboards', 'Admin\AdsDashboardsController');
     Route::resource('contact_companies', 'Admin\ContactCompaniesController');
     Route::post('contact_companies_mass_destroy', ['uses' => 'Admin\ContactCompaniesController@massDestroy', 'as' => 'contact_companies.mass_destroy']);
@@ -70,25 +69,25 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('audiences_mass_destroy', ['uses' => 'Admin\AudiencesController@massDestroy', 'as' => 'audiences.mass_destroy']);
     Route::post('audiences_restore/{id}', ['uses' => 'Admin\AudiencesController@restore', 'as' => 'audiences.restore']);
     Route::delete('audiences_perma_del/{id}', ['uses' => 'Admin\AudiencesController@perma_del', 'as' => 'audiences.perma_del']);
-    Route::resource('categories', 'Admin\CategoriesController');
-    Route::post('categories_mass_destroy', ['uses' => 'Admin\CategoriesController@massDestroy', 'as' => 'categories.mass_destroy']);
-    Route::post('categories_restore/{id}', ['uses' => 'Admin\CategoriesController@restore', 'as' => 'categories.restore']);
-    Route::delete('categories_perma_del/{id}', ['uses' => 'Admin\CategoriesController@perma_del', 'as' => 'categories.perma_del']);
     Route::get('internal_notifications/read', 'Admin\InternalNotificationsController@read');
     Route::resource('internal_notifications', 'Admin\InternalNotificationsController');
     Route::post('internal_notifications_mass_destroy', ['uses' => 'Admin\InternalNotificationsController@massDestroy', 'as' => 'internal_notifications.mass_destroy']);
-    Route::resource('phones', 'Admin\PhonesController');
-    Route::post('phones_mass_destroy', ['uses' => 'Admin\PhonesController@massDestroy', 'as' => 'phones.mass_destroy']);
-    Route::post('phones_restore/{id}', ['uses' => 'Admin\PhonesController@restore', 'as' => 'phones.restore']);
-    Route::delete('phones_perma_del/{id}', ['uses' => 'Admin\PhonesController@perma_del', 'as' => 'phones.perma_del']);
-    Route::resource('ads', 'Admin\AdsController');
-    Route::post('ads_mass_destroy', ['uses' => 'Admin\AdsController@massDestroy', 'as' => 'ads.mass_destroy']);
-    Route::post('ads_restore/{id}', ['uses' => 'Admin\AdsController@restore', 'as' => 'ads.restore']);
-    Route::delete('ads_perma_del/{id}', ['uses' => 'Admin\AdsController@perma_del', 'as' => 'ads.perma_del']);
     Route::resource('demographics', 'Admin\DemographicsController');
     Route::post('demographics_mass_destroy', ['uses' => 'Admin\DemographicsController@massDestroy', 'as' => 'demographics.mass_destroy']);
     Route::post('demographics_restore/{id}', ['uses' => 'Admin\DemographicsController@restore', 'as' => 'demographics.restore']);
     Route::delete('demographics_perma_del/{id}', ['uses' => 'Admin\DemographicsController@perma_del', 'as' => 'demographics.perma_del']);
+    Route::resource('phones', 'Admin\PhonesController');
+    Route::post('phones_mass_destroy', ['uses' => 'Admin\PhonesController@massDestroy', 'as' => 'phones.mass_destroy']);
+    Route::post('phones_restore/{id}', ['uses' => 'Admin\PhonesController@restore', 'as' => 'phones.restore']);
+    Route::delete('phones_perma_del/{id}', ['uses' => 'Admin\PhonesController@perma_del', 'as' => 'phones.perma_del']);
+    Route::resource('categories', 'Admin\CategoriesController');
+    Route::post('categories_mass_destroy', ['uses' => 'Admin\CategoriesController@massDestroy', 'as' => 'categories.mass_destroy']);
+    Route::post('categories_restore/{id}', ['uses' => 'Admin\CategoriesController@restore', 'as' => 'categories.restore']);
+    Route::delete('categories_perma_del/{id}', ['uses' => 'Admin\CategoriesController@perma_del', 'as' => 'categories.perma_del']);
+    Route::resource('ads', 'Admin\AdsController');
+    Route::post('ads_mass_destroy', ['uses' => 'Admin\AdsController@massDestroy', 'as' => 'ads.mass_destroy']);
+    Route::post('ads_restore/{id}', ['uses' => 'Admin\AdsController@restore', 'as' => 'ads.restore']);
+    Route::delete('ads_perma_del/{id}', ['uses' => 'Admin\AdsController@perma_del', 'as' => 'ads.perma_del']);
     Route::resource('campaigns', 'Admin\CampaignsController');
     Route::post('campaigns_mass_destroy', ['uses' => 'Admin\CampaignsController@massDestroy', 'as' => 'campaigns.mass_destroy']);
     Route::post('campaigns_restore/{id}', ['uses' => 'Admin\CampaignsController@restore', 'as' => 'campaigns.restore']);
@@ -105,22 +104,30 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('stations_mass_destroy', ['uses' => 'Admin\StationsController@massDestroy', 'as' => 'stations.mass_destroy']);
     Route::post('stations_restore/{id}', ['uses' => 'Admin\StationsController@restore', 'as' => 'stations.restore']);
     Route::delete('stations_perma_del/{id}', ['uses' => 'Admin\StationsController@perma_del', 'as' => 'stations.perma_del']);
-    Route::resource('permissions', 'Admin\PermissionsController');
-    Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
-    Route::resource('roles', 'Admin\RolesController');
-    Route::post('roles_mass_destroy', ['uses' => 'Admin\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
     Route::resource('users', 'Admin\UsersController');
     Route::post('users_mass_destroy', ['uses' => 'Admin\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
+    Route::resource('roles', 'Admin\RolesController');
+    Route::post('roles_mass_destroy', ['uses' => 'Admin\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
     Route::resource('teams', 'Admin\TeamsController');
     Route::post('teams_mass_destroy', ['uses' => 'Admin\TeamsController@massDestroy', 'as' => 'teams.mass_destroy']);
+    Route::resource('permissions', 'Admin\PermissionsController');
+    Route::post('permissions_mass_destroy', ['uses' => 'Admin\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
+    Route::resource('alerts', 'Admin\AlertsController');
+    Route::post('alerts_mass_destroy', ['uses' => 'Admin\AlertsController@massDestroy', 'as' => 'alerts.mass_destroy']);
+    Route::resource('content_categories', 'Admin\ContentCategoriesController');
+    Route::post('content_categories_mass_destroy', ['uses' => 'Admin\ContentCategoriesController@massDestroy', 'as' => 'content_categories.mass_destroy']);
+    Route::resource('content_tags', 'Admin\ContentTagsController');
+    Route::post('content_tags_mass_destroy', ['uses' => 'Admin\ContentTagsController@massDestroy', 'as' => 'content_tags.mass_destroy']);
+    Route::resource('content_pages', 'Admin\ContentPagesController');
+    Route::post('content_pages_mass_destroy', ['uses' => 'Admin\ContentPagesController@massDestroy', 'as' => 'content_pages.mass_destroy']);
 
     Route::model('messenger', 'App\MessengerTopic');
     Route::get('messenger/inbox', 'Admin\MessengerController@inbox')->name('messenger.inbox');
     Route::get('messenger/outbox', 'Admin\MessengerController@outbox')->name('messenger.outbox');
     Route::resource('messenger', 'Admin\MessengerController');
 
+
     Route::get('search', 'MegaSearchController@search')->name('mega-search');
     Route::get('language/{lang}', function ($lang) {
         return redirect()->back()->withCookie(cookie()->forever('language', $lang));
-    })->name('language');
-});
+    })->name('language');});

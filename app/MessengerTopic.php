@@ -15,7 +15,7 @@ class MessengerTopic extends Model
         'subject',
         'sender_id',
         'receiver_id',
-        'sent_at',
+        'sent_at'
     ];
     protected $dates = [
         'sent_at',
@@ -46,38 +46,36 @@ class MessengerTopic extends Model
     }
 
     public static function unreadInboxCount()
-    {
-        $topics = Auth::user()->topics()->get();
-        $count = 0;
-        foreach ($topics as $topic) {
-            if ($topic->receiver_id == Auth::user()->id) {
+        {
+            $topics = Auth::user()->topics()->get();
+            $count = 0;
+            foreach($topics as $topic) {
+                if ($topic->receiver_id == Auth::user()->id) {
+                    if ($topic->unread()) {
+                        $count++;
+                    }
+                }
+            }
+            return $count;
+        }
+
+        public static function countUnread()
+        {
+            $topics = Auth::user()->topics()->get();
+            $count = 0;
+            foreach ($topics as $topic) {
                 if ($topic->unread()) {
                     $count++;
                 }
             }
+            return $count;
         }
-
-        return $count;
-    }
-
-    public static function countUnread()
-    {
-        $topics = Auth::user()->topics()->get();
-        $count = 0;
-        foreach ($topics as $topic) {
-            if ($topic->unread()) {
-                $count++;
-            }
-        }
-
-        return $count;
-    }
 
     public function unread()
     {
-        $type = $this->userType();
-        $read_at = $type.'_read_at';
-        if (!$this->{$read_at}) {
+        $type    = $this->userType();
+        $read_at = $type . "_read_at";
+        if (! $this->{$read_at}) {
             return true;
         }
 
@@ -86,12 +84,13 @@ class MessengerTopic extends Model
         }
 
         return false;
+
     }
 
     public function read()
     {
-        $type = $this->userType();
-        $read_at = $type.'_read_at';
+        $type             = $this->userType();
+        $read_at          = $type . "_read_at";
         $this->{$read_at} = Carbon::now();
         $this->save();
 
@@ -108,4 +107,5 @@ class MessengerTopic extends Model
 
         return $type;
     }
+
 }

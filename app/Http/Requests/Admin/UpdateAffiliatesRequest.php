@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,8 +23,8 @@ class UpdateAffiliatesRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'stations.*.station_label'  => 'required',
+            
+            'stations.*.station_label' => 'required',
             'stations.*.channel_number' => 'required',
         ];
     }

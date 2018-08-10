@@ -13,12 +13,12 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-xs-12 form-group">
-                    {!! Form::label('advertiser_company', trans('global.agents.fields.advertiser-company').'', ['class' => 'control-label']) !!}
-                    {!! Form::text('advertiser_company', old('advertiser_company'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    {!! Form::label('advertiser_id', trans('global.agents.fields.advertiser').'', ['class' => 'control-label']) !!}
+                    {!! Form::select('advertiser_id', $advertisers, old('advertiser_id'), ['class' => 'form-control select2']) !!}
                     <p class="help-block"></p>
-                    @if($errors->has('advertiser_company'))
+                    @if($errors->has('advertiser_id'))
                         <p class="help-block">
-                            {{ $errors->first('advertiser_company') }}
+                            {{ $errors->first('advertiser_id') }}
                         </p>
                     @endif
                 </div>
@@ -121,18 +121,6 @@
                     @if($errors->has('notes'))
                         <p class="help-block">
                             {{ $errors->first('notes') }}
-                        </p>
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 form-group">
-                    {!! Form::label('advertiser_id', trans('global.agents.fields.advertiser').'', ['class' => 'control-label']) !!}
-                    {!! Form::select('advertiser_id', $advertisers, old('advertiser_id'), ['class' => 'form-control select2']) !!}
-                    <p class="help-block"></p>
-                    @if($errors->has('advertiser_id'))
-                        <p class="help-block">
-                            {{ $errors->first('advertiser_id') }}
                         </p>
                     @endif
                 </div>

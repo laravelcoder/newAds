@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,8 +23,8 @@ class StoreInternalNotificationsRequest extends FormRequest
     public function rules()
     {
         return [
-            'text'    => 'required',
-            'users'   => 'required',
+            'text' => 'required',
+            'users' => 'required',
             'users.*' => 'exists:users,id',
         ];
     }

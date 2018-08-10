@@ -50,6 +50,7 @@
 <ul class="nav nav-tabs" role="tablist">
     
 <li role="presentation" class="active"><a href="#phones" aria-controls="phones" role="tab" data-toggle="tab">Phones</a></li>
+<li role="presentation" class=""><a href="#alerts" aria-controls="alerts" role="tab" data-toggle="tab">Alerts</a></li>
 </ul>
 
 <!-- Tab panes -->
@@ -114,6 +115,55 @@
         @else
             <tr>
                 <td colspan="9">@lang('global.app_no_entries_in_table')</td>
+            </tr>
+        @endif
+    </tbody>
+</table>
+</div>
+<div role="tabpanel" class="tab-pane " id="alerts">
+<table class="table table-bordered table-striped {{ count($alerts) > 0 ? 'datatable' : '' }}">
+    <thead>
+        <tr>
+            <th>@lang('global.alerts.fields.title')</th>
+                        <th>@lang('global.alerts.fields.alert-type')</th>
+                        <th>@lang('global.alerts.fields.contact')</th>
+                        <th>@lang('global.alerts.fields.user')</th>
+                                                <th>&nbsp;</th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (count($alerts) > 0)
+            @foreach ($alerts as $alert)
+                <tr data-entry-id="{{ $alert->id }}">
+                    <td field-key='title'>{{ $alert->title }}</td>
+                                <td field-key='alert_type'>{{ $alert->alert_type }}</td>
+                                <td field-key='contact'>{{ $alert->contact->first_name or '' }}</td>
+                                <td field-key='user'>{{ $alert->user->name or '' }}</td>
+                                                                <td>
+                                    @can('alert_view')
+                                    <a href="{{ route('admin.alerts.show',[$alert->id]) }}" class="btn btn-xs btn-primary">@lang('global.app_view')</a>
+                                    @endcan
+                                    @can('alert_edit')
+                                    <a href="{{ route('admin.alerts.edit',[$alert->id]) }}" class="btn btn-xs btn-info">@lang('global.app_edit')</a>
+                                    @endcan
+                                    @can('alert_delete')
+{!! Form::open(array(
+                                        'style' => 'display: inline-block;',
+                                        'method' => 'DELETE',
+                                        'onsubmit' => "return confirm('".trans("global.app_are_you_sure")."');",
+                                        'route' => ['admin.alerts.destroy', $alert->id])) !!}
+                                    {!! Form::submit(trans('global.app_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
+                                    {!! Form::close() !!}
+                                    @endcan
+                                </td>
+
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="10">@lang('global.app_no_entries_in_table')</td>
             </tr>
         @endif
     </tbody>

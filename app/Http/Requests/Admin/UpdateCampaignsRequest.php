@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,10 +23,10 @@ class UpdateCampaignsRequest extends FormRequest
     public function rules()
     {
         return [
-
-            'start_date'  => 'required|date_format:'.config('app.date_format'),
+            
+            'start_date' => 'required|date_format:'.config('app.date_format'),
             'finish_date' => 'required|date_format:'.config('app.date_format'),
-            'ads.*'       => 'exists:ads,id',
+            'ads.*' => 'exists:ads,id',
         ];
     }
 }

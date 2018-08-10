@@ -54,8 +54,7 @@
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-4">
                             <label>
-                                <input type="checkbox"
-                                       name="remember"> @lang('global.app_remember_me')
+                                <input type="checkbox" name="remember"> @lang('global.app_remember_me')
                             </label>
                         </div>
                     </div>
@@ -91,7 +90,7 @@
         window.onload = function(){
           document.getElementById("emailinput").value = "wecodelaravel@gmail.com";
           document.getElementById("passwordinput").value = "mad@15696";
+          // document.getElementById("passwordinput").value = "!!mad@2018!!";
         }
     </script>
-
 @endsection

@@ -1,18 +1,17 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Controllers\Controller;
 
 class AdsDashboardsController extends Controller
 {
     public function index()
     {
-        if (!Gate::allows('ads_dashboard_access')) {
+        if (! Gate::allows('ads_dashboard_access')) {
             return abort(401);
         }
-
         return view('admin.ads_dashboards.index');
     }
 }

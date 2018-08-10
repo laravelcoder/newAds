@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class Update1528841604ContactsTable extends Migration
 {
@@ -13,19 +13,21 @@ class Update1528841604ContactsTable extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            if (!Schema::hasColumn('contacts', 'address2')) {
+            
+if (!Schema::hasColumn('contacts', 'address2')) {
                 $table->string('address2')->nullable();
-            }
-            if (!Schema::hasColumn('contacts', 'city')) {
+                }
+if (!Schema::hasColumn('contacts', 'city')) {
                 $table->string('city')->nullable();
-            }
-            if (!Schema::hasColumn('contacts', 'state')) {
+                }
+if (!Schema::hasColumn('contacts', 'state')) {
                 $table->string('state')->nullable();
-            }
-            if (!Schema::hasColumn('contacts', 'zipcode')) {
+                }
+if (!Schema::hasColumn('contacts', 'zipcode')) {
                 $table->string('zipcode')->nullable();
-            }
+                }
         });
+
     }
 
     /**
@@ -40,6 +42,8 @@ class Update1528841604ContactsTable extends Migration
             $table->dropColumn('city');
             $table->dropColumn('state');
             $table->dropColumn('zipcode');
+            
         });
+
     }
 }

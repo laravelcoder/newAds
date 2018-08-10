@@ -4,20 +4,19 @@ namespace Tests;
 
 use App\Permission;
 use DatabaseSeeder;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithSession;
 use Laravel\Dusk\TestCase as BaseTestCase;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    use CreatesApplication, DatabaseMigrations;
+    use CreatesApplication, InteractsWithSession;
 
     /**
      * Prepare for Dusk test execution.
      *
      * @beforeClass
-     *
      * @return void
      */
     public static function prepare()
@@ -53,10 +52,10 @@ abstract class DuskTestCase extends BaseTestCase
             $this->refreshApplication();
         }
 
-        $this->artisan('migrate');
+        $this->artisan('migrate:fresh');
 
         if (Permission::all()->count() == 0) {
-            $this->seed(DatabaseSeeder::class);
+            $this->artisan('db:seed');
         }
     }
 }
