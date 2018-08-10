@@ -12,10 +12,10 @@ class CategorySeedPivot extends Seeder
     public function run()
     {
         $items = [
-            
+
             1 => [
                 'advertiser_id' => [1],
-                'ad_id' => [],
+                'ad_id'         => [],
             ],
 
         ];

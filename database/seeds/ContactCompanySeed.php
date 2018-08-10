@@ -12,8 +12,8 @@ class ContactCompanySeed extends Seeder
     public function run()
     {
         $items = [
-            
-            ['id' => 1, 'name' => 'Coke', 'website' => 'website', 'email' => 'example@example.com', 'address' => 'address', 'address2' => 'address2', 'city' => 'city', 'state' => 'state', 'zipcode' => '90210', 'country' => 'country', 'logo' => null, 'created_by_id' => 2, 'created_by_team_id' => null,],
+
+            ['id' => 1, 'name' => 'Coke', 'website' => 'website', 'email' => 'example@example.com', 'address' => 'address', 'address2' => 'address2', 'city' => 'city', 'state' => 'state', 'zipcode' => '90210', 'country' => 'country', 'logo' => null, 'created_by_id' => 2, 'created_by_team_id' => null],
 
         ];
 

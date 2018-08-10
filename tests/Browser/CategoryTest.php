@@ -3,8 +3,8 @@
 namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class CategoryTest extends DuskTestCase
 {
@@ -16,18 +16,18 @@ class CategoryTest extends DuskTestCase
         $category = factory('App\Category')->make();
 
         $relations = [
-            factory('App\Contactcompany')->create(), 
-            factory('App\Contactcompany')->create(), 
-            factory('App\Ad')->create(), 
-            factory('App\Ad')->create(), 
+            factory('App\Contactcompany')->create(),
+            factory('App\Contactcompany')->create(),
+            factory('App\Ad')->create(),
+            factory('App\Ad')->create(),
         ];
 
         $this->browse(function (Browser $browser) use ($admin, $category, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.categories.index'))
                 ->clickLink('Add new')
-                ->type("category", $category->category)
-                ->type("slug", $category->slug)
+                ->type('category', $category->category)
+                ->type('slug', $category->slug)
                 ->select('select[name="advertiser_id[]"]', $relations[0]->id)
                 ->select('select[name="advertiser_id[]"]', $relations[1]->id)
                 ->select('select[name="ad_id[]"]', $relations[2]->id)
@@ -50,18 +50,18 @@ class CategoryTest extends DuskTestCase
         $category2 = factory('App\Category')->make();
 
         $relations = [
-            factory('App\Contactcompany')->create(), 
-            factory('App\Contactcompany')->create(), 
-            factory('App\Ad')->create(), 
-            factory('App\Ad')->create(), 
+            factory('App\Contactcompany')->create(),
+            factory('App\Contactcompany')->create(),
+            factory('App\Ad')->create(),
+            factory('App\Ad')->create(),
         ];
 
         $this->browse(function (Browser $browser) use ($admin, $category, $category2, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.categories.index'))
-                ->click('tr[data-entry-id="' . $category->id . '"] .btn-info')
-                ->type("category", $category2->category)
-                ->type("slug", $category2->slug)
+                ->click('tr[data-entry-id="'.$category->id.'"] .btn-info')
+                ->type('category', $category2->category)
+                ->type('slug', $category2->slug)
                 ->select('select[name="advertiser_id[]"]', $relations[0]->id)
                 ->select('select[name="advertiser_id[]"]', $relations[1]->id)
                 ->select('select[name="ad_id[]"]', $relations[2]->id)
@@ -83,10 +83,10 @@ class CategoryTest extends DuskTestCase
         $category = factory('App\Category')->create();
 
         $relations = [
-            factory('App\Contactcompany')->create(), 
-            factory('App\Contactcompany')->create(), 
-            factory('App\Ad')->create(), 
-            factory('App\Ad')->create(), 
+            factory('App\Contactcompany')->create(),
+            factory('App\Contactcompany')->create(),
+            factory('App\Ad')->create(),
+            factory('App\Ad')->create(),
         ];
 
         $category->advertiser_id()->attach([$relations[0]->id, $relations[1]->id]);
@@ -95,7 +95,7 @@ class CategoryTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($admin, $category, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.categories.index'))
-                ->click('tr[data-entry-id="' . $category->id . '"] .btn-primary')
+                ->click('tr[data-entry-id="'.$category->id.'"] .btn-primary')
                 ->assertSeeIn("td[field-key='category']", $category->category)
                 ->assertSeeIn("td[field-key='slug']", $category->slug)
                 ->assertSeeIn("tr:last-child td[field-key='advertiser_id'] span:first-child", $relations[0]->name)
@@ -104,5 +104,4 @@ class CategoryTest extends DuskTestCase
                 ->assertSeeIn("tr:last-child td[field-key='ad_id'] span:last-child", $relations[3]->ad_label);
         });
     }
-
 }

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\ContentCategory;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreContentCategoriesRequest;
 use App\Http\Requests\Admin\UpdateContentCategoriesRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 class ContentCategoriesController extends Controller
 {
     /**
@@ -21,12 +18,11 @@ class ContentCategoriesController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('content_category_access')) {
+        if (!Gate::allows('content_category_access')) {
             return abort(401);
         }
 
-
-                $content_categories = ContentCategory::all();
+        $content_categories = ContentCategory::all();
 
         return view('admin.content_categories.index', compact('content_categories'));
     }
@@ -38,40 +34,40 @@ class ContentCategoriesController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('content_category_create')) {
+        if (!Gate::allows('content_category_create')) {
             return abort(401);
         }
+
         return view('admin.content_categories.create');
     }
 
     /**
      * Store a newly created ContentCategory in storage.
      *
-     * @param  \App\Http\Requests\StoreContentCategoriesRequest  $request
+     * @param \App\Http\Requests\StoreContentCategoriesRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreContentCategoriesRequest $request)
     {
-        if (! Gate::allows('content_category_create')) {
+        if (!Gate::allows('content_category_create')) {
             return abort(401);
         }
         $content_category = ContentCategory::create($request->all());
 
-
-
         return redirect()->route('admin.content_categories.index');
     }
-
 
     /**
      * Show the form for editing ContentCategory.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if (! Gate::allows('content_category_edit')) {
+        if (!Gate::allows('content_category_edit')) {
             return abort(401);
         }
         $content_category = ContentCategory::findOrFail($id);
@@ -82,33 +78,32 @@ class ContentCategoriesController extends Controller
     /**
      * Update ContentCategory in storage.
      *
-     * @param  \App\Http\Requests\UpdateContentCategoriesRequest  $request
-     * @param  int  $id
+     * @param \App\Http\Requests\UpdateContentCategoriesRequest $request
+     * @param int                                               $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateContentCategoriesRequest $request, $id)
     {
-        if (! Gate::allows('content_category_edit')) {
+        if (!Gate::allows('content_category_edit')) {
             return abort(401);
         }
         $content_category = ContentCategory::findOrFail($id);
         $content_category->update($request->all());
 
-
-
         return redirect()->route('admin.content_categories.index');
     }
-
 
     /**
      * Display ContentCategory.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if (! Gate::allows('content_category_view')) {
+        if (!Gate::allows('content_category_view')) {
             return abort(401);
         }
         $content_pages = \App\ContentPage::whereHas('category_id',
@@ -121,16 +116,16 @@ class ContentCategoriesController extends Controller
         return view('admin.content_categories.show', compact('content_category', 'content_pages'));
     }
 
-
     /**
      * Remove ContentCategory from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        if (! Gate::allows('content_category_delete')) {
+        if (!Gate::allows('content_category_delete')) {
             return abort(401);
         }
         $content_category = ContentCategory::findOrFail($id);
@@ -146,7 +141,7 @@ class ContentCategoriesController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('content_category_delete')) {
+        if (!Gate::allows('content_category_delete')) {
             return abort(401);
         }
         if ($request->input('ids')) {
@@ -157,5 +152,4 @@ class ContentCategoriesController extends Controller
             }
         }
     }
-
 }

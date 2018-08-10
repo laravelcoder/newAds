@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Alert;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAlertsRequest;
 use App\Http\Requests\Admin\UpdateAlertsRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\DataTables;
 
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 class AlertsController extends Controller
 {
     /**
@@ -22,18 +19,16 @@ class AlertsController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('alert_access')) {
+        if (!Gate::allows('alert_access')) {
             return abort(401);
         }
 
-
-        
         if (request()->ajax()) {
             $query = Alert::query();
-            $query->with("contact");
-            $query->with("user");
+            $query->with('contact');
+            $query->with('user');
             $template = 'actionsTemplate';
-            
+
             $query->select([
                 'alerts.id',
                 'alerts.title',
@@ -50,7 +45,7 @@ class AlertsController extends Controller
             $table->addColumn('massDelete', '&nbsp;');
             $table->addColumn('actions', '&nbsp;');
             $table->editColumn('actions', function ($row) use ($template) {
-                $gateKey  = 'alert_';
+                $gateKey = 'alert_';
                 $routeKey = 'admin.alerts';
 
                 return view($template, compact('row', 'gateKey', 'routeKey'));
@@ -71,7 +66,7 @@ class AlertsController extends Controller
                 return $row->user ? $row->user->name : '';
             });
 
-            $table->rawColumns(['actions','massDelete']);
+            $table->rawColumns(['actions', 'massDelete']);
 
             return $table->make(true);
         }
@@ -86,52 +81,51 @@ class AlertsController extends Controller
      */
     public function create()
     {
-        if (! Gate::allows('alert_create')) {
+        if (!Gate::allows('alert_create')) {
             return abort(401);
         }
-        
+
         $contacts = \App\Contact::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
         $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $enum_alert_type = Alert::$enum_alert_type;
-            
+
         return view('admin.alerts.create', compact('enum_alert_type', 'contacts', 'users'));
     }
 
     /**
      * Store a newly created Alert in storage.
      *
-     * @param  \App\Http\Requests\StoreAlertsRequest  $request
+     * @param \App\Http\Requests\StoreAlertsRequest $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAlertsRequest $request)
     {
-        if (! Gate::allows('alert_create')) {
+        if (!Gate::allows('alert_create')) {
             return abort(401);
         }
         $alert = Alert::create($request->all());
 
-
-
         return redirect()->route('admin.alerts.index');
     }
-
 
     /**
      * Show the form for editing Alert.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        if (! Gate::allows('alert_edit')) {
+        if (!Gate::allows('alert_edit')) {
             return abort(401);
         }
-        
+
         $contacts = \App\Contact::get()->pluck('first_name', 'id')->prepend(trans('global.app_please_select'), '');
         $users = \App\User::get()->pluck('name', 'id')->prepend(trans('global.app_please_select'), '');
         $enum_alert_type = Alert::$enum_alert_type;
-            
+
         $alert = Alert::findOrFail($id);
 
         return view('admin.alerts.edit', compact('alert', 'enum_alert_type', 'contacts', 'users'));
@@ -140,33 +134,32 @@ class AlertsController extends Controller
     /**
      * Update Alert in storage.
      *
-     * @param  \App\Http\Requests\UpdateAlertsRequest  $request
-     * @param  int  $id
+     * @param \App\Http\Requests\UpdateAlertsRequest $request
+     * @param int                                    $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAlertsRequest $request, $id)
     {
-        if (! Gate::allows('alert_edit')) {
+        if (!Gate::allows('alert_edit')) {
             return abort(401);
         }
         $alert = Alert::findOrFail($id);
         $alert->update($request->all());
 
-
-
         return redirect()->route('admin.alerts.index');
     }
-
 
     /**
      * Display Alert.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        if (! Gate::allows('alert_view')) {
+        if (!Gate::allows('alert_view')) {
             return abort(401);
         }
         $alert = Alert::findOrFail($id);
@@ -174,16 +167,16 @@ class AlertsController extends Controller
         return view('admin.alerts.show', compact('alert'));
     }
 
-
     /**
      * Remove Alert from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        if (! Gate::allows('alert_delete')) {
+        if (!Gate::allows('alert_delete')) {
             return abort(401);
         }
         $alert = Alert::findOrFail($id);
@@ -199,7 +192,7 @@ class AlertsController extends Controller
      */
     public function massDestroy(Request $request)
     {
-        if (! Gate::allows('alert_delete')) {
+        if (!Gate::allows('alert_delete')) {
             return abort(401);
         }
         if ($request->input('ids')) {
@@ -210,5 +203,4 @@ class AlertsController extends Controller
             }
         }
     }
-
 }

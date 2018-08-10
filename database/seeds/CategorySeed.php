@@ -12,8 +12,8 @@ class CategorySeed extends Seeder
     public function run()
     {
         $items = [
-            
-            ['id' => 1, 'category' => 'Beverages', 'slug' => 'beverages',],
+
+            ['id' => 1, 'category' => 'Beverages', 'slug' => 'beverages'],
 
         ];
 
