@@ -19,13 +19,18 @@
 <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.2.0/js/dataTables.select.min.js"></script>
 <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
-<script src="{{ url('adminlte/js') }}/bootstrap.min.js"></script>
-<script src="{{ url('adminlte/js') }}/select2.full.min.js"></script>
-<script src="{{ url('adminlte/js') }}/main.js"></script>
+<script src="{{ url('adminlte/js/bootstrap.min.js') }}"></script>
+<script src="{{ url('adminlte/js/select2.full.min.js') }}"></script>
+<script src="{{ url('adminlte/js/fullHeight.js') }}"></script>
+
+<script src="{{ url('adminlte/js/main.js') }}"></script>
 
 <script src="{{ url('adminlte/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <script src="{{ url('adminlte/plugins/fastclick/fastclick.js') }}"></script>
 <script src="{{ url('adminlte/js/app.min.js') }}"></script>
+
+<script src="{{ url('adminlte/js/adminlte.js') }}"></script>
+
 <script>
     window._token = '{{ csrf_token() }}';
 </script>
@@ -35,7 +40,9 @@
             "url": "https://cdn.datatables.net/plug-ins/1.10.15/i18n/{{ config('app.languages')[app()->getLocale()] }}.json"
         }
     });
-
+    $(document).ready(function() {
+        $('.sidebar').height('100%');
+      });
     $(document).ready(function() {
         $('.searchable-field').select2({
             minimumInputLength: 3,
@@ -140,6 +147,26 @@
             }
         });
     });
+</script>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '275710106580050',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v3.1'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
 </script>
 
 @yield('javascript')

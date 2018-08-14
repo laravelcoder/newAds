@@ -6,7 +6,7 @@
 </head>
 
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 
 <div id="wrapper">
 
@@ -47,6 +47,10 @@
             </div>
         </section>
     </div>
+
+@include('partials.sidebar')
+
+
 </div>
 
 {!! Form::open(['route' => 'auth.logout', 'style' => 'display:none;', 'id' => 'logout']) !!}

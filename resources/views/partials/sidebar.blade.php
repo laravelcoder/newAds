@@ -1,13 +1,13 @@
 @inject('request', 'Illuminate\Http\Request')
 <!-- Left side column. contains the sidebar -->
-<aside class="main-sidebar">
+<aside class="main-sidebar full-height">
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
+    <section class="sidebar full-height">
         <ul class="sidebar-menu">
 
-            <li>
+        {{--     <li>
                 <select class="searchable-field form-control"></select>
-            </li>
+            </li> --}}
 
 {{--             <li class="{{ $request->segment(1) == 'home' ? 'active' : '' }}">
                 <a href="{{ url('/') }}">
@@ -307,6 +307,9 @@
                 </a>
             </li>
         </ul>
+<img src="{{ asset('images/sling_n_dish.png') }}" />
     </section>
+
+
 </aside>
 
