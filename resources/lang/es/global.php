@@ -1,39 +1,310 @@
 <?php
 
 return [
-		'user-management' => [		'title' => 'User management',		'fields' => [		],	],
-		'permissions' => [		'title' => 'Permissions',		'fields' => [			'title' => 'Title',		],	],
-		'roles' => [		'title' => 'Roles',		'fields' => [			'title' => 'Title',			'permission' => 'Permissions',		],	],
-		'users' => [		'title' => 'Users',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'password' => 'Password',			'role' => 'Role',			'remember-token' => 'Remember token',			'team' => 'Team',		],	],
-		'ads-dashboard' => [		'title' => 'Ads Dashboard',		'fields' => [		],	],
-		'networks' => [		'title' => 'Networks Channels',		'fields' => [		],	],
-		'teams' => [		'title' => 'Teams',		'fields' => [			'name' => 'Name',		],	],
-		'internal-notifications' => [		'title' => 'Notifications',		'fields' => [			'text' => 'Text',			'link' => 'Link',			'users' => 'Users',		],	],
-		'advertiser-management' => [		'title' => 'Advertiser Management',		'fields' => [		],	],
-		'contact-companies' => [		'title' => 'Advertisers',		'fields' => [			'name' => 'Advertiser Name',			'website' => 'Website',			'email' => 'Email',			'address' => 'Address',			'address2' => 'Address 2',			'city' => 'City',			'state' => 'State',			'zipcode' => 'Zipcode',			'country' => 'Country',			'logo' => 'Logo',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',		],	],
-		'contacts' => [		'title' => 'Contacts',		'fields' => [			'company' => 'Advertiser',			'first-name' => 'First name',			'last-name' => 'Last name',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',			'notes' => 'Notes',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',		],	],
-		'agents' => [		'title' => 'Agents',		'fields' => [			'advertiser' => 'Advertiser',			'first-name' => 'First name',			'last-name' => 'Last name',			'email' => 'Email',			'skype' => 'Skype',			'address' => 'Address',			'photo' => 'Photo',			'about' => 'About',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'notes' => 'Notes',		],	],
-		'ads' => [		'title' => 'Ads',		'fields' => [			'ad-label' => 'Ad label',			'ad-description' => 'Ad Description',			'video-upload' => 'Video upload',			'total-impressions' => 'Total Impressions',			'total-networks' => 'Total Networks',			'total-channels' => 'Total Channels',			'advertiser' => 'Advertiser',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'category-id' => 'Category',			'video-screenshot' => 'Video screenshot',		],	],
-		'categories' => [		'title' => 'Categories',		'fields' => [			'category' => 'Category',			'slug' => 'Slug',			'advertiser-id' => 'Advertiser',			'ad-id' => 'Ad',		],	],
-		'phones' => [		'title' => 'Phones',		'fields' => [			'phone-number' => 'Phone number',			'contact' => 'Contact',			'advertiser' => 'Advertiser',			'agent' => 'Agent',		],	],
-		'ads-section' => [		'title' => 'Ads section',		'fields' => [		],	],
-		'ads-section' => [		'title' => 'Ads Section',		'fields' => [		],	],
-		'audiences' => [		'title' => 'Audiences',		'fields' => [			'name' => 'Name',			'value' => 'Value',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertiser' => 'Advertiser',		],	],
-		'demographics' => [		'title' => 'Demographics',		'fields' => [			'demographic' => 'Demographic',			'value' => 'Value',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertiser' => 'Advertiser',		],	],
-		'advertisers-details' => [		'title' => 'Advertisers Details',		'fields' => [		],	],
-		'network-research' => [		'title' => 'Network Research',		'fields' => [		],	],
-		'networks-admin' => [		'title' => 'Networks admin',		'fields' => [		],	],
-		'networks' => [		'title' => 'Networks',		'fields' => [			'network' => 'Network',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'network-id' => 'Network id',			'affiliates' => 'Affiliates',		],	],
-		'providers' => [		'title' => 'Providers',		'fields' => [		],	],
-		'stations' => [		'title' => 'Stations',		'fields' => [			'station-label' => 'Station Label',			'channel-number' => 'Channel #',			'affiliate' => 'Affiliate',			'network' => 'Network',		],	],
-		'campaign' => [		'title' => 'Campaign',		'fields' => [			'name' => 'Name',			'start-date' => 'Start date',			'finish-date' => 'Finish date',			'created-by' => 'Created by',			'created-by-team' => 'Created by Team',			'advertiser' => 'Advertiser',			'ads' => 'Ads',		],	],
-		'affiliates' => [		'title' => 'Affiliates',		'fields' => [			'affiliate' => 'Affiliate',		],	],
-		'alerts' => [		'title' => 'Alerts',		'fields' => [			'title' => 'Title',			'content' => 'Content',			'alert-type' => 'Alert type',			'contact' => 'Contact',			'user' => 'User',		],	],
-		'sales-dashboard' => [		'title' => 'Sales Dashboard',		'fields' => [		],	],
-		'content-management' => [		'title' => 'Content management',		'fields' => [		],	],
-		'content-categories' => [		'title' => 'Categories',		'fields' => [			'title' => 'Category',			'slug' => 'Slug',		],	],
-		'content-tags' => [		'title' => 'Tags',		'fields' => [			'title' => 'Tag',			'slug' => 'Slug',		],	],
-		'content-pages' => [		'title' => 'Pages',		'fields' => [			'title' => 'Title',			'category-id' => 'Categories',			'tag-id' => 'Tags',			'page-text' => 'Text',			'excerpt' => 'Excerpt',			'featured-image' => 'Featured image',		],	],
+	
+	'user-management' => [
+		'title' => 'User management',
+		'fields' => [
+		],
+	],
+	
+	'permissions' => [
+		'title' => 'Permissions',
+		'fields' => [
+			'title' => 'Title',
+		],
+	],
+	
+	'roles' => [
+		'title' => 'Roles',
+		'fields' => [
+			'title' => 'Title',
+			'permission' => 'Permissions',
+		],
+	],
+	
+	'users' => [
+		'title' => 'Users',
+		'fields' => [
+			'name' => 'Name',
+			'email' => 'Email',
+			'password' => 'Password',
+			'role' => 'Role',
+			'remember-token' => 'Remember token',
+			'team' => 'Team',
+		],
+	],
+	
+	'ads-dashboard' => [
+		'title' => 'Ads Dashboard',
+		'fields' => [
+		],
+	],
+	
+	'networks' => [
+		'title' => 'Networks Channels',
+		'fields' => [
+		],
+	],
+	
+	'teams' => [
+		'title' => 'Teams',
+		'fields' => [
+			'name' => 'Name',
+		],
+	],
+	
+	'internal-notifications' => [
+		'title' => 'Notifications',
+		'fields' => [
+			'text' => 'Text',
+			'link' => 'Link',
+			'users' => 'Users',
+		],
+	],
+	
+	'advertiser-management' => [
+		'title' => 'Advertiser Management',
+		'fields' => [
+		],
+	],
+	
+	'contact-companies' => [
+		'title' => 'Advertisers',
+		'fields' => [
+			'name' => 'Advertiser Name',
+			'website' => 'Website',
+			'email' => 'Email',
+			'address' => 'Address',
+			'address2' => 'Address 2',
+			'city' => 'City',
+			'state' => 'State',
+			'zipcode' => 'Zipcode',
+			'country' => 'Country',
+			'logo' => 'Logo',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+		],
+	],
+	
+	'contacts' => [
+		'title' => 'Contacts',
+		'fields' => [
+			'company' => 'Advertiser',
+			'first-name' => 'First name',
+			'last-name' => 'Last name',
+			'email' => 'Email',
+			'skype' => 'Skype',
+			'address' => 'Address',
+			'notes' => 'Notes',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+		],
+	],
+	
+	'agents' => [
+		'title' => 'Agents',
+		'fields' => [
+			'advertiser' => 'Advertiser',
+			'first-name' => 'First name',
+			'last-name' => 'Last name',
+			'email' => 'Email',
+			'skype' => 'Skype',
+			'address' => 'Address',
+			'photo' => 'Photo',
+			'about' => 'About',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+			'notes' => 'Notes',
+		],
+	],
+	
+	'ads' => [
+		'title' => 'Ads',
+		'fields' => [
+			'ad-label' => 'Ad label',
+			'ad-description' => 'Ad Description',
+			'video-upload' => 'Video upload',
+			'total-impressions' => 'Total Impressions',
+			'total-networks' => 'Total Networks',
+			'total-channels' => 'Total Channels',
+			'advertiser' => 'Advertiser',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+			'category-id' => 'Category',
+			'video-screenshot' => 'Video screenshot',
+		],
+	],
+	
+	'categories' => [
+		'title' => 'Categories',
+		'fields' => [
+			'category' => 'Category',
+			'slug' => 'Slug',
+			'advertiser-id' => 'Advertiser',
+			'ad-id' => 'Ad',
+		],
+	],
+	
+	'phones' => [
+		'title' => 'Phones',
+		'fields' => [
+			'phone-number' => 'Phone number',
+			'contact' => 'Contact',
+			'advertiser' => 'Advertiser',
+			'agent' => 'Agent',
+		],
+	],
+	
+	'ads-section' => [
+		'title' => 'Ads section',
+		'fields' => [
+		],
+	],
+	
+	'ads-section' => [
+		'title' => 'Ads Section',
+		'fields' => [
+		],
+	],
+	
+	'audiences' => [
+		'title' => 'Audiences',
+		'fields' => [
+			'name' => 'Name',
+			'value' => 'Value',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+			'advertiser' => 'Advertiser',
+		],
+	],
+	
+	'demographics' => [
+		'title' => 'Demographics',
+		'fields' => [
+			'demographic' => 'Demographic',
+			'value' => 'Value',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+			'advertiser' => 'Advertiser',
+		],
+	],
+	
+	'advertisers-details' => [
+		'title' => 'Advertisers Details',
+		'fields' => [
+		],
+	],
+	
+	'network-research' => [
+		'title' => 'Network Research',
+		'fields' => [
+		],
+	],
+	
+	'networks-admin' => [
+		'title' => 'Networks admin',
+		'fields' => [
+		],
+	],
+	
+	'networks' => [
+		'title' => 'Networks',
+		'fields' => [
+			'network' => 'Network',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+			'network-id' => 'Network id',
+			'affiliates' => 'Affiliates',
+		],
+	],
+	
+	'providers' => [
+		'title' => 'Providers',
+		'fields' => [
+		],
+	],
+	
+	'stations' => [
+		'title' => 'Stations',
+		'fields' => [
+			'station-label' => 'Station Label',
+			'channel-number' => 'Channel #',
+			'affiliate' => 'Affiliate',
+			'network' => 'Network',
+		],
+	],
+	
+	'campaign' => [
+		'title' => 'Campaign',
+		'fields' => [
+			'name' => 'Name',
+			'start-date' => 'Start date',
+			'finish-date' => 'Finish date',
+			'created-by' => 'Created by',
+			'created-by-team' => 'Created by Team',
+			'advertiser' => 'Advertiser',
+			'ads' => 'Ads',
+		],
+	],
+	
+	'affiliates' => [
+		'title' => 'Affiliates',
+		'fields' => [
+			'affiliate' => 'Affiliate',
+		],
+	],
+	
+	'alerts' => [
+		'title' => 'Alerts',
+		'fields' => [
+			'title' => 'Title',
+			'content' => 'Content',
+			'alert-type' => 'Alert type',
+			'contact' => 'Contact',
+			'user' => 'User',
+		],
+	],
+	
+	'sales-dashboard' => [
+		'title' => 'Sales Dashboard',
+		'fields' => [
+		],
+	],
+	
+	'content-management' => [
+		'title' => 'Content management',
+		'fields' => [
+		],
+	],
+	
+	'content-categories' => [
+		'title' => 'Categories',
+		'fields' => [
+			'title' => 'Category',
+			'slug' => 'Slug',
+		],
+	],
+	
+	'content-tags' => [
+		'title' => 'Tags',
+		'fields' => [
+			'title' => 'Tag',
+			'slug' => 'Slug',
+		],
+	],
+	
+	'content-pages' => [
+		'title' => 'Pages',
+		'fields' => [
+			'title' => 'Title',
+			'category-id' => 'Categories',
+			'tag-id' => 'Tags',
+			'page-text' => 'Text',
+			'excerpt' => 'Excerpt',
+			'featured-image' => 'Featured image',
+		],
+	],
 	'app_create' => 'Crear',
 	'app_save' => 'Guardar',
 	'app_edit' => 'Editar',
@@ -278,5 +549,5 @@ return [
 	'app_slug' => 'Segmento',
 	'app_team-management' => 'Equipos',
 	'app_team-management-singular' => 'Equipo',
-	'global_title' => 'Sales Dashboard',
+	'global_title' => 'Amplificador De Alcance Global',
 ];

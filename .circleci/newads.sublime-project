@@ -1,8 +1,23 @@
 {
+	"build_systems":
+	[
+		{
+			"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+			"name": "Anaconda Python Builder",
+			"selector": "source.python",
+			"shell_cmd": "\"python\" -u \"$file\""
+		}
+	],
 	"folders":
 	[
 		{
 			"path": "C:\\Users\\phillip.madsen\\repos\\newAds"
+		},
+		{
+			"path": "C:\\Users\\phillip.madsen\\repos\\manager"
+		},
+		{
+			"path": "C:\\Users\\phillip.madsen\\AppData\\Roaming\\Sublime Text 3\\Packages\\User\\sublime-snippets\\laravel\\Sublime-Text-PHP-and-Laravel-Snippets-master"
 		}
 	]
 }

@@ -1,7 +1,7 @@
 <div class="page-header-inner">
     <div class="page-header-inner">
         <div class="navbar-header">
-            <a href="{{ url('/admin/sales_dashboard') }}"
+            <a href="{{ url('/admin/sales_dashboards') }}"
                class="navbar-brand">
                 @trans('global.global_title')
             </a>

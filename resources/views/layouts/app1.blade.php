@@ -3,10 +3,13 @@
 
 <head>
     @include('partials.head')
+
+    @stack('pagestyle')
+    @stack('topscripts')
 </head>
 
 
-<body class="hold-transition skin-black sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini">
 
 <div id="wrapper">
 
@@ -15,14 +18,12 @@
 
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+        @yield('pageHeader')
+ 
         <!-- Main content -->
-        <section class="content">
-            @if(isset($siteTitle))
-                <h3 class="page-title">
-                    {{ $siteTitle }}
-                </h3>
-            @endif
-
+        <section class="content container-fluid">
+  
+ 
             <div class="row">
                 <div class="col-md-12">
 
@@ -48,7 +49,7 @@
         </section>
     </div>
     
-    @include('partials.sidebar')
+    @include('partials.footer')
 
 </div>
 
