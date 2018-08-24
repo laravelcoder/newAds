@@ -11,7 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
         $this->call(TeamSeed::class);
         $this->call(PermissionSeed::class);
         $this->call(RoleSeed::class);
@@ -27,6 +26,5 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeedPivot::class);
         $this->call(RoleSeedPivot::class);
         $this->call(UserSeedPivot::class);
-
     }
 }

@@ -7,19 +7,18 @@ use Illuminate\Http\Request;
 class MegaSearchController extends Controller
 {
     protected $models = [
-        'Category' => 'global.categories.title',
-        'Audience' => 'global.audiences.title',
+        'Category'       => 'global.categories.title',
+        'Audience'       => 'global.audiences.title',
         'ContactCompany' => 'global.contact-companies.title',
-        'Demographic' => 'global.demographics.title',
-        'Network' => 'global.networks.title',
-        'Station' => 'global.stations.title',
-        'Ad' => 'global.ads.title',
-        'Campaign' => 'global.campaign.title',
+        'Demographic'    => 'global.demographics.title',
+        'Network'        => 'global.networks.title',
+        'Station'        => 'global.stations.title',
+        'Ad'             => 'global.ads.title',
+        'Campaign'       => 'global.campaign.title',
     ];
 
     public function search(Request $request)
     {
-
         $search = $request->input('search', false);
         $term = $search['term'];
 
@@ -29,14 +28,14 @@ class MegaSearchController extends Controller
 
         $return = [];
         foreach ($this->models as $modelString => $translation) {
-            $model = 'App\\' . $modelString;
+            $model = 'App\\'.$modelString;
 
             $query = $model::query();
 
             $fields = $model::$searchable;
 
             foreach ($fields as $field) {
-                $query->orWhere($field, 'LIKE', '%' . $term . '%');
+                $query->orWhere($field, 'LIKE', '%'.$term.'%');
             }
 
             $results = $query->get();
@@ -51,7 +50,7 @@ class MegaSearchController extends Controller
                 }
                 $results_formated['fields_formated'] = $fields_formated;
 
-                $results_formated['url'] = url('/admin/' . str_plural(snake_case($modelString)) . '/' . $result->id . '/edit');
+                $results_formated['url'] = url('/admin/'.str_plural(snake_case($modelString)).'/'.$result->id.'/edit');
 
                 $return[] = $results_formated;
             }

@@ -3,9 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class QA_EmailNotification extends Notification
 {
@@ -15,6 +14,7 @@ class QA_EmailNotification extends Notification
     {
         $this->data = $data;
     }
+
     public function via($notifiable)
     {
         return ['mail'];
@@ -27,15 +27,14 @@ class QA_EmailNotification extends Notification
 
     public function getMessage()
     {
-        return (new MailMessage)
-            ->subject(config('app.name') . ': entry ' . $this->data["action"] . ' in ' . $this->data['crud_name'])
+        return (new MailMessage())
+            ->subject(config('app.name').': entry '.$this->data['action'].' in '.$this->data['crud_name'])
             ->greeting('Hi,')
-            ->line('we would like to inform you that entry has been ' . $this->data["action"] . ' in ' . $this->data['crud_name'])
+            ->line('we would like to inform you that entry has been '.$this->data['action'].' in '.$this->data['crud_name'])
             ->line('Please log in to see more information.')
             ->action(config('app.name'), url(env('APP_URL')))
             ->line('Thank you')
-            ->line(config('app.name') . ' Team')
-            ->salutation(" ");
+            ->line(config('app.name').' Team')
+            ->salutation(' ');
     }
-
 }

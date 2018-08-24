@@ -3,8 +3,8 @@
 namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Tests\DuskTestCase;
 
 class CampaignTest extends DuskTestCase
 {
@@ -16,18 +16,18 @@ class CampaignTest extends DuskTestCase
         $campaign = factory('App\Campaign')->make();
 
         $relations = [
-            factory('App\Ad')->create(), 
-            factory('App\Ad')->create(), 
+            factory('App\Ad')->create(),
+            factory('App\Ad')->create(),
         ];
 
         $this->browse(function (Browser $browser) use ($admin, $campaign, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.campaigns.index'))
                 ->clickLink('Add new')
-                ->type("name", $campaign->name)
-                ->type("start_date", $campaign->start_date)
-                ->type("finish_date", $campaign->finish_date)
-                ->select("advertiser_id", $campaign->advertiser_id)
+                ->type('name', $campaign->name)
+                ->type('start_date', $campaign->start_date)
+                ->type('finish_date', $campaign->finish_date)
+                ->select('advertiser_id', $campaign->advertiser_id)
                 ->select('select[name="ads[]"]', $relations[0]->id)
                 ->select('select[name="ads[]"]', $relations[1]->id)
                 ->press('Save')
@@ -47,18 +47,18 @@ class CampaignTest extends DuskTestCase
         $campaign2 = factory('App\Campaign')->make();
 
         $relations = [
-            factory('App\Ad')->create(), 
-            factory('App\Ad')->create(), 
+            factory('App\Ad')->create(),
+            factory('App\Ad')->create(),
         ];
 
         $this->browse(function (Browser $browser) use ($admin, $campaign, $campaign2, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.campaigns.index'))
-                ->click('tr[data-entry-id="' . $campaign->id . '"] .btn-info')
-                ->type("name", $campaign2->name)
-                ->type("start_date", $campaign2->start_date)
-                ->type("finish_date", $campaign2->finish_date)
-                ->select("advertiser_id", $campaign2->advertiser_id)
+                ->click('tr[data-entry-id="'.$campaign->id.'"] .btn-info')
+                ->type('name', $campaign2->name)
+                ->type('start_date', $campaign2->start_date)
+                ->type('finish_date', $campaign2->finish_date)
+                ->select('advertiser_id', $campaign2->advertiser_id)
                 ->select('select[name="ads[]"]', $relations[0]->id)
                 ->select('select[name="ads[]"]', $relations[1]->id)
                 ->press('Update')
@@ -77,8 +77,8 @@ class CampaignTest extends DuskTestCase
         $campaign = factory('App\Campaign')->create();
 
         $relations = [
-            factory('App\Ad')->create(), 
-            factory('App\Ad')->create(), 
+            factory('App\Ad')->create(),
+            factory('App\Ad')->create(),
         ];
 
         $campaign->ads()->attach([$relations[0]->id, $relations[1]->id]);
@@ -86,7 +86,7 @@ class CampaignTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($admin, $campaign, $relations) {
             $browser->loginAs($admin)
                 ->visit(route('admin.campaigns.index'))
-                ->click('tr[data-entry-id="' . $campaign->id . '"] .btn-primary')
+                ->click('tr[data-entry-id="'.$campaign->id.'"] .btn-primary')
                 ->assertSeeIn("td[field-key='name']", $campaign->name)
                 ->assertSeeIn("td[field-key='start_date']", $campaign->start_date)
                 ->assertSeeIn("td[field-key='finish_date']", $campaign->finish_date)
@@ -97,5 +97,4 @@ class CampaignTest extends DuskTestCase
                 ->assertSeeIn("tr:last-child td[field-key='ads'] span:last-child", $relations[1]->ad_label);
         });
     }
-
 }
